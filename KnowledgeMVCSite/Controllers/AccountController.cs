@@ -1,6 +1,7 @@
 ﻿using KnowledgeMVCSite.App_Start;
 using KnowledgeMVCSite.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,11 +28,13 @@ namespace KnowledgeMVCSite.Controllers
         }
 
         public ApplicationUserManager UserManager {
-            get => _signInManager?? HttpContext.GetOwinContext()
+            get => _userManager ?? HttpContext.GetOwinContext().Get<ApplicationUserManager>();
 
 
             set => _userManager = value; }
-        public ApplicationSignInManager SignInManager { get => _signInManager; set => _signInManager = value; }
+        public ApplicationSignInManager SignInManager {
+            get => _signInManager??HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            set => _signInManager = value; }
 
 
 
@@ -54,8 +57,14 @@ namespace KnowledgeMVCSite.Controllers
                     UserName = model.EMail,
                     Email = model.EMail
                 };
-                var result =await UserManager
+                var result = await UserManager.CreateAsync(user,model.Password);
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, false, false);
+                    RedirectToAction("Index", "Home");
+                }
             }
+
 
 
         }
