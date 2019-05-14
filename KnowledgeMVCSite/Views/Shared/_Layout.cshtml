@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>知识分类-@ViewBag.Title</title>
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body,html{
+            height:100%;
+            min-height:100%;          
+        }
+        
+          </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top"  >
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">知识分享网站</span>
+                    @*折叠时三条横线使用*@
+                    <span class="icon-bar"></span>    
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><b>知识分享网站</b></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">帮助</a></li>
+                    <li><a href="#">关于</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ERP知识<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">U9ERP</a></li>
+                            <li><a href="#">K3ERP</a></li>
+                            @*<li class="divider"></li>
+                <li><a href="#">C#</a></li>
+
+                <li role="separator" class="divider">.NET CORE</li>
+                <li><a href="#">MVC</a></li>
+                <li role="separator" class="divider">JAVA</li>
+                <li><a href="#">One more separated link</a>MES</li>*@
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">编程知识<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><b style="color:blue">.NET</b></li>
+                            <li><a href="#">C#</a></li>
+                            <li><a href="#">.NET CORE</a></li>
+                            <li><a href="#">MVC</a></li>
+                            <li class="divider"></li>
+                            <li><b style="color:blue">JAVA</b></li>
+                            <li><a href="#">Java</a></li>
+                            <li class="divider"></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="请输入">
+                    </div>
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="">登陆</a></li>
+                    <li><a href="#">注册</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container" style="padding-top:50px;width:100%;">
+        <div class="row">
+            <div class="col-md-9" >
+                @RenderBody()
+            </div>
+            <div class="col-md-3">
+                <span class="badge">MES排产</span>
+                <span class="badge">销售出库</span>
+                <span class="badge">系统死机 </span>
+                <span class="badge">计划需求</span>
+            </div>
+        </div>
+       
+      
+            <footer>
+                <p>&copy; @DateTime.Now.Year - 我的知识分享应用程序—<small>俞程仁</small></p>
+
+            </footer>
+      
+       
+    </div>
+    
+    
+
+
+    
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#head',
+            data: {
+                title: "知识分享",
+                subtitle: "人人都有新知识，新积累"
+            },
+            methods: {
+
+            },
+            computed: {
+
+            },
+
+
+        });
+
+       
+     
+    </script>
+    @RenderSection("Scripts", false)
+</body>
+
+</html>
