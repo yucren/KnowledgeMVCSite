@@ -14,38 +14,31 @@
           </style>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top"  >
-        <div class="container-fluid">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div id="head" class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">知识分享网站</span>
                     @*折叠时三条横线使用*@
-                    <span class="icon-bar"></span>    
+                    <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="#"><b>知识分享网站</b></a>
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">帮助</a></li>
-                    <li><a href="#">关于</a></li>
+                <ul id="headLink" class="nav navbar-nav">
+                    <li>@Html.ActionLink("首页", "Index", "Home")</li>
+                    <li>@Html.ActionLink("帮助", "Help", "Home")</li>
+                    <li>@Html.ActionLink("关于", "About", "Home")</li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ERP知识<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">U9ERP</a></li>
-                            <li><a href="#">K3ERP</a></li>
-                            @*<li class="divider"></li>
-                <li><a href="#">C#</a></li>
+                            <li>@Html.ActionLink("U9ERP", "Index", "Knowledge", routeValues: new { catalog = "U9ERP" }, htmlAttributes: null)</li>
+                            <li>@Html.ActionLink("K3ERP", "Index", "Knowledge", routeValues: new { catalog = "K3ERP" }, htmlAttributes: null)</li>
 
-                <li role="separator" class="divider">.NET CORE</li>
-                <li><a href="#">MVC</a></li>
-                <li role="separator" class="divider">JAVA</li>
-                <li><a href="#">One more separated link</a>MES</li>*@
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -68,17 +61,14 @@
                     </div>
                     <button type="submit" class="btn btn-default">搜索</button>
                 </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="">登陆</a></li>
-                    <li><a href="#">注册</a></li>
-                </ul>
+                @Html.Partial("_LoginPartial")
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
 
     <div class="container" style="padding-top:50px;width:100%;">
         <div class="row">
-            <div class="col-md-9" >
+            <div class="col-md-9">
                 @RenderBody()
             </div>
             <div class="col-md-3">
@@ -88,43 +78,20 @@
                 <span class="badge">计划需求</span>
             </div>
         </div>
-       
-      
-            <footer>
-                <p>&copy; @DateTime.Now.Year - 我的知识分享应用程序—<small>俞程仁</small></p>
 
-            </footer>
-      
-       
+
+        <footer>
+            <p>&copy; @DateTime.Now.Year - 我的知识分享应用程序—<small>俞程仁</small></p>
+
+        </footer>
+
+
     </div>
-    
-    
 
-
-    
     <script src="~/Scripts/jquery-1.9.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/vue.js"></script>
-    <script>
-        new Vue({
-            el: '#head',
-            data: {
-                title: "知识分享",
-                subtitle: "人人都有新知识，新积累"
-            },
-            methods: {
-
-            },
-            computed: {
-
-            },
-
-
-        });
-
-       
-     
-    </script>
+    <script src="~/Scripts/global.js"></script>
     @RenderSection("Scripts", false)
 </body>
 

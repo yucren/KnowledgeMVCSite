@@ -13,5 +13,14 @@ namespace KnowledgeMVCSite.Controllers
         {
             return View();
         }
+
+        public ActionResult Help()
+        {
+            return View();
+        }
+        public ActionResult About()
+        {
+            return View();
+        }
     }
 }

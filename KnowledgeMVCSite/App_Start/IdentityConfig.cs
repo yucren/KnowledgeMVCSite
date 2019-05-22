@@ -42,11 +42,11 @@ namespace KnowledgeMVCSite.App_Start
             //配置密码的验证逻辑
             manager.PasswordValidator = new PasswordValidator
             {
-                RequireDigit = true,
+                //RequireDigit = true,
                 RequiredLength = 6,
-                RequireLowercase = true,
-                RequireNonLetterOrDigit = true,
-                RequireUppercase = true
+                //RequireLowercase = true,
+                //RequireNonLetterOrDigit = true,
+                //RequireUppercase = true
             };
             //配置用户锁定默认值
             manager.UserLockoutEnabledByDefault = true;//允许用户锁定
