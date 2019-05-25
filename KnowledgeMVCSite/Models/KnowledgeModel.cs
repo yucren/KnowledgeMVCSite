@@ -4,12 +4,14 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security.Cookies;
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using System.Web.Mvc;
 
-    public class KnowledgeModel :IdentityDbContext<ApplicationUser>
+    public class KnowledgeModel : IdentityDbContext<ApplicationUser>
     {
         //您的上下文已配置为从您的应用程序的配置文件(App.config 或 Web.config)
         //使用“KnowledgeModel”连接字符串。默认情况下，此连接字符串针对您的 LocalDb 实例上的
@@ -23,7 +25,7 @@
         public KnowledgeModel()
             : base("name=KnowledgeModel", throwIfV1Schema: false)
         {
-            
+
         }
         /// <summary>
         /// 创建上下文
@@ -37,8 +39,35 @@
         //为您要在模型中包含的每种实体类型都添加 DbSet。有关配置和使用 Code First  模型
         //的详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=390109。
 
-        // public virtual DbSet<MyEntity> MyEntities { get; set; }
+         public virtual DbSet<Knowledge> Knowledges { get; set; }
+      
     }
+    [Bind(Include = "Title,Context")]
+    public class Knowledge{
+        [Required]
+        public int Id { get; set; }
+        
+        public ApplicationUser User { get; set; }
+        [Required]
+        [DataType(DataType.DateTime)]  
+        
+        public DateTime CreateTime { get; set; }
+        [Required]
+        [Display(Name = "标题")]
+        [StringLength(maximumLength: 100, MinimumLength = 1, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
+        public string Title { get; set; }
+        [Required]
+        [Display(Name = "描述知识详细内容")]
+        [StringLength(maximumLength:20000, MinimumLength= 10, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
+
+        public string Context { get; set; }
+
+
+
+
+
+        }
+
 
     public class ApplicationUser:IdentityUser
     {

@@ -1,37 +1,36 @@
-﻿
+﻿@using KnowledgeMVCSite.Models
+@model List<Knowledge>
 @{
     ViewBag.Title = "Index";
 }
-
 <div id="app">
     <div class="row" style="margin-left:0;margin-right:0;margin-bottom:5px; padding: 10px 0; background-color:white">
         <div class="col-md-12">
-            <button type="button" class="btn btn-primary">
-                <span class="glyphicon">                   
+            <a href='@Url.Action("Create","Knowledge")' class="btn btn-primary">
+                <span class="glyphicon">
                     <img src="~/Content/img/Create.png" />
-                    </span> 创建知识
-
-            </button>
-           
+                </span> 创建知识
+            </a>
 
         </div>
+
     </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">移动网关支持用户导入及批量分配应用</div>
-        <div class="panel-body">
-            友空间已全面集成U9 V6.0发布的移动应用，企业管理员在移动网关中配置完员工账号信息，
-            并分配应用权限后，员工可在友空间使用对应的移动应用。 此次修改主要针对移动网关的易用性进行升级，
-            新增了批量导入用户、批量分配应用等功能。
+
+
+    @foreach (Knowledge item in Model)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">@item.Title</div>
+            <div class="panel-body">
+             @Html.Raw(@HttpUtility.UrlDecode(@item.Context))
+            </div>
         </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">移动网关支持用户导入及批量分配应用</div>
-        <div class="panel-body">
-            友空间已全面集成U9 V6.0发布的移动应用，企业管理员在移动网关中配置完员工账号信息，
-            并分配应用权限后，员工可在友空间使用对应的移动应用。 此次修改主要针对移动网关的易用性进行升级，
-            新增了批量导入用户、批量分配应用等功能。
-        </div>
-    </div>
+    }
+
+  
+
+
+
 
 </div>
 
@@ -39,22 +38,26 @@
 
 
 
-@section Scripts
-{
+    @section Scripts
+{      
+        <link href="~/Content/themes/default/easyui.css" rel="stylesheet" />
+        <link href="~/Content/themes/icon.css" rel="stylesheet" />
+        <link href="~/Content/themes/texteditor.css" rel="stylesheet" />
+        <script src="~/Scripts/vue.js"></script>      
+        <script src="~/Scripts/jquery.easyui-1.4.5.js"></script>
+        <script src="~/Scripts/jquery.texteditor.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data: {
+                    message: '<h1>菜鸟教程</h1>'
+                }
+            });
 
-    <script src="~/Scripts/vue.js"></script>
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                message: '<h1>菜鸟教程</h1>'
-            }
-        });
 
 
+        </script>
 
-    </script>
-
-}
+    }
 
 

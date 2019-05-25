@@ -16,6 +16,7 @@ namespace KnowledgeMVCSite
 
 		public void ConfigureAuth(IAppBuilder app)
         {
+            
             //// 配置数据库上下文、用户管理器和登录管理器，以便为每个请求使用单个实例
             app.CreatePerOwinContext(KnowledgeModel.Create); //上下文
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);

@@ -23,8 +23,8 @@ namespace KnowledgeMVCSite.Controllers
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public ApplicationUserManager UserManager {
@@ -100,6 +100,7 @@ namespace KnowledgeMVCSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
