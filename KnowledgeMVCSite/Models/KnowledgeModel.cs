@@ -5,11 +5,14 @@
     using Microsoft.Owin.Security.Cookies;
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
     using System.Linq;
+    using System.Reflection;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using System.Web.Mvc;
+    using KnowledgeMVCSite.Models;
 
     public class KnowledgeModel : IdentityDbContext<ApplicationUser>
     {
@@ -25,7 +28,7 @@
         public KnowledgeModel()
             : base("name=KnowledgeModel", throwIfV1Schema: false)
         {
-
+            Database.SetInitializer<KnowledgeModel>(new Initializer());
         }
         /// <summary>
         /// 创建上下文
@@ -40,23 +43,32 @@
         //的详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=390109。
 
          public virtual DbSet<Knowledge> Knowledges { get; set; }
+
       
+
     }
     [Bind(Include = "Title,Context")]
     public class Knowledge{
         [Required]
+        [Comment("ID")]
         public int Id { get; set; }
         
         public ApplicationUser User { get; set; }
         [Required]
+        [Comment("创建时间")]
         [DataType(DataType.DateTime)]  
         
         public DateTime CreateTime { get; set; }
         [Required]
+        [Comment("标题")]
+        //[Column()]
+        //[NotMapped]        
         [Display(Name = "标题")]
+        
         [StringLength(maximumLength: 100, MinimumLength = 1, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
         public string Title { get; set; }
         [Required]
+        [Comment("正文")]
         [Display(Name = "描述知识详细内容")]
         [StringLength(maximumLength:20000, MinimumLength= 10, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
 
@@ -74,10 +86,12 @@
         /// <summary>
         /// 城市 
         /// </summary>
+       
         public virtual string City { get; set; }
         /// <summary>
-        /// 年龄
+        /// 
         /// </summary>
+    
         public virtual int Age { get; set; }
 
         /// <summary>
@@ -94,6 +108,55 @@
             return userIdentity;
         }
 
+
+    }
+
+    /// <summary>
+    /// 查找列注释
+    /// SELECT ISNULL(b.value,'') AS 列注释, a.name FROM sys.columns a 
+    /// LEFT JOIN sys.extended_properties b
+    /// ON a.object_id =b.major_id AND a.column_id =b.minor_id
+    /// WHERE a.object_id =OBJECT_ID('ScanInEntries')
+    /// </summary>
+
+    class Initializer:CreateDatabaseIfNotExists<KnowledgeModel>
+    {
+        /// <summary>
+        /// 创建初始化种子
+        /// </summary>
+        /// <param name="context">数据库上下文</param>
+        protected override void Seed(KnowledgeModel context)
+        {
+            
+            var dbsets = context.GetType().GetProperties().Where(
+                
+                p => p.PropertyType.Name.Contains("DbSet`1"));
+
+
+            foreach (var dbset in dbsets)
+            {
+
+                PropertyInfo[] properties = dbset.PropertyType.GetGenericArguments()[0].GetProperties();
+                foreach (PropertyInfo propertyInfo in properties)
+                {
+                    CommentAttribute commentAttribute = propertyInfo.GetCustomAttribute<CommentAttribute>();
+                    if (commentAttribute != null)
+                    {
+
+                        context.Database.ExecuteSqlCommand("EXECUTE sp_addextendedproperty N'MS_Description', '" + commentAttribute.Value + "', N'SCHEMA', N'dbo', N'TABLE', N'" + propertyInfo.DeclaringType.Name +"s"+ "', N'COLUMN', N'" + propertyInfo.Name + "'");
+
+                    }
+
+                }
+
+
+
+            }
+
+
+
+
+        }
 
     }
 }

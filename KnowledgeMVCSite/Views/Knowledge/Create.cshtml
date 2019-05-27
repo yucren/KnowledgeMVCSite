@@ -9,6 +9,10 @@
 
 <h2 class="">@ViewBag.Title</h2>
 
+
+
+
+
 @using (Html.BeginForm("Create", "Knowledge", FormMethod.Post, new { @class = "form-horizontal", id = "createForm" }))
 {
     @Html.AntiForgeryToken()
@@ -50,6 +54,7 @@
     <script src="~/Scripts/locale/easyui-lang-zh_CN.js"></script>
     <script src="~/Scripts/jquery.easyui.min.js"></script>
     <script src="~/Scripts/jquery.texteditor.js"></script>
+
     <script>
         $(function () {
             $('#textEidtor').texteditor({
