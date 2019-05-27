@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <button onclick="change()">变粗</button>
+    </div>
+    <div id="editor" contenteditable="true" style="width:500px;height:300px;background-color:blanchedalmond"></div>
+    <script>
+        function change() {
+            var select = window.getSelection();
+            var a = document.createTextNode("dsgfasdga");
+            select.getRangeAt(0).insertNode(a);
+            console.log(select.toString());
+
+        }
+
+    </script>
+</body>
+</html>
