@@ -13,6 +13,7 @@
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using KnowledgeMVCSite.Models;
+    using System.Collections.Generic;
 
     public class KnowledgeModel : IdentityDbContext<ApplicationUser>
     {
@@ -43,6 +44,7 @@
         //的详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=390109。
 
          public virtual DbSet<Knowledge> Knowledges { get; set; }
+         public virtual DbSet<Category> Categories { get; set;  }
 
       
 
@@ -56,15 +58,17 @@
         public ApplicationUser User { get; set; }
         [Required]
         [Comment("创建时间")]
-        [DataType(DataType.DateTime)]  
-        
-        public DateTime CreateTime { get; set; }
+        [DataType(DataType.DateTime)]         
+        public DateTime CreateTime { get; set; }  
+        public Category category { get; set; }
+
+        [ForeignKey("category")]
+        public int category_Id { get; set; }
         [Required]
         [Comment("标题")]
         //[Column()]
         //[NotMapped]        
         [Display(Name = "标题")]
-        
         [StringLength(maximumLength: 100, MinimumLength = 1, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
         public string Title { get; set; }
         [Required]
@@ -74,12 +78,28 @@
 
         public string Context { get; set; }
 
+        
 
 
 
+    }
 
-        }
 
+    public class Category
+    {
+        [Comment("ID")]
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        [Comment("编码")]
+        [Display(Name = "编码")]
+        [StringLength(5, MinimumLength = 5, ErrorMessage = "{0}编码长度为{1}")]
+        public string Code { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        [Comment("名称")]
+        [Display(Name = "名称")]
+        public string Name { get; set; }
+    }
 
     public class ApplicationUser:IdentityUser
     {

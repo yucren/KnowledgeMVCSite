@@ -23,7 +23,7 @@ namespace KnowledgeMVCSite.Controllers
         [Authorize]
         public ActionResult Create()
         {
-
+            ViewData["category"] = GetCategory();
             return View();
         }
 
@@ -32,8 +32,7 @@ namespace KnowledgeMVCSite.Controllers
         [HttpPost]
         public  async Task<ActionResult>  Create(Knowledge knowledge)
         {
-           
-             
+            
             if (ModelState.IsValid)
             {
                
@@ -83,6 +82,23 @@ namespace KnowledgeMVCSite.Controllers
             //}
            
             return View(knowledge);
+        }
+        
+        public IEnumerable<SelectListItem> GetCategory()
+        {
+           var categories= from category in db.Categories
+            select new SelectListItem
+            {
+                Value = category.Id.ToString(),
+                Text = category.Name,
+                Selected =false,
+                
+                
+
+            };
+            return categories.AsEnumerable<SelectListItem>();
+
+
         }
 
 

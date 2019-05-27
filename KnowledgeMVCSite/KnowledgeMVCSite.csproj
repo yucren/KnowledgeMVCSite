@@ -139,6 +139,10 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\KnowledgeController.cs" />
     <Compile Include="Filter\NoCacheAttribute.cs" />
+    <Compile Include="Migrations\201905270902292_add_category2.cs" />
+    <Compile Include="Migrations\201905270902292_add_category2.Designer.cs">
+      <DependentUpon>201905270902292_add_category2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CommentAttribte.cs" />
@@ -533,6 +537,11 @@
     <Content Include="Scripts\jquery.texteditor.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\locale\easyui-lang-af.js" />
     <Content Include="Scripts\locale\easyui-lang-am.js" />
     <Content Include="Scripts\locale\easyui-lang-ar.js" />
@@ -601,6 +610,12 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\upImg\" />
+    <Folder Include="Views\Default\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201905270902292_add_category2.resx">
+      <DependentUpon>201905270902292_add_category2.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
