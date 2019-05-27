@@ -7,13 +7,13 @@ namespace KnowledgeMVCSite.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class add_category2 : IMigrationMetadata
+    public sealed partial class add1 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(add_category2));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(add1));
         
         string IMigrationMetadata.Id
         {
-            get { return "201905270902292_add_category2"; }
+            get { return "201905271345202_add1"; }
         }
         
         string IMigrationMetadata.Source

@@ -23,16 +23,21 @@ namespace KnowledgeMVCSite.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            ViewData["category"] = GetCategory();
+            ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name",2);
+
             return View();
         }
 
         [Authorize]
         [ValidateAntiForgeryToken]        
         [HttpPost]
-        public  async Task<ActionResult>  Create(Knowledge knowledge)
+        public  async Task<ActionResult>  Create([Bind(Include = "CategoryId,Title,Context")] Knowledge knowledge)
         {
-            
+          
+            var id = HttpContext.Request["CategoryId"];
+           
+            ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name",knowledge.CategoryId);
+
             if (ModelState.IsValid)
             {
                
@@ -49,6 +54,7 @@ namespace KnowledgeMVCSite.Controllers
                             CreateTime = DateTime.Now,
                             Context = knowledge.Context,
                             Title = knowledge.Title,
+                            CategoryId = knowledge.CategoryId,
                             User = db.Users.Where(p => p.Email == HttpContext.User.Identity.Name).Single()
 
                         });
@@ -84,22 +90,22 @@ namespace KnowledgeMVCSite.Controllers
             return View(knowledge);
         }
         
-        public IEnumerable<SelectListItem> GetCategory()
-        {
-           var categories= from category in db.Categories
-            select new SelectListItem
-            {
-                Value = category.Id.ToString(),
-                Text = category.Name,
-                Selected =false,
+        //public IEnumerable<SelectListItem> GetCategory()
+        //{
+        //   var categories= from category in db.Categories
+        //    select new SelectListItem
+        //    {
+        //        Value = category.Id.ToString(),
+        //        Text = category.Name,
+        //        Selected =false,
                 
                 
 
-            };
-            return categories.AsEnumerable<SelectListItem>();
+        //    };
+        //    return categories.AsEnumerable<SelectListItem>();
 
 
-        }
+        //}
 
 
 

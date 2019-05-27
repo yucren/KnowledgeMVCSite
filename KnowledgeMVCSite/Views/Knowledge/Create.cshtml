@@ -18,15 +18,15 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 <div class="form-group">
-    @Html.LabelFor(m => m.category, new { @class = "control-label" })
-    @Html.DropDownList("category_Id", ViewData["category"] as IEnumerable<SelectListItem>)   
+    @Html.LabelFor(m =>m.CategoryId, new { @class = "control-label" })
+    @Html.DropDownListFor(m=>m.CategoryId, null,htmlAttributes: new { @class = "form-control" })
     @Html.LabelFor(m => m.Title, new { @class = "control-label", @for = "form-group-input" })
     @Html.TextBoxFor(m => m.Title, new { @class = "form-control", id = "form-group-input", placeholder = "一句话描述你分享的知识" })
     @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
     @Html.LabelFor(m => m.Context, new { @class = "control-label" })
 </div>
     <div class="form-group">
-        <div id="textEidtor" style="height:500px;padding:20px">
+        <div id="textEidtor" style="height:350px;padding:15px">
         </div>
     </div>
     @Html.HiddenFor(m => m.Context, new { id = "content" })

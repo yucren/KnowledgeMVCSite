@@ -138,10 +138,11 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\KnowledgeController.cs" />
+    <Compile Include="Controllers\KnowledgesController.cs" />
     <Compile Include="Filter\NoCacheAttribute.cs" />
-    <Compile Include="Migrations\201905270902292_add_category2.cs" />
-    <Compile Include="Migrations\201905270902292_add_category2.Designer.cs">
-      <DependentUpon>201905270902292_add_category2.cs</DependentUpon>
+    <Compile Include="Migrations\201905271345202_add1.cs" />
+    <Compile Include="Migrations\201905271345202_add1.Designer.cs">
+      <DependentUpon>201905271345202_add1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -600,6 +601,11 @@
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\DisplayEmail.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Knowledges\Create.cshtml" />
+    <Content Include="Views\Knowledges\Delete.cshtml" />
+    <Content Include="Views\Knowledges\Details.cshtml" />
+    <Content Include="Views\Knowledges\Edit.cshtml" />
+    <Content Include="Views\Knowledges\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -613,8 +619,8 @@
     <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201905270902292_add_category2.resx">
-      <DependentUpon>201905270902292_add_category2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905271345202_add1.resx">
+      <DependentUpon>201905271345202_add1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

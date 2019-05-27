@@ -44,26 +44,29 @@
         //的详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=390109。
 
          public virtual DbSet<Knowledge> Knowledges { get; set; }
-         public virtual DbSet<Category> Categories { get; set;  }
+         public virtual DbSet<Category> Categorys { get; set;  }
 
       
 
     }
-    [Bind(Include = "Title,Context")]
+    [Bind(Include = "Title,Context,CategoryId")]
     public class Knowledge{
         [Required]
         [Comment("ID")]
         public int Id { get; set; }
         
         public ApplicationUser User { get; set; }
-        [Required]
+        
         [Comment("创建时间")]
         [DataType(DataType.DateTime)]         
         public DateTime CreateTime { get; set; }  
-        public Category category { get; set; }
+        public Category Category { get; set; }
 
-        [ForeignKey("category")]
-        public int category_Id { get; set; }
+        //[ForeignKey("category")]
+        [Required]
+        [Comment("知识类别")]
+        [Display(Name ="知识类别")]
+        public int CategoryId { get; set; }
         [Required]
         [Comment("标题")]
         //[Column()]
@@ -76,7 +79,7 @@
         [Display(Name = "描述知识详细内容")]
         [StringLength(maximumLength:20000, MinimumLength= 10, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
 
-        public string Context { get; set; }
+        public virtual string Context { get; set; }
 
         
 
@@ -84,12 +87,12 @@
 
     }
 
-
+    [Table("Categorys")]
     public class Category
     {
         [Comment("ID")]
         [Required]
-        public int Id { get; set; }
+        public int CategoryId { get; set; }
         [Required]
         [Comment("编码")]
         [Display(Name = "编码")]
@@ -99,6 +102,8 @@
         [Comment("名称")]
         [Display(Name = "名称")]
         public string Name { get; set; }
+
+        public virtual ICollection<Knowledge> Knowledges { get; set; }
     }
 
     public class ApplicationUser:IdentityUser
