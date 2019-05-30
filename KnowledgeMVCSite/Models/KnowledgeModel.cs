@@ -46,10 +46,49 @@
          public virtual DbSet<Knowledge> Knowledges { get; set; }
          public virtual DbSet<Category> Categorys { get; set;  }
 
+         public virtual DbSet<Discuss> Discusses{ get; set; }
+
       
 
     }
-    [Bind(Include = "Title,Context,CategoryId")]
+    
+    public class Discuss
+    {
+        public Discuss()
+        {
+           
+        }
+
+        [Comment("ID")]
+        
+        public int Id { get; set; }
+
+        [Required(AllowEmptyStrings =false)]
+        [Comment("评论")]
+        [Display(Name = "评论")]
+        [Index(IsClustered = false, IsUnique = false)]
+        [StringLength(900)]
+        public string Context { get; set; }
+
+         [Comment("创建时间")]         
+         [Display(Name ="评论时间")]
+         [DataType(DataType.DateTime)]
+
+        public DateTime CreateTime { get; set; }
+
+        [ForeignKey("User")]
+        public string UserId { get; set; }
+        
+        public ApplicationUser User { get; set; }
+        [ForeignKey("Knowledge")]
+        public int KnowledgeId { get; set; }
+
+        public Knowledge Knowledge { get; set; }
+
+
+
+    }
+
     public class Knowledge{
         [Required]
         [Comment("ID")]
@@ -69,16 +108,18 @@
         public int CategoryId { get; set; }
         [Required]
         [Comment("标题")]
+        [Index(IsClustered =false,IsUnique=false)]
         //[Column()]
         //[NotMapped]        
         [Display(Name = "标题")]
         [StringLength(maximumLength: 100, MinimumLength = 1, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
         public string Title { get; set; }
+
         [Required]
         [Comment("正文")]
         [Display(Name = "描述知识详细内容")]
         [StringLength(maximumLength:20000, MinimumLength= 10, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
-
+        //[Index(IsClustered = false, IsUnique = false)]
         public virtual string Context { get; set; }
 
         

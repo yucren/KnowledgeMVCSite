@@ -14,7 +14,7 @@
     <RootNamespace>KnowledgeMVCSite</RootNamespace>
     <AssemblyName>KnowledgeMVCSite</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -139,14 +139,16 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\KnowledgeController.cs" />
     <Compile Include="Controllers\KnowledgesController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Filter\NoCacheAttribute.cs" />
-    <Compile Include="Migrations\201905271345202_add1.cs" />
-    <Compile Include="Migrations\201905271345202_add1.Designer.cs">
-      <DependentUpon>201905271345202_add1.cs</DependentUpon>
+    <Compile Include="Migrations\201905300216278_add2.cs" />
+    <Compile Include="Migrations\201905300216278_add2.Designer.cs">
+      <DependentUpon>201905300216278_add2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CommentAttribte.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Startup.cs" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -606,6 +608,8 @@
     <Content Include="Views\Knowledges\Details.cshtml" />
     <Content Include="Views\Knowledges\Edit.cshtml" />
     <Content Include="Views\Knowledges\Index.cshtml" />
+    <Content Include="Views\Knowledge\DiscsussPartial.cshtml" />
+    <Content Include="Views\Knowledge\SearchPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -617,10 +621,11 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\upImg\" />
     <Folder Include="Views\Default\" />
+    <Folder Include="Views\Manager\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201905271345202_add1.resx">
-      <DependentUpon>201905271345202_add1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905300216278_add2.resx">
+      <DependentUpon>201905300216278_add2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
@@ -638,7 +643,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56557</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56557/</IISUrl>
+          <IISUrl>http://10.10.13.230/know</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

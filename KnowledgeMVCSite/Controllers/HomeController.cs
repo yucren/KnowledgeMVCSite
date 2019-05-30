@@ -14,12 +14,23 @@ namespace KnowledgeMVCSite.Controllers
         KnowledgeModel db = KnowledgeModel.Create();
         [NoCache]
         // GET: Home
-        public ActionResult Index()
+        public ActionResult Index(int? catelog)
         {
-            var knowleges = db.Knowledges.ToList();           
+            List<Knowledge> knowledges;
+            if (catelog ==null)
+            {
+                knowledges = db.Knowledges.Include("Category").Include("User").ToList();
 
-            return View(knowleges);
+            }
+            else
+            {
+                knowledges = db.Knowledges.Include("Category").Include("User").Where(c => c.CategoryId == catelog).ToList();
+
+            }
+
+            return View(knowledges);
         }
+      
 
         public ActionResult Help()
         {

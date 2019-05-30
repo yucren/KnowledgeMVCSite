@@ -10,10 +10,12 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace KnowledgeMVCSite.Controllers
 {
+    [ValidateInput(false)]
     public class KnowledgeController : Controller
     {
 
         KnowledgeModel db = new KnowledgeModel();
+        
         // GET: Knowledge
         public ActionResult Index(string catalog)
         {
@@ -23,34 +25,30 @@ namespace KnowledgeMVCSite.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name",2);
+            ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name", 2);
 
             return View();
         }
 
         [Authorize]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         [HttpPost]
-        public  async Task<ActionResult>  Create([Bind(Include = "CategoryId,Title,Context")] Knowledge knowledge)
+        
+        public async Task<ActionResult> Create([Bind(Include = "CategoryId,Title,Context")] Knowledge knowledge)
         {
-          
-            var id = HttpContext.Request["CategoryId"];
-           
-            ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name",knowledge.CategoryId);
+
+
+            ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name", knowledge.CategoryId);
 
             if (ModelState.IsValid)
             {
-               
+
                 ActionResult a = await Task.Run<ActionResult>(() =>
                 {
                     try
                     {
-
-
-
                         db.Knowledges.Add(new Knowledge
                         {
-
                             CreateTime = DateTime.Now,
                             Context = knowledge.Context,
                             Title = knowledge.Title,
@@ -58,8 +56,8 @@ namespace KnowledgeMVCSite.Controllers
                             User = db.Users.Where(p => p.Email == HttpContext.User.Identity.Name).Single()
 
                         });
-                         db.SaveChanges();
-                    return    RedirectToAction("Index", "Home");
+                        db.SaveChanges();
+                        return RedirectToAction("Index", "Home");
 
                     }
                     catch (Exception ex)
@@ -68,16 +66,15 @@ namespace KnowledgeMVCSite.Controllers
                         ModelState.AddModelError("", ex.Message);
                         return View(knowledge);
                     }
-                    
-                     
+
                 }
-                
-               
-                
+
+
+
                 );
                 return a;
 
-            
+
             }
             //foreach (var item in ModelState.Values)
             //{
@@ -86,9 +83,45 @@ namespace KnowledgeMVCSite.Controllers
             //        ModelState.AddModelError("", err.ErrorMessage);
             //    }
             //}
-           
+
             return View(knowledge);
         }
+
+        public PartialViewResult DiscsussPartial(int knowledgeId)
+        {
+            ViewBag.knowledgeId = knowledgeId;
+            var model = (from discuss in db.Discusses.Include("User") where discuss.Knowledge.Id == knowledgeId select discuss)  .ToList();
+
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public async Task Discuss([Bind(Include ="Context,KnowledgeId")] Discuss model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                Discuss discuss = new Discuss
+                {
+                    Context = model.Context,
+                    CreateTime = DateTime.Now,
+                    KnowledgeId=model.KnowledgeId,
+                    User = db.Users.Where(p => p.Email == HttpContext.User.Identity.Name).SingleOrDefault()
+                };
+                db.Discusses.Add(discuss);
+                await db.SaveChangesAsync();
+               
+            }
+
+        }
+
+        [HttpPost]
+        public PartialViewResult SearchPartial(string searchValue)
+        {
+            var model=  db.Knowledges.Include("User").Include("Category").Where(p => p.Title.Contains(searchValue) || p.Context.Contains(searchValue)).ToList();
+            return PartialView(model);
+        }
+
         
         //public IEnumerable<SelectListItem> GetCategory()
         //{
