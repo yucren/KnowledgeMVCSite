@@ -14,7 +14,7 @@
     <RootNamespace>KnowledgeMVCSite</RootNamespace>
     <AssemblyName>KnowledgeMVCSite</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -141,9 +141,9 @@
     <Compile Include="Controllers\KnowledgesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Filter\NoCacheAttribute.cs" />
-    <Compile Include="Migrations\201905300216278_add2.cs" />
-    <Compile Include="Migrations\201905300216278_add2.Designer.cs">
-      <DependentUpon>201905300216278_add2.cs</DependentUpon>
+    <Compile Include="Migrations\201905310159176_add.cs" />
+    <Compile Include="Migrations\201905310159176_add.Designer.cs">
+      <DependentUpon>201905310159176_add.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -609,10 +609,10 @@
     <Content Include="Views\Knowledges\Edit.cshtml" />
     <Content Include="Views\Knowledges\Index.cshtml" />
     <Content Include="Views\Knowledge\DiscsussPartial.cshtml" />
-    <Content Include="Views\Knowledge\SearchPartial.cshtml" />
+    <Content Include="Views\Shared\SearchPartial.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Home\Index.Mobile.cshtml" />
+    <Content Include="Views\Home\Index-Mobile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -627,8 +627,8 @@
     <Folder Include="Views\Manager\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201905300216278_add2.resx">
-      <DependentUpon>201905300216278_add2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905310159176_add.resx">
+      <DependentUpon>201905310159176_add.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
@@ -644,9 +644,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>56557</DevelopmentServerPort>
+          <DevelopmentServerPort>80</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:5000</IISUrl>
+          <IISUrl>http://10.10.13.230/know</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

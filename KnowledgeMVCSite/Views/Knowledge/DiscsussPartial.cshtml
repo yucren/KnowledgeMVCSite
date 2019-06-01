@@ -5,7 +5,10 @@
 
 @using (Ajax.BeginForm("Discuss","Knowledge",new AjaxOptions {
     HttpMethod= "post",
-    OnSuccess="disucssSuccess"    
+    OnComplete="disucssSuccess",
+    AllowCache=false     
+      
+      
 }))
 {
 <input type="hidden" name="KnowledgeId" value="@ViewBag.knowledgeId" />

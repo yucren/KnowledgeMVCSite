@@ -14,10 +14,23 @@ namespace KnowledgeMVCSite
     {
         void Application_Start(object sender, EventArgs e)
         {
+            Application["countOnline"] = 0;
             // 在应用程序启动时运行的代码
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);            
+        }
+        void Session_Start(object sender, EventArgs e)
+        {
+
+            Application["countOnline"] = int.Parse(Application["countOnline"].ToString()) + 1;
+
+        }
+        void Session_End(object sender, EventArgs e)
+        {
+            Application["countOnline"] = int.Parse(Application["countOnline"].ToString()) - 1;
+
+
         }
     }
 }

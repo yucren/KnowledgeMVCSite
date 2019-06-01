@@ -48,10 +48,37 @@
 
          public virtual DbSet<Discuss> Discusses{ get; set; }
 
+         public virtual DbSet<Praise> Praises { get; set; }
+
       
 
     }
-    
+
+    public class Praise
+    {
+        public Praise()
+        {
+
+            CreateTime = DateTime.Now;         
+
+
+        }
+        [Comment("ID")]
+        public int Id { get; set; }
+        [DataType(DataType.DateTime)]
+        [Comment("创建时间")]
+        public DateTime CreateTime { get; set; }
+
+        [ForeignKey("User")]
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
+        [ForeignKey("Knowledge")]
+        public int KnowledgeId { get; set; }
+        public Knowledge Knowledge { get; set; }
+
+    }
+
+
     public class Discuss
     {
         public Discuss()
@@ -121,6 +148,7 @@
         [StringLength(maximumLength:20000, MinimumLength= 10, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
         //[Index(IsClustered = false, IsUnique = false)]
         public virtual string Context { get; set; }
+        public virtual ICollection<Praise> Praises { get; set; }
 
         
 

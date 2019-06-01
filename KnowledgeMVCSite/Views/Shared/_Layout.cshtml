@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
@@ -101,24 +102,22 @@
         </div>
 
 
-        <footer>
+        <footer style="margin-top:30px">
             <p>&copy; @DateTime.Now.Year - 我的知识分享应用程序—<small>俞程仁</small></p>
-
+            <p>当前访问人数量：@HttpContext.Current.Application["countOnline"] </p>
         </footer>
 
 
     </div>
 
-
     <script src="~/Scripts/jquery-1.11.3.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-    <script src="~/Scripts/vue.js"></script>
-    <script src="~/Scripts/global.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/vue.js"></script>  
     <link href="~/Content/themes/default/easyui.css" rel="stylesheet" />
     <link href="~/Content/themes/icon.css" rel="stylesheet" />
-    <link href="~/Content/themes/texteditor.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery.easyui-1.4.5.js"></script>
+    <link href="~/Content/themes/texteditor.css" rel="stylesheet" />   
     <script src="~/Scripts/jquery.texteditor.js"></script>
     <script>
         function search() {

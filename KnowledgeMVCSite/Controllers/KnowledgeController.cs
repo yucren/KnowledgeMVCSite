@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
+using KnowledgeMVCSite.Filter;
+using Microsoft.AspNet.Identity;
 
 namespace KnowledgeMVCSite.Controllers
 {
@@ -86,7 +88,7 @@ namespace KnowledgeMVCSite.Controllers
 
             return View(knowledge);
         }
-
+        [NoCache]
         public PartialViewResult DiscsussPartial(int knowledgeId)
         {
             ViewBag.knowledgeId = knowledgeId;
@@ -122,6 +124,43 @@ namespace KnowledgeMVCSite.Controllers
             return PartialView(model);
         }
 
+
+        public string  Praise(int knowlegeId)
+        {
+            var userid = User.Identity.GetUserId();
+            if (string.IsNullOrEmpty(User.Identity.Name))
+            {
+                return "未登录";
+            }
+
+            if (db.Praises.Where(p=>p.KnowledgeId==knowlegeId && p.UserId== userid).Count()!=0)
+            {
+                db.Praises.Remove(db.Praises.Where(p => p.KnowledgeId == knowlegeId && p.UserId == userid).First());
+                db.SaveChanges();
+                return "点赞已取消";
+
+            }
+          var praise=  db.Praises.Add(new Models.Praise
+            {
+                  KnowledgeId =knowlegeId,
+                   UserId= userid
+
+          });
+
+            if (praise !=null)
+            {
+                db.SaveChanges();
+                return "点赞成功";
+            }
+            else
+            {
+                return "错误";
+            }
+
+
+
+
+        }
         
         //public IEnumerable<SelectListItem> GetCategory()
         //{

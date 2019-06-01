@@ -19,36 +19,12 @@
 </div>
     
 
-    <div id="contentBody">
-        @foreach (Knowledge item in Model)
-        {
-            <div style="padding:10px 0px 0px 0px;margin-top:40px; background-color :white">
-                <div style="padding-bottom:10px">
-                    <p style="display:block;font-size:20px">@item.User.UserName <span style="color:blue;font-size:25px;" class="glyphicon glyphicon-chevron-right"></span>@item.Category.Name</p>
-                    <strong style="font-size:18px;padding-left:10px">@item.Title </strong>
-                </div>
+<div id="contentBody">
 
-                <div class="panel-body-noborder" style="margin-bottom:15px;padding-left:10px">
-                    @Html.Raw(@HttpUtility.UrlDecode(@item.Context))
-                </div>
-                <div style="margin-bottom:-15px;padding:10px" class="well">
-                    <p><span style="color:darkgray;font-size:20px" class="glyphicon glyphicon-thumbs-up"></span></p>
-                    <button class="btn btn-primary pull-right" style="margin-top:-33px;margin-right:10%" onclick="discuss(event,@item.Id)">
-                        <span class="glyphicon glyphicon-comment" >
-                            </span>评论
-                    </button>
-                    <button class="btn btn-primary pull-right" style="margin-top:-33px;margin-right:-15%">
-                        <span class="glyphicon glyphicon-share-alt"></span>分享
-                    </button>
-                </div>
-                <div class="discuss" style="margin-top:20px"></div>
-
-            </div>
-       
-     
+    @Html.Partial("SearchPartial",Model)
+    <button   class="btn btn-primary center-block" onclick="more()">加载更多</button>
     
-    }
-        </div>
+</div>
 
 
 
@@ -71,7 +47,10 @@
             var discussDIV = null;
             var dicusseId = 0;
             var button = null;
-            function discuss(event, id) {
+            var count=1
+            function discuss(event, id) {  
+                count += 1;
+                $('#test').html(count)
                 if (discussDIV == null) {
                     discussDIV = $($(event.target).parents("div").get(0)).next(".discuss");
                     button = event.target;
@@ -81,12 +60,9 @@
                 }
 
                 else if (button === event.target) {
-                    discussDIV.toggle()
-                         discussDIV = $($(event.target).parents("div").get(0)).next(".discuss");
-                        button = event.target;
-                        dicusseId = id;
+                                           
                         discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
-
+                    discussDIV.toggle()    
                 }
                 else   {
                         discussDIV.hide();
@@ -100,21 +76,47 @@
                     
                 }
 
-                
-                
 
-       
-               
+            }
 
-
-
-
+            function more() {
+                $.post('')
+                $('#contentBody').load()
 
 
             }
             function disucssSuccess() {
-                console.log(dicusseId);
-                discussDIV.load("Knowledge/DiscsussPartial", { knowledgeId: dicusseId });
+              
+                discussDIV.load('@Url.Action("DiscsussPartial","Knowledge")', { knowledgeId: dicusseId });
+
+            }
+
+            function praise(event,id, userId) {
+
+                            var p = $(event.target);
+                if (userId=="0") {
+                    alert("请先登陆后再点赞");
+                    }
+                else {
+                     $.post('@Url.Action("Praise","Knowledge")', { knowlegeId: id }, function (req, status, xhr) {
+
+                        if (status == "success") {
+                            if (req == "点赞成功") {
+
+                                p.css("color", 'red');
+                            }
+                            else if (req =="点赞已取消") {
+                                p.css("color", 'darkgray');
+                            }
+                            else {
+                                alert(req);
+                            }
+
+                        }
+
+                    })
+                }              
+
 
             }
 

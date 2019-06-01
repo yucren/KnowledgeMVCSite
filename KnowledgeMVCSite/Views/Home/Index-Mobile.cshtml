@@ -1,0 +1,156 @@
+﻿@using KnowledgeMVCSite.Models
+@model List<Knowledge>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="app">
+    <div class="row" style="margin-left:0;margin-right:0;margin-bottom:5px; padding: 10px 0; background-color:white">
+        <div class="col-md-12">
+            <a href='@Url.Action("Create","Knowledge")' class="btn btn-primary">
+                <span class="glyphicon">
+                    <img src="~/Content/img/Create.png" />
+                </span> 创建知识
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div id="contentBody">
+
+    @foreach (Knowledge item in Model)
+    {
+        <div style="padding:10px 0px 0px 0px;margin-top:40px; background-color :white">
+            <div style="padding-bottom:10px">
+                <p style="display:block;font-size:20px">@item.User.UserName <span style="color:blue;font-size:25px;" class="glyphicon glyphicon-chevron-right"></span>@item.Category.Name</p>
+                <strong style="font-size:18px;padding-left:10px">@item.Title </strong>
+            </div>
+
+            <div class="panel-body-noborder" style="margin-bottom:15px;padding-left:10px">
+                @Html.Raw(@HttpUtility.UrlDecode(@item.Context))
+            </div>
+            <div style="margin-bottom:-15px;padding:10px" class="well">
+                <p onclick="praise(event, @item.Id,'@(User.Identity.Name==""?"0":User.Identity.Name)')"><span style="color:@(item.Praises.Where(p=>p.UserId==item.User.Id).Count()==0?"darkgray":"red") ;font-size:20px" class="glyphicon glyphicon-thumbs-up"></span></p>
+                <button class="btn btn-primary pull-right" style="margin-top:-33px;margin-right:20%" onclick="discuss(event,@item.Id)">
+                    <span class="glyphicon glyphicon-comment">
+                    </span>评论
+                </button>
+                <button class="btn btn-primary pull-right" style="margin-top:-33px;margin-right:-40%">
+                    <span class="glyphicon glyphicon-share-alt"></span>分享
+                </button>
+            </div>
+            <div class="discuss" style="margin-top:20px"></div>
+
+        </div>
+
+
+
+    }
+
+    <button class="btn btn-primary" onclick="more()">加载更多</button>
+</div>
+
+
+
+
+<style>
+</style>
+
+
+@section Scripts
+{
+    <script>
+            new Vue({
+                el: '#app',
+                data: {
+                    message: '<h1>菜鸟教程</h1>'
+                }
+            });
+
+            var discussDIV = null;
+            var dicusseId = 0;
+            var button = null;
+            var count=1
+            function discuss(event, id) {
+                count += 1;
+                $('#test').html(count)
+                if (discussDIV == null) {
+                    discussDIV = $($(event.target).parents("div").get(0)).next(".discuss");
+                    button = event.target;
+                    dicusseId = id;
+                    discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
+
+                }
+
+                else if (button === event.target) {
+
+                        discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
+                    discussDIV.toggle()
+                }
+                else   {
+                        discussDIV.hide();
+                        discussDIV = $($(event.target).parents("div").get(0)).next(".discuss");
+                        button = event.target;
+                        dicusseId = id;
+                        discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
+                        discussDIV.show();
+
+
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+           function disucssSuccess() {
+               
+                discussDIV.load("Knowledge/DiscsussPartial", { knowledgeId: dicusseId });
+
+            }
+
+            function praise(event,id, userId) {
+
+                var p = $(event.target);
+                if (userId=="0") {
+                    alert("请先登陆后再点赞");
+                }
+                else {
+                     $.post('@Url.Action("Praise","Knowledge")', { knowlegeId: id }, function (req, status, xhr) {
+
+                         if (status == "success") {
+                             if (req == "点赞成功") {
+
+                                 p.css("color", 'red');
+                             }
+                             else if (req =="点赞已取消") {
+                                 p.css("color", 'darkgray');
+                             }
+                             else {
+                                 alert(req);
+                             }
+
+                    }
+
+                })
+                }
+
+
+            }
+
+    </script>
+
+}
+
+

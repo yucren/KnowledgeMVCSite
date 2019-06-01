@@ -14,17 +14,23 @@ namespace KnowledgeMVCSite.Controllers
         KnowledgeModel db = KnowledgeModel.Create();
         [NoCache]
         // GET: Home
-        public ActionResult Index(int? catelog)
+        public ActionResult Index(int? catelog,int? pageCount,int? pageNum)
         {
+            var pc = pageCount == null ? 1 : pageCount.Value;
+            var pn = pageNum == null ? 10 : pageNum.Value;
+
             List<Knowledge> knowledges;
             if (catelog ==null)
             {
-                knowledges = db.Knowledges.Include("Category").Include("User").ToList();
+                knowledges = db.Knowledges.Include("Category").Include("User").
+                Include("Praises").OrderByDescending(p=>p.CreateTime).Skip((pc-1) * pn).
+                Take(pn).ToList();
 
             }
             else
             {
-                knowledges = db.Knowledges.Include("Category").Include("User").Where(c => c.CategoryId == catelog).ToList();
+                knowledges = db.Knowledges.Include("Category").Include("User").Include("Praises").Where(c => c.CategoryId == catelog).Skip((pc - 1) * pn).
+                    OrderByDescending(p => p.CreateTime).Take(pn).ToList();
 
             }
 
