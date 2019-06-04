@@ -1,0 +1,202 @@
+﻿<script>
+var discussDIV = null;
+var dicusseId = 0;
+var button = null;
+var count = 1;
+var pageCount = 1;
+var pageNum = 10;
+var catalog = null;
+var searchValue = "";
+
+$(function () {
+    //添加单击链接匹配
+    $('#headLink a').each(function (index, item) {
+
+        if (document.location.pathname === "/") {
+
+            $('#headLink a').first().parent().addClass("active");
+        }
+        else if ($(this).attr("href") !== "/" && document.location.pathname.includes($(this).attr("href"))) {
+
+            $(this).parent().addClass("active");
+
+        }
+    });
+});
+new Vue({
+    el: '#app',
+    data: {
+        message: '<h1>菜鸟教程</h1>'
+    }
+    });
+    function loadding(e) {
+        $(e).button("loading").delay(500).queue(function () {
+           $(e).button('reset');
+            $(e).dequeue(); 
+            getDiscussCount();
+        })
+    }
+function discuss(event, id) {  
+    var target = $($(event.target).parents("div").get(0)).next(".discuss");
+    if (target.css('display') == 'none') {
+        //loadding(event.target);
+    }
+    if (discussDIV === null) {
+        //loadding(event.target);
+        discussDIV = $($(event.target).parents("div").get(0)).next(".discuss");
+        button = event.target;
+        dicusseId = id;
+        discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
+        getDiscussCount()
+    }
+    else if (button === event.target) {
+        discussDIV.toggle();
+        //if (discussDIV.css('display')=="block") {
+        //    discussDIV.css('display', 'none');
+        //}
+        //else {
+        //    discussDIV.css('display', 'block');
+        //}
+        
+        discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
+        getDiscussCount()
+
+    }
+    else {
+        discussDIV.hide();
+        discussDIV = $($(event.target).parents("div").get(0)).next(".discuss");
+        button = event.target;
+        dicusseId = id;
+        //loadding(event.target);
+        discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
+        discussDIV.show();
+        getDiscussCount()
+    }
+    var a = button === event.target;
+}
+function more() {
+    pageCount += 1;
+    $.post('@Url.Action("Index","Home")', {
+        pageCount: pageCount,
+        pageNum: pageNum,
+        searchValue:searchValue,
+        catalog: catalog,
+
+
+    },
+        function (req, status, xhr) {
+            if (status === "success") {
+                if (req === '\r\n') {
+                    var warning = document.getElementById('noMore');
+                    if (warning ==undefined) {
+                        $('#contentBody').append('<div id="noMore" class="alert alert-warning"><a href = "#" class= "alert-link" > 已经没有更多了</a ></div >');
+                    }
+                   
+                }
+                else {
+                    $('#contentBody').append(req);
+                }
+                    
+            }
+
+
+        }
+
+    );
+
+
+
+
+    }
+
+    function getDiscussCount() {
+        
+         $.get('@Url.Action("GetDiscussCout", "Knowledge")/?knowledgeId=' + dicusseId, function (req,status,xhr) {
+        if (status=='success') {
+            $($(button).children('span')[1]).html(req);
+        }
+
+    });
+
+    }
+      function getPraiseCount(p,id) {
+        
+          $.get('@Url.Action("GetPraiseCout", "Knowledge")/?knowledgeId=' + id, function (req,status,xhr) {
+        if (status=='success') {
+            $(p).html(req);
+        }
+
+    });
+
+    }
+function disucssSuccess() {
+
+    discussDIV.load('@Url.Action("DiscsussPartial","Knowledge")', { knowledgeId: dicusseId });
+    getDiscussCount();
+    
+}
+
+function praise(event, id, userId) {
+
+    var p = $(event.target);
+    if (userId === "0") {
+        alert("请先登陆后再点赞");
+    }
+    else {
+        $.post('@Url.Action("Praise","Knowledge")', { knowlegeId: id }, function (req, status, xhr) {
+
+            if (status === "success") {
+                if (req === "点赞成功") {
+
+                    p.css("color", 'red');
+                    getPraiseCount(p,id);
+                }
+                else if (req === "点赞已取消") {
+                    p.css("color", 'darkgray');
+                    getPraiseCount(p,id);
+                }
+                else {
+                    alert(req);
+                }
+
+            }
+
+        });
+    }
+}
+    
+    $(window).scroll(function () {
+        var scrollTop = $(this).scrollTop();    //滚动条滚动距离
+        var scrollHeight = $(document).height();//文档内容高度
+        var windowHeight = $(this).height();  //文档可视区域高度
+        if (scrollTop > 35) {
+            $('#headTitle').hide();
+            $('#searchBar').appendTo($('#head'));
+            $('#searchBar').css({
+                position: 'absolute',
+                top: 0,
+                left: '5px',
+                width: '70%',
+            })          
+
+        }
+        else {
+            $('#headTitle').show();
+            $('#searchBar').appendTo($('#searchBarDIV'));
+            $('#searchBar').css({
+                position: 'static',               
+                width: '100%',
+            })      
+        }
+        if (scrollTop + windowHeight == scrollHeight) {
+            more();
+        }
+    });
+    function search(e) {
+        if (e.keyCode==13) {
+         submit();
+        }
+
+
+    }
+</script>

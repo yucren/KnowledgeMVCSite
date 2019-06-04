@@ -13,13 +13,14 @@
             @Html.Raw(@HttpUtility.UrlDecode(@item.Context))
         </div>
         <div style="margin-bottom:-15px;padding:10px" class="well">
-            <p onclick="praise(event, @item.Id,'@(User.Identity.Name==""?"0":User.Identity.Name)')"><span style="color:@(item.Praises.Where(p=>p.UserId==User.Identity.GetUserId()).Count()==0?"darkgray":"red") ;font-size:20px" class="glyphicon glyphicon-thumbs-up"></span></p>
-            <button class="btn btn-primary pull-right" style="margin-top:-33px;margin-right:100px" onclick="discuss(event,@item.Id)">
-                <span class="glyphicon glyphicon-comment">
-                </span>评论
-            </button>
-            <button class="btn btn-primary pull-right" style="margin-top:-33px;margin-right:-150px">
+            <p onclick="praise(event, @item.Id,'@(User.Identity.Name==""?"0":User.Identity.Name)')"><span style="color:@(item.Praises.Where(p=>p.UserId==User.Identity.GetUserId()).Count()==0?"darkgray":"red") ;font-size:20px" class="glyphicon glyphicon-thumbs-up">@item.Praises.Count</span></p>
+            <button class="btn btn-primary pull-right" style="margin-top:-33px;margin-right:0px">
                 <span class="glyphicon glyphicon-share-alt"></span>分享
+            </button>
+
+            <button class="btn btn-primary pull-right" data-loading-text="加载中..." style="margin-top:-33px;margin-right:2px" onclick="discuss(event,@item.Id)">
+                <span class="glyphicon glyphicon-comment">
+                </span><span>@(item.Discusses.Count)</span>条评论
             </button>
         </div>
         <div class="discuss" style="margin-top:20px"></div>

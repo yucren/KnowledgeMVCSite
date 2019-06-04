@@ -14,7 +14,7 @@
     <RootNamespace>KnowledgeMVCSite</RootNamespace>
     <AssemblyName>KnowledgeMVCSite</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -141,9 +141,9 @@
     <Compile Include="Controllers\KnowledgesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Filter\NoCacheAttribute.cs" />
-    <Compile Include="Migrations\201905310159176_add.cs" />
-    <Compile Include="Migrations\201905310159176_add.Designer.cs">
-      <DependentUpon>201905310159176_add.cs</DependentUpon>
+    <Compile Include="Migrations\201906041251274_add.cs" />
+    <Compile Include="Migrations\201906041251274_add.Designer.cs">
+      <DependentUpon>201906041251274_add.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -612,7 +612,9 @@
     <Content Include="Views\Shared\SearchPartial.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Home\Index-Mobile.cshtml" />
+    <Content Include="Views\Home\Index.Mobile.cshtml" />
+    <Content Include="Views\Shared\_JsPartialPage.cshtml" />
+    <Content Include="Views\Shared\_Layout.Mobile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -627,8 +629,8 @@
     <Folder Include="Views\Manager\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201905310159176_add.resx">
-      <DependentUpon>201905310159176_add.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201906041251274_add.resx">
+      <DependentUpon>201906041251274_add.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
@@ -646,7 +648,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>80</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://10.10.13.230/know</IISUrl>
+          <IISUrl>http://localhost:5000</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

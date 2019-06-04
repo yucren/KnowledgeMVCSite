@@ -13,7 +13,7 @@ namespace KnowledgeMVCSite.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201905310159176_add"; }
+            get { return "201906041251274_add"; }
         }
         
         string IMigrationMetadata.Source

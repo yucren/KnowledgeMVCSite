@@ -145,10 +145,11 @@
         [Required]
         [Comment("正文")]
         [Display(Name = "描述知识详细内容")]
-        [StringLength(maximumLength:20000, MinimumLength= 10, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
+        [StringLength(maximumLength:200000, MinimumLength= 10, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
         //[Index(IsClustered = false, IsUnique = false)]
         public virtual string Context { get; set; }
         public virtual ICollection<Praise> Praises { get; set; }
+        public virtual ICollection<Discuss> Discusses { get; set; }
 
         
 

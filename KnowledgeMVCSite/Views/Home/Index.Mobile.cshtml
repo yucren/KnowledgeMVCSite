@@ -5,7 +5,15 @@
 }
 
 <div id="app">
+    <div id="searchBarDIV">
+        <form id="searchBar" style="margin-top:10px;width:100%;" class="form-inline" action='@Url.Action("Index","Home")'>
 
+            <div class="form-group" style="width:100%">
+                <span style="position:absolute;top:11px;right:7%;" class="glyphicon glyphicon-search"></span>
+                <input style="width:100%" id="searchValue" name="searchValue" type="text" class="form-control " placeholder="标题或者内容" onkeydown="search(event)" />
+            </div>
+        </form>
+    </div>
     <div class="row" style="margin-left:0;margin-right:0;margin-bottom:5px; padding: 10px 0; background-color:white">
         <div class="col-md-12">
             <a href='@Url.Action("Create","Knowledge")' class="btn btn-primary">
@@ -27,15 +35,13 @@
 
 
 </div>
-<div>
-    <button class="btn btn-primary center-block" onclick="more()">加载更多</button>
-</div>
+
 
 
 
 @section Scripts
 {
-<script>
+    <script>
 
         @if (ViewBag.catalog == null)
         {
@@ -47,8 +53,8 @@
         }
 
         searchValue = '@ViewBag.searchValue';
-</script>
-    
+    </script>
+
 
 }
 

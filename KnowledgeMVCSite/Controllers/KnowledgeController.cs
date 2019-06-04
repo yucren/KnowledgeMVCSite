@@ -118,7 +118,7 @@ namespace KnowledgeMVCSite.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult SearchPartial(string searchValue)
+        public PartialViewResult SearchPartial(string searchValue, int? pageCount, int? pageNum)
         {
             var model=  db.Knowledges.Include("User").Include("Category").Where(p => p.Title.Contains(searchValue) || p.Context.Contains(searchValue)).ToList();
             return PartialView(model);
@@ -161,7 +161,20 @@ namespace KnowledgeMVCSite.Controllers
 
 
         }
-        
+        [HttpGet]
+        public async Task<int> GetDiscussCout(int knowledgeId)
+        {
+            var kn = await db.Knowledges.FindAsync(knowledgeId);
+            return kn.Discusses.Count;
+
+        }
+        [HttpGet]
+        public async Task<int> GetPraiseCout(int knowledgeId)
+        {
+            var kn = await db.Knowledges.FindAsync(knowledgeId);
+            return kn.Praises.Count;
+
+        }
         //public IEnumerable<SelectListItem> GetCategory()
         //{
         //   var categories= from category in db.Categories
@@ -170,8 +183,8 @@ namespace KnowledgeMVCSite.Controllers
         //        Value = category.Id.ToString(),
         //        Text = category.Name,
         //        Selected =false,
-                
-                
+
+
 
         //    };
         //    return categories.AsEnumerable<SelectListItem>();
