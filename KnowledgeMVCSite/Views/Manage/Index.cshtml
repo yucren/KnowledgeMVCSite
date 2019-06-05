@@ -7,6 +7,7 @@
 
 
 <div>
+   
     <h4>更改你的帐户设置</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -85,3 +86,24 @@
         </dd>
     </dl>
 </div>
+<div>
+    <h4>您发表的知识</h4>
+    <hr />
+    <div id="report">
+        @Html.Partial("_ReportKnowPartial",Model.knowledges)
+
+    </div>
+</div>
+@section scripts{
+    @*<script>
+        $(function () {
+            $('#report').load('@Url.Action("_ReportKnowPartial", "Knowledge")')
+
+
+        })
+
+    </script>*@
+    
+    
+    
+    }

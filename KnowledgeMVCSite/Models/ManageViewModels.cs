@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using KnowledgeMVCSite.Controllers;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,17 @@ namespace KnowledgeMVCSite.Models
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
         public bool BrowserRemembered { get; set; }
+        public List<Knowledge> knowledges {
+            get
+            {
+                var userid =HttpContext.Current.User.Identity.GetUserId();
+                var kn = KnowledgeController.db.Knowledges.Where(p => p.User.Id == userid).ToList();
+                return kn;
+
+
+            }
+
+        }
     }
     public class ChangePasswordViewModel
     {

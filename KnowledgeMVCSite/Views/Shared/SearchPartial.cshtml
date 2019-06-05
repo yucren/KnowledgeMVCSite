@@ -10,7 +10,7 @@
         </div>
 
         <div class="panel-body-noborder panel-fit" style="margin-bottom:15px;padding-left:10px">
-            @Html.Raw(@HttpUtility.UrlDecode(@item.Context))
+            @Html.Raw(@item.Context)
         </div>
         <div style="margin-bottom:-15px;padding:10px" class="well">
             <p onclick="praise(event, @item.Id,'@(User.Identity.Name==""?"0":User.Identity.Name)')"><span style="color:@(item.Praises.Where(p=>p.UserId==User.Identity.GetUserId()).Count()==0?"darkgray":"red") ;font-size:20px" class="glyphicon glyphicon-thumbs-up">@item.Praises.Count</span></p>

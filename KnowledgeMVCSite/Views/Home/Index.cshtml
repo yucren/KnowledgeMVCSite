@@ -19,23 +19,46 @@
     </div>
 </div>
 
+<div class="row">
+    <div id="contentBody" class="col-md-9">
 
-<div id="contentBody">
+        
+            @Html.Partial("SearchPartial", Model)
+       
+
+        <div style="margin-top:30px">
+            <button class="btn btn-primary center-block" onclick="more()">加载更多</button>
+        </div>
 
 
-    @Html.Partial("SearchPartial", Model)
+    </div>
 
 
+
+    <div class="col-md-3" style="margin-top:25px" id="catalog">
+        <h3>热门标签</h3>
+
+       
+        
+    </div>
+   
 </div>
-<div style="margin-top:30px">
-    <button class="btn btn-primary center-block" onclick="more()">加载更多</button>
-</div>
-
 
 
 @section Scripts
 {
 <script>
+    $.get('@Url.Action("GetCatalog", "knowledge")', function (req, status, xhr) {
+        var catalog = JSON.parse(req);
+        catalog.forEach(function (item, index, arr) {
+
+            $('#catalog').append('<p><a class="btn btn-primary" href="#">' + item.Name +"</a></p>");
+        })}
+
+        );
+       
+
+    
 
         @if (ViewBag.catalog == null)
         {

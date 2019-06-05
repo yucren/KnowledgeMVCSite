@@ -603,18 +603,14 @@
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\DisplayEmail.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Knowledges\Create.cshtml" />
-    <Content Include="Views\Knowledges\Delete.cshtml" />
-    <Content Include="Views\Knowledges\Details.cshtml" />
-    <Content Include="Views\Knowledges\Edit.cshtml" />
-    <Content Include="Views\Knowledges\Index.cshtml" />
     <Content Include="Views\Knowledge\DiscsussPartial.cshtml" />
-    <Content Include="Views\Shared\SearchPartial.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Home\Index.Mobile.cshtml" />
     <Content Include="Views\Shared\_JsPartialPage.cshtml" />
     <Content Include="Views\Shared\_Layout.Mobile.cshtml" />
+    <Content Include="Views\Shared\_ReportKnowPartial.cshtml" />
+    <Content Include="Views\Shared\SearchPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -626,7 +622,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\upImg\" />
     <Folder Include="Views\Default\" />
-    <Folder Include="Views\Manager\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201906041251274_add.resx">

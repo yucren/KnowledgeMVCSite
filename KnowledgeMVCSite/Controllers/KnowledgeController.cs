@@ -13,10 +13,11 @@ using Microsoft.AspNet.Identity;
 namespace KnowledgeMVCSite.Controllers
 {
     [ValidateInput(false)]
+    [Authorize]
     public class KnowledgeController : Controller
     {
 
-        KnowledgeModel db = new KnowledgeModel();
+      public static KnowledgeModel db = new KnowledgeModel();
         
         // GET: Knowledge
         public ActionResult Index(string catalog)
@@ -175,6 +176,22 @@ namespace KnowledgeMVCSite.Controllers
             return kn.Praises.Count;
 
         }
+
+        public PartialViewResult _ReportKnowPartial()
+        {
+            var userid = User.Identity.GetUserId();
+            var kn = db.Knowledges.Where(p => p.User.Id == userid).ToList();
+            return PartialView(kn);
+        }
+
+        public string GetCatalog()
+        {
+
+            var json = db.Categorys.ToList();
+           return  Newtonsoft.Json.JsonConvert.SerializeObject(json);
+
+        }
+
         //public IEnumerable<SelectListItem> GetCategory()
         //{
         //   var categories= from category in db.Categories
