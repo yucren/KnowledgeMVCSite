@@ -28,7 +28,7 @@
 </div>
 
 
-<div id="contentBody">
+<div id="contentBody" style="margin-bottom:30px">
 
 
     @Html.Partial("SearchPartial", Model)
@@ -53,6 +53,35 @@
         }
 
         searchValue = '@ViewBag.searchValue';
+
+
+        $(window).scroll(function () {
+            var scrollTop = $(this).scrollTop();    //滚动条滚动距离
+            var scrollHeight = $(document).height();//文档内容高度
+            var windowHeight = $(this).height();  //文档可视区域高度
+            if (scrollTop > 35) {
+                $('#headTitle').hide();
+                $('#searchBar').appendTo($('#head'));
+                $('#searchBar').css({
+                    position: 'absolute',
+                    top: 0,
+                    left: '5px',
+                    width: '70%',
+                })
+
+            }
+            else {
+                $('#headTitle').show();
+                $('#searchBar').appendTo($('#searchBarDIV'));
+                $('#searchBar').css({
+                    position: 'static',
+                    width: '100%',
+                })
+            }
+            if ( scrollHeight- scrollTop - windowHeight == 0 ) {
+                more();
+            }
+        });
     </script>
 
 
