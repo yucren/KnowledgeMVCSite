@@ -5,6 +5,11 @@
     @foreach ( Knowledge item in Model)
     {
 
-        <p   class="h5 col-md-offset-2" ><b>知识标题：</b>@item.Title --------@item.CreateTime</p>
+        <p   class="h5 col-md-offset-2" ><b>知识标题：</b>@item.Title --------@item.CreateTime
+       <span>
+            <a href='@Url.Action("Edit","Knowledge",routeValues:new { id = item.Id })' class="btn btn-link">编辑</a>
+       </span>
+        </p>
+        
     }
 </div>

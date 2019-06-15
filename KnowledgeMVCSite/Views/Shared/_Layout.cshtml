@@ -6,15 +6,14 @@
     <meta charset="utf-8" />
     <title>知识分类-@ViewBag.Title</title>
     <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />   
     <style>
-        body,html{
-            height:100%;
-            min-height:100%;
-            background-color:rgb(240,240,240)
+        body, html {
+            height: 100%;
+            min-height: 100%;
+            background-color: rgb(240,240,240)
         }
-        
-          </style>
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -27,8 +26,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                </button>               
-                @Html.ActionLink("知识分享网站", "Index", "Home",null,htmlAttributes:new {@class="navbar-brand"  })
+                </button>
+                @Html.ActionLink("知识分享网站", "Index", "Home", null, htmlAttributes: new { @class = "navbar-brand" })
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
@@ -39,7 +38,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ERP知识<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("U9ERP", "Index", "Home", routeValues: new { catalog = 1 },htmlAttributes:null)</li>
+                            <li>@Html.ActionLink("U9ERP", "Index", "Home", routeValues: new { catalog = 1 }, htmlAttributes: null)</li>
                             <li>@Html.ActionLink("K3ERP", "Index", "Home", routeValues: new { catalog = 2 }, htmlAttributes: null)</li>
 
                         </ul>
@@ -65,11 +64,11 @@
                     <div class="form-group">
                         <input id="searchValue" name="searchValue" type="text" class="form-control" placeholder="标题或者内容" onkeydown="$('#searchBtn').submit()">
                     </div>
-                  
+
                     <button id="searchBtn" type="submit" class="btn btn-default">
                         搜索
 
-                    </button>   
+                    </button>
                 </form>
 
                 @Html.Partial("_LoginPartial")
@@ -88,7 +87,7 @@
 
                 @RenderBody()
             </div>
-          
+
         </div>
 
 
@@ -104,12 +103,13 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
-    <script src="~/Scripts/vue.js"></script>
     <link href="~/Content/themes/default/easyui.css" rel="stylesheet" />
     <link href="~/Content/themes/icon.css" rel="stylesheet" />
     <link href="~/Content/themes/texteditor.css" rel="stylesheet" />
+    <script src="~/Scripts/vue.js"></script>
+    <script src="~/Scripts/locale/easyui-lang-zh_CN.js"></script>
+    <script src="~/Scripts/jquery.easyui.min.js"></script>
     <script src="~/Scripts/jquery.texteditor.js"></script>
-    <script src="~/Scripts/global.js"></script>
     @Html.Partial("_JsPartialPage")
     @RenderSection("Scripts", false)
 

@@ -29,7 +29,8 @@ namespace KnowledgeMVCSite.Controllers
         public ActionResult Create()
         {
             ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name", 2);
-
+            ViewBag.Title = "创建知识";
+            ViewBag.IsEdit = false;
             return View();
         }
 
@@ -37,10 +38,9 @@ namespace KnowledgeMVCSite.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         
-        public async Task<ActionResult> Create([Bind(Include = "CategoryId,Title,Context")] Knowledge knowledge)
+        public async Task<ActionResult> Create([Bind(Include = "Id,CategoryId,Title,Context")] Knowledge knowledge)
         {
-
-
+            ViewBag.IsEdit =bool.Parse(Request["IsEdit"]);
             ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name", knowledge.CategoryId);
 
             if (ModelState.IsValid)
@@ -50,6 +50,18 @@ namespace KnowledgeMVCSite.Controllers
                 {
                     try
                     {
+                        if (ViewBag.IsEdit)
+                        {
+                            var know = db.Knowledges.Find(knowledge.Id);
+                            know.CreateTime = DateTime.Now;
+                            know.Context = knowledge.Context;
+                            know.Title = knowledge.Title;
+                            know.CategoryId = knowledge.CategoryId;
+                            know.User = db.Users.Where(p => p.Email == HttpContext.User.Identity.Name).Single();
+                            db.SaveChanges();
+                            return RedirectToAction("Index", "Home");
+                        }
+
                         db.Knowledges.Add(new Knowledge
                         {
                             CreateTime = DateTime.Now,
@@ -67,6 +79,7 @@ namespace KnowledgeMVCSite.Controllers
                     {
 
                         ModelState.AddModelError("", ex.Message);
+                        
                         return View(knowledge);
                     }
 
@@ -89,6 +102,19 @@ namespace KnowledgeMVCSite.Controllers
 
             return View(knowledge);
         }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+
+            var knowledge = await db.Knowledges.FindAsync(id);
+            ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name", knowledge.CategoryId);
+            ViewBag.Title = "编辑知识";
+            ViewBag.IsEdit = true;
+            return View("Create",knowledge);
+
+
+        }
+
         [NoCache]
         public PartialViewResult DiscsussPartial(int knowledgeId)
         {

@@ -2,28 +2,28 @@
 @model Knowledge
 @{
 
-    
+    ViewBag.Title = "编辑知识";
 }
 <h2 class="">@ViewBag.Title</h2>
+
+
 @using (Html.BeginForm("Create", "Knowledge", FormMethod.Post, new { @class = "form-horizontal", id = "createForm" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
- <div class="form-group">
-    @Html.LabelFor(m =>m.CategoryId, new { @class = "control-label" })
-    @Html.DropDownListFor(m=>m.CategoryId, null,htmlAttributes: new { @class = "form-control" })
-    @Html.LabelFor(m => m.Title, new { @class = "control-label", @for = "form-group-input" })
-    @Html.TextBoxFor(m => m.Title, new { @class = "form-control", id = "form-group-input", placeholder = "一句话描述你分享的知识" })
-    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
-    @Html.LabelFor(m => m.Context, new { @class = "control-label" })
- </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CategoryId, new { @class = "control-label" })
+        @Html.DropDownListFor(m => m.CategoryId, null, htmlAttributes: new { @class = "form-control" })
+        @Html.LabelFor(m => m.Title, new { @class = "control-label", @for = "form-group-input" })
+        @Html.TextBoxFor(m => m.Title, new { @class = "form-control", id = "form-group-input", placeholder = "一句话描述你分享的知识" })
+        @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+        @Html.LabelFor(m => m.Context, new { @class = "control-label" })
+    </div>
     <div class="form-group">
         <div id="textEidtor" style="height:450px;padding:15px">
         </div>
     </div>
     @Html.HiddenFor(m => m.Context, new { id = "content" })
-    @Html.Hidden("IsEdit",(bool)ViewBag.IsEdit)
-    @Html.HiddenFor(m=>m.Id)
     @Html.ValidationMessageFor(m => m.Context, "", new { @class = "text-danger" })
     <div class="form-group">
         <input type="submit" class="btn btn-primary" name="submit" value="发布知识" onclick="PushKnowledge()" />
@@ -39,14 +39,6 @@
 </style>
 @section Scripts
 {
-    <link href="~/Content/themes/default/easyui.css" rel="stylesheet" />
-    <link href="~/Content/themes/icon.css" rel="stylesheet" />
-    <link href="~/Content/themes/texteditor.css" rel="stylesheet" />
-    <script src="~/Scripts/vue.js"></script>
-    <script src="~/Scripts/locale/easyui-lang-zh_CN.js"></script>
-    <script src="~/Scripts/jquery.easyui.min.js"></script>
-    <script src="~/Scripts/jquery.texteditor.js"></script>
-
     <script>
         $(function () {
             $('#textEidtor').texteditor({
@@ -59,7 +51,7 @@
             }
         })
         function PushKnowledge() {
-            var text = $('#textEidtor').texteditor('getValue');           
+            var text = $('#textEidtor').texteditor('getValue');
             $('#content').val(text);
         }
     </script>
