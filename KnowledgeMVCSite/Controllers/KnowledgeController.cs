@@ -102,7 +102,7 @@ namespace KnowledgeMVCSite.Controllers
 
             return View(knowledge);
         }
-
+        [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
 
@@ -111,7 +111,24 @@ namespace KnowledgeMVCSite.Controllers
             ViewBag.Title = "编辑知识";
             ViewBag.IsEdit = true;
             return View("Create",knowledge);
+        }
+        [HttpGet]
+        public async Task<Boolean> Delete(int id)
 
+        {           
+          
+                    var knowledge = await db.Knowledges.FindAsync(id);              
+                    db.Knowledges.Remove(knowledge);
+                   int cout=  await db.SaveChangesAsync();
+            if (cout==1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+      
 
         }
 

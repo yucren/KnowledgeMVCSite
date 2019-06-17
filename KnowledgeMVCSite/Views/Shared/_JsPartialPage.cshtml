@@ -172,4 +172,20 @@ function praise(event, id, userId) {
 
 
     }
+    function removeKnow(id) {
+
+        $.get('@Url.Action("Edit","Knowledge")/' + id, function (req, status, xhr) {
+            if (status === 'success') {
+                if (req ==true) {
+                    $('#reportKnow').remove($('#' + id));
+                }
+                else {
+                    alert("删除失败");
+                }
+               
+            }
+
+        })
+
+    }
 </script>
