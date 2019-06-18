@@ -62,7 +62,7 @@ namespace KnowledgeMVCSite.Controllers
             {
                 return View();
             }
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, true, true);
             switch (result)
             {
                 case SignInStatus.Success:

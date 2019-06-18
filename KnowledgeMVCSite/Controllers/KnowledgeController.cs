@@ -38,7 +38,7 @@ namespace KnowledgeMVCSite.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         
-        public async Task<ActionResult> Create([Bind(Include = "Id,CategoryId,Title,Context")] Knowledge knowledge)
+        public async Task<ActionResult> Create([Bind(Include = "CategoryId,Title,Context")] Knowledge knowledge)
         {
             ViewBag.IsEdit =bool.Parse(Request["IsEdit"]);
             ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name", knowledge.CategoryId);
@@ -52,7 +52,7 @@ namespace KnowledgeMVCSite.Controllers
                     {
                         if (ViewBag.IsEdit)
                         {
-                            var know = db.Knowledges.Find(knowledge.Id);
+                            var know = db.Knowledges.Find(int.Parse(Request["Id"]));
                             know.CreateTime = DateTime.Now;
                             know.Context = knowledge.Context;
                             know.Title = knowledge.Title;
@@ -120,7 +120,7 @@ namespace KnowledgeMVCSite.Controllers
                     var knowledge = await db.Knowledges.FindAsync(id);              
                     db.Knowledges.Remove(knowledge);
                    int cout=  await db.SaveChangesAsync();
-            if (cout==1)
+            if (cout !=0)
             {
                 return true;
             }
@@ -226,7 +226,7 @@ namespace KnowledgeMVCSite.Controllers
             var kn = db.Knowledges.Where(p => p.User.Id == userid).ToList();
             return PartialView(kn);
         }
-
+        [AllowAnonymous]
         public string GetCatalog()
         {
 

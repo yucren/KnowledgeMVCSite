@@ -4,7 +4,7 @@ var dicusseId = 0;
 var button = null;
 var count = 1;
 var pageCount = 1;
-var pageNum = 10;
+var pageNum = 1;
 var catalog = null;
 var searchValue = "";
 
@@ -94,7 +94,7 @@ function more() {
                    
                 }
                 else {
-                    $('#contentBody').append(req);
+                    $('#moreBtn').before(req);
                 }
                     
             }
@@ -173,11 +173,11 @@ function praise(event, id, userId) {
 
     }
     function removeKnow(id) {
-
-        $.get('@Url.Action("Edit","Knowledge")/' + id, function (req, status, xhr) {
+        if (confirm("确认删除")) {
+    $.get('@Url.Action("Delete","Knowledge")/' + id, function (req, status, xhr) {
             if (status === 'success') {
-                if (req ==true) {
-                    $('#reportKnow').remove($('#' + id));
+                if (req ==='True') {
+                   $('#' +id).remove();
                 }
                 else {
                     alert("删除失败");
@@ -186,6 +186,10 @@ function praise(event, id, userId) {
             }
 
         })
+        }  
+        
+
+    
 
     }
 </script>

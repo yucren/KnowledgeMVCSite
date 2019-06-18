@@ -10,15 +10,31 @@ namespace KnowledgeMVCSite.Models
 {
     public class IndexViewModel
     {
+        public class Know
+        {
+            public int Id { get; set; }
+            public DateTime CreateTime { get; set; }
+            public string Title { get; set; }
+
+
+        }
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
         public bool BrowserRemembered { get; set; }
-        public List<Knowledge> knowledges {
+        public List<Know> Knowledges {
             get
             {
                 var userid =HttpContext.Current.User.Identity.GetUserId();
-                var kn = KnowledgeController.db.Knowledges.Where(p => p.User.Id == userid).ToList();
+                var kn = KnowledgeController.db.Knowledges.Where(p => p.User.Id == userid).Select(
+                    p=>new Know
+                    {
+                       Id= p.Id,
+                       Title= p.Title,
+                      CreateTime= p.CreateTime
+                    }                   
+                    
+                    ).ToList();
                 return kn;
 
 

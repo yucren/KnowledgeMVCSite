@@ -28,12 +28,14 @@ namespace KnowledgeMVCSite
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new Microsoft.Owin.PathString("/Account/Login"),
+                ExpireTimeSpan=TimeSpan.FromMinutes(20),
+                SlidingExpiration=true,
 			    Provider = new CookieAuthenticationProvider()
                 {
-                    // 当用户登录时使应用程序可以验证安全戳。
-                    // 这是一项安全功能，当你更改密码或者向帐户添加外部登录名时，将使用此功能。
-					OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager,ApplicationUser>(
-						validateInterval: TimeSpan.FromMinutes(30),
+                        // 当用户登录时使应用程序可以验证安全戳。
+                        // 这是一项安全功能，当你更改密码或者向帐户添加外部登录名时，将使用此功能。
+					    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager,ApplicationUser>(
+						validateInterval: TimeSpan.FromMinutes(10),                       
 						regenerateIdentity:(manager,user)=>user.GenerateUserIdentityAsync(manager) )
                 }
 
