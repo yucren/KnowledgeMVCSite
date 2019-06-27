@@ -42,15 +42,31 @@
         }
         //为您要在模型中包含的每种实体类型都添加 DbSet。有关配置和使用 Code First  模型
         //的详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=390109。
-
          public virtual DbSet<Knowledge> Knowledges { get; set; }
          public virtual DbSet<Category> Categorys { get; set;  }
-
          public virtual DbSet<Discuss> Discusses{ get; set; }
-
          public virtual DbSet<Praise> Praises { get; set; }
+         public virtual DbSet<Accessory> Accessories { get; set; }
+    }
+    [Bind(Exclude = "KnowledgeId,UserId,")]
+    public class Accessory
+    {
+        public int Id { get; set; }
+        [StringLength(100,ErrorMessage ="{0}文件名不能超过{1}个字符")]
+        [Required]
+        [Display(Name ="附件名")]
+        public string FileName { get; set; }
+        [Required]
+        [Display(Name ="上传时间")]
+        public DateTime CreateTime { get; set; }
+        [ForeignKey("Knowledge")]
+        [Required]
+        public int KnowledgeId { get; set; }
+        public virtual Knowledge Knowledge { get; set; }
+        [ForeignKey("User")]
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
 
-      
 
     }
 
@@ -150,6 +166,7 @@
         public virtual string Context { get; set; }
         public virtual ICollection<Praise> Praises { get; set; }
         public virtual ICollection<Discuss> Discusses { get; set; }
+        public virtual ICollection<Accessory> Accessories { get; set; }
 
         
 

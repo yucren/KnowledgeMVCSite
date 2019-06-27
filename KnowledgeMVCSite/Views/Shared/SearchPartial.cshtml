@@ -5,20 +5,25 @@
 {
     <div style="padding:10px 0px 0px 0px;margin-top:40px; background-color :white">
         <div style="padding-bottom:10px">
-            <p style="display:block;font-size:20px">@item.User.UserName <span style="color:blue;font-size:25px;" class="glyphicon glyphicon-chevron-right"></span>@item.Category.Name</p>
+            <p style="display:block;font-size:20px">
+                @item.User.UserName <span style="color:blue;font-size:25px;" class="glyphicon glyphicon-chevron-right"></span>@item.Category.Name
+                <span>@item.CreateTime</span>
+                <button onclick="readALL(event)"  class="btn btn-link btn-info readAllBtn" style="border:none;text-decoration-line:none">阅读全文<span class="glyphicon glyphicon-arrow-down"></span></button>
+                <button class="btn btn-primary btn-sm  pull-right" style="margin-right:10px" >
+                    <span class="glyphicon glyphicon-share-alt"></span>
+                </button>
+
+            </p>
             <strong style="font-size:18px;padding-left:10px">@item.Title </strong>
         </div>
 
-        <div class="panel-body-noborder panel-fit" style="margin-bottom:15px;padding-left:10px">
+        <div class="panel-body-noborder panel-fit" style="height:100px; margin-bottom:15px;padding-left:10px">
             @Html.Raw(@item.Context)
         </div>
         <div style="margin-bottom:-15px;padding:10px" class="well">
-            <p onclick="praise(event, @item.Id,'@(User.Identity.Name==""?"0":User.Identity.Name)')"><span style="color:@(item.Praises.Where(p=>p.UserId==User.Identity.GetUserId()).Count()==0?"darkgray":"red") ;font-size:20px" class="glyphicon glyphicon-thumbs-up">@item.Praises.Count</span></p>
-            <button class="btn btn-primary pull-right" style="margin-top:-33px;margin-right:0px">
-                <span class="glyphicon glyphicon-share-alt"></span>分享
-            </button>
+            <p ><span onclick="praise(event, @item.Id,'@(User.Identity.Name==""?"0":User.Identity.Name)')" style="color:@(item.Praises.Where(p=>p.UserId==User.Identity.GetUserId()).Count()==0?"darkgray":"red") ;font-size:20px" class="glyphicon glyphicon-thumbs-up">@item.Praises.Count</span></p>
 
-            <button class="btn btn-primary pull-right" data-loading-text="加载中..." style="margin-top:-33px;margin-right:2px" onclick="discuss(event,@item.Id)">
+            <button class="btn btn-primary btn-sm pull-right" data-loading-text="加载中..." style="margin-top:-33px;margin-right:10px" onclick="discuss(event,@item.Id)">
                 <span class="glyphicon glyphicon-comment">
                 </span><span>@(item.Discusses.Count)</span>条评论
             </button>
@@ -30,4 +35,3 @@
 
 
 }
-

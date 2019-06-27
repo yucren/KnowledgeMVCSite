@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
 using KnowledgeMVCSite.Filter;
 using Microsoft.AspNet.Identity;
+using System.IO;
 
 namespace KnowledgeMVCSite.Controllers
 {
@@ -25,7 +26,7 @@ namespace KnowledgeMVCSite.Controllers
             ViewBag.Title = catalog;
             return View();
         }
-        [Authorize]
+        
         public ActionResult Create()
         {
             ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name", 2);
@@ -68,8 +69,9 @@ namespace KnowledgeMVCSite.Controllers
                             Context = knowledge.Context,
                             Title = knowledge.Title,
                             CategoryId = knowledge.CategoryId,
-                            User = db.Users.Where(p => p.Email == HttpContext.User.Identity.Name).Single()
-
+                            User = db.Users.Where(p => p.Email == HttpContext.User.Identity.Name).Single(),
+                            
+                            
                         });
                         db.SaveChanges();
                         return RedirectToAction("Index", "Home");
@@ -132,7 +134,8 @@ namespace KnowledgeMVCSite.Controllers
 
         }
 
-        [NoCache]
+        
+        [AllowAnonymous]
         public PartialViewResult DiscsussPartial(int knowledgeId)
         {
             ViewBag.knowledgeId = knowledgeId;
@@ -142,6 +145,7 @@ namespace KnowledgeMVCSite.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task Discuss([Bind(Include ="Context,KnowledgeId")] Discuss model)
         {
 
@@ -206,6 +210,7 @@ namespace KnowledgeMVCSite.Controllers
 
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<int> GetDiscussCout(int knowledgeId)
         {
             var kn = await db.Knowledges.FindAsync(knowledgeId);
@@ -213,6 +218,7 @@ namespace KnowledgeMVCSite.Controllers
 
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<int> GetPraiseCout(int knowledgeId)
         {
             var kn = await db.Knowledges.FindAsync(knowledgeId);
@@ -233,6 +239,38 @@ namespace KnowledgeMVCSite.Controllers
             var json = db.Categorys.ToList();
            return  Newtonsoft.Json.JsonConvert.SerializeObject(json);
 
+        }
+        [HttpPost]
+        public async Task<string> GetFiles()
+        {
+            try
+            {
+                List<string> uploadFiles = new List<string>();
+                var files = Request.Files;
+                foreach (string item in files)
+                {
+                    HttpPostedFileBase file = files[item];
+                    if (file != null)
+                    {
+                        //var fileName = Path.GetFileNameWithoutExtension(file.FileName) + "-" + Guid.NewGuid() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(file.FileName);
+                        var fileName = Guid.NewGuid()+Path.GetExtension(file.FileName);
+                        file.SaveAs(Server.MapPath("~/upfiles/") + fileName);
+                        uploadFiles.Add(fileName);
+                        db.Accessories.Add(new Accessory
+                        {
+                            CreateTime = DateTime.Now,
+                            FileName = fileName,
+                            UserId = User.Identity.GetUserId()  
+                        });
+                    }
+                }
+               await db.SaveChangesAsync();
+               return string.Join("|",uploadFiles.ToArray());
+            }
+            catch (Exception)
+            {
+                return "上传失败";
+            } 
         }
 
         //public IEnumerable<SelectListItem> GetCategory()

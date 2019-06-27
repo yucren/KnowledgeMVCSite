@@ -4,7 +4,7 @@ var dicusseId = 0;
 var button = null;
 var count = 1;
 var pageCount = 1;
-var pageNum = 1;
+//var pageNum = 1;
 var catalog = null;
 var searchValue = "";
 
@@ -23,19 +23,19 @@ $(function () {
         }
     });
 });
-new Vue({
-    el: '#app',
-    data: {
-        message: '<h1>菜鸟教程</h1>'
-    }
-    });
-    function loadding(e) {
-        $(e).button("loading").delay(500).queue(function () {
-           $(e).button('reset');
-            $(e).dequeue(); 
-            getDiscussCount();
-        })
-    }
+//new Vue({
+//    el: '#app',
+//    data: {
+//        message: '<h1>菜鸟教程</h1>'
+//    }
+//    });
+//    function loadding(e) {
+//        $(e).button("loading").delay(500).queue(function () {
+//           $(e).button('reset');
+//            $(e).dequeue(); 
+//            getDiscussCount();
+//        })
+//    }
 function discuss(event, id) {  
     var target = $($(event.target).parents("div").get(0)).next(".discuss");
     if (target.css('display') == 'none') {
@@ -78,15 +78,14 @@ function more() {
     pageCount += 1;
     $.post('@Url.Action("Index","Home")', {
         pageCount: pageCount,
-        pageNum: pageNum,
+        //pageNum: pageNum,
         searchValue:searchValue,
         catalog: catalog,
-
 
     },
         function (req, status, xhr) {
             if (status === "success") {
-                if (req === '\r\n') {
+                if (req === '') {
                     var warning = document.getElementById('noMore');
                     if (warning ==undefined) {
                         $('#contentBody').append('<div id="noMore" class="alert alert-warning"><a href = "#" class= "alert-link" > 已经没有更多了</a ></div >');
@@ -94,7 +93,13 @@ function more() {
                    
                 }
                 else {
-                    $('#moreBtn').before(req);
+                    if ($('#moreBtn').length===0) {
+                        $('#contentBody').append(req);
+                    }
+                    else {
+                        $('#moreBtn').before(req);
+                    }
+                    
                 }
                     
             }
@@ -136,8 +141,13 @@ function disucssSuccess() {
     
 }
 
-function praise(event, id, userId) {
-
+    function praise(event, id, userId) {
+    //    console.log(event.target);
+    //    console.log(event.currentTarget);
+    //if (event.target != event.currentTarget) {
+       
+    //    return false;
+    //}
     var p = $(event.target);
     if (userId === "0") {
         alert("请先登陆后再点赞");
@@ -190,6 +200,110 @@ function praise(event, id, userId) {
         
 
     
+
+    }
+
+    function readALL(e) {
+        var me = $(e.currentTarget);
+        console.log(me.text());
+        if (me.text() === "阅读全文") {
+
+            me.closest('div').next().height('auto')
+            me.text('收起');
+            
+        } else if (me.text() === "收起") {
+            me.closest('div').next().height(100);
+            me.text('阅读全文');
+
+        } 
+     
+       
+
+    }
+
+    function uploadFile(id) {
+
+        var fileObjs = document.getElementById(id).files; // js 获取文件对象
+        if (typeof (fileObjs) == "undefined" || fileObjs.size <= 0) {
+            alert("请选择Excel文件");
+            return;
+        }
+        var formFile = new FormData();
+        formFile.append("action", "UploadVMKImagePath");
+        for (var i = 0; i < fileObjs.length; i++) {
+            formFile.append("files" +i , fileObjs[i]); //加入文件对象
+        }
+        
+        var data = formFile;
+        $.ajax({
+            url: '@Url.Action("GetFiles","Knowledge")',
+            data: data,
+            type: "Post",
+            dataType: "text",
+            cache: false,//上传文件无需缓存
+            processData: false,//用于对data参数进行序列化处理 这里必须false
+            contentType: false, //必须
+            beforeSend: function () {
+
+                $.messager.progress({
+
+                    title: "提示",
+                    msg: "加载中。。。。。。",
+
+
+                });
+
+            },
+            success: function (result) {
+                $.messager.progress('close');
+                if (result==="发生错误") {
+                    $.messager.alert({
+                        title: "错误",
+                        msg: "发生错误，上传错误",
+                        icon: "error"
+                    })
+                    return;
+                }            
+                               
+                $.messager.show({
+                    title: '提示',
+                    msg: '上传成功',
+                    timeout: 1000,
+                    showType: 'slide',
+                    style: {
+                        right: '',
+                        top: document.body.scrollTop + document.documentElement.scrollTop,
+                        bottom: ''
+                    }
+
+                });
+                var arr = result.split("|");
+                if ($('#uploadFileBtn').next('ul').length !=0) {
+
+                    for (var i = 0; i < arr.length; i++) {
+
+                        $('#uploadFileBtn').next('ul').append("<li class='list-group-item'>" + arr[i] + "</li>");
+
+                    }
+                   
+                }
+                else {
+                    var html = "<ul id='uplist' class='list-group'>";
+                    for (var i = 0; i < arr.length; i++) {
+
+                        html += "<li class='list-group-item'>" + arr[i] + "</li>";
+
+                    }
+                    html += "</ul>";
+                    $('#uploadFileBtn').after(html);
+
+                }  
+
+            },
+
+
+        })
+
 
     }
 </script>

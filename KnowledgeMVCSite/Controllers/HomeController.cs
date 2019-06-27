@@ -18,7 +18,7 @@ namespace KnowledgeMVCSite.Controllers
             ViewBag.catalog = catalog;
             ViewBag.searchValue = searchValue;
             var pc = pageCount == null ? 1 : pageCount.Value;
-            var pn = pageNum == null ? 1 : pageNum.Value;
+            var pn = pageNum == null ? 5 : pageNum.Value;
             var sv = searchValue ?? "";
 
             List<Knowledge> knowledges;

@@ -9,21 +9,27 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
- <div class="form-group">
-    @Html.LabelFor(m =>m.CategoryId, new { @class = "control-label" })
-    @Html.DropDownListFor(m=>m.CategoryId, null,htmlAttributes: new { @class = "form-control" })
+<div class="form-group">
+    @Html.LabelFor(m => m.CategoryId, new { @class = "control-label" })
+    @Html.DropDownListFor(m => m.CategoryId, null, htmlAttributes: new { @class = "form-control" })
     @Html.LabelFor(m => m.Title, new { @class = "control-label", @for = "form-group-input" })
     @Html.TextBoxFor(m => m.Title, new { @class = "form-control", id = "form-group-input", placeholder = "一句话描述你分享的知识" })
     @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
     @Html.LabelFor(m => m.Context, new { @class = "control-label" })
- </div>
-    <div class="form-group">
-        <div id="textEidtor" style="height:450px;padding:15px">
-        </div>
+    
+</div>
+<div class="form-group">
+    <div id="textEidtor" style="height:450px;padding:15px">
     </div>
+    @Html.Label("accessories","附件:")
+    <input style="display:inline-block" type="file" multiple id="accessories" name="accessories" />
+    <input style="display:inline-block" type="button" id="uploadFileBtn"  name="uploadFileBtn" onclick="uploadFile('accessories')" value="上传"/>
+</div>
+
     @Html.HiddenFor(m => m.Context, new { id = "content" })
     @Html.Hidden("IsEdit",(bool)ViewBag.IsEdit)
     @Html.HiddenFor(m=>m.Id)
+    <input type="hidden" id="accessoHidden"   />
     @Html.ValidationMessageFor(m => m.Context, "", new { @class = "text-danger" })
     <div class="form-group">
         <input type="submit" class="btn btn-primary" name="submit" value="发布知识" onclick="PushKnowledge()" />
@@ -36,6 +42,7 @@
         padding-left: 5%;
         width: 80%;
     }
+   
 </style>
 @section Scripts
 {
@@ -61,6 +68,12 @@
         function PushKnowledge() {
             var text = $('#textEidtor').texteditor('getValue');           
             $('#content').val(text);
+           
+          var arr =  $.map(document.querySelectorAll('#uplist>li'), function (value) {
+                return value.innerText;
+
+            })
+            $('#accessoHidden').val(arr.join("|"));
         }
     </script>
 

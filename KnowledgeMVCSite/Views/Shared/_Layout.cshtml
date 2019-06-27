@@ -30,7 +30,7 @@
                 @Html.ActionLink("知识分享网站", "Index", "Home", null, htmlAttributes: new { @class = "navbar-brand" })
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <div class="collapse navbar-collapse collapsing" id="navbar-collapse-1">
                 <ul id="headLink" class="nav navbar-nav">
                     <li>@Html.ActionLink("首页", "Index", "Home")</li>
                     <li>@Html.ActionLink("帮助", "Help", "Home")</li>
@@ -98,20 +98,20 @@
 
 
     </div>
-
+    <link href="~/Content/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/Content/themes/icon.css" rel="stylesheet" />
+    <link href="~/Content/themes/texteditor.css" rel="stylesheet" />
+    <link href="~/Content/Common.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.11.3.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
-    <link href="~/Content/themes/default/easyui.css" rel="stylesheet" />
-    <link href="~/Content/themes/icon.css" rel="stylesheet" />
-    <link href="~/Content/themes/texteditor.css" rel="stylesheet" />
-    <script src="~/Scripts/vue.js"></script>
     <script src="~/Scripts/locale/easyui-lang-zh_CN.js"></script>
     <script src="~/Scripts/jquery.easyui.min.js"></script>
     <script src="~/Scripts/jquery.texteditor.js"></script>
-    @Html.Partial("_JsPartialPage")
     @RenderSection("Scripts", false)
+    @Html.Partial("_JsPartialPage")
+
 
 </body>
 
