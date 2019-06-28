@@ -21,10 +21,23 @@
 
 <div class="row">
     <div id="contentBody" class="col-md-9">
-        @Html.Partial("SearchPartial", Model)
-        <div id="moreBtn" style="margin-top:30px">
-            <button class="btn btn-primary center-block" onclick="more()">加载更多</button>
-        </div>
+
+        @if (Model.Count != 0)
+        {
+            @Html.Partial("SearchPartial", Model)
+            <div id="moreBtn" style="margin-top:30px">
+                <button class="btn btn-primary center-block" onclick="more()">加载更多</button>
+            </div>
+        }
+        else
+        {
+
+            <div id="noKnow" class="alert alert-warning">
+                <a href="@Url.Action("Create","Knowledge")" class="alert-link"> 还没有人创建知识，赶紧创建吧</a>
+            </div>
+
+        }
+
     </div>
 
 
@@ -46,8 +59,8 @@
     $.get('@Url.Action("GetCatalog", "knowledge")', function (req, status, xhr) {
         var catalog = JSON.parse(req);
         catalog.forEach(function (item, index, arr) {
-
-            $('#catalog').append('<p><a class="btn btn-primary" href="#">' + item.Name +"</a></p>");
+          
+            $('#catalog').append('<p><a class="btn btn-primary" href="/know/?catalog=' + item.CategoryId+  '">' + item.Name +"</a></p>");
         })}
 
         );

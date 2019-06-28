@@ -29,7 +29,7 @@
     @Html.HiddenFor(m => m.Context, new { id = "content" })
     @Html.Hidden("IsEdit",(bool)ViewBag.IsEdit)
     @Html.HiddenFor(m=>m.Id)
-    <input type="hidden" id="accessoHidden"   />
+    <input type="hidden" id="accessoHidden" name="accessoHidden"   />
     @Html.ValidationMessageFor(m => m.Context, "", new { @class = "text-danger" })
     <div class="form-group">
         <input type="submit" class="btn btn-primary" name="submit" value="发布知识" onclick="PushKnowledge()" />
@@ -73,7 +73,10 @@
                 return value.innerText;
 
             })
-            $('#accessoHidden').val(arr.join("|"));
+            if (arr !=null && arr.length ==0) {
+                $('#accessoHidden').val(arr.join("|"));
+            }
+           
         }
     </script>
 

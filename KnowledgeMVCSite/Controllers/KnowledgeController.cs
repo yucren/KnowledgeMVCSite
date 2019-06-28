@@ -41,8 +41,15 @@ namespace KnowledgeMVCSite.Controllers
         
         public async Task<ActionResult> Create([Bind(Include = "CategoryId,Title,Context")] Knowledge knowledge)
         {
+            String[] fileNameArr =null;
             ViewBag.IsEdit =bool.Parse(Request["IsEdit"]);
             ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name", knowledge.CategoryId);
+            var accessories = Request["accessoHidden"];
+            if (!string.IsNullOrEmpty(accessories))
+            {
+                fileNameArr =accessories.Split('|') ;
+            }
+            
 
             if (ModelState.IsValid)
             {
@@ -62,17 +69,33 @@ namespace KnowledgeMVCSite.Controllers
                             db.SaveChanges();
                             return RedirectToAction("Index", "Home");
                         }
+                        
+                            var newKnowledge = new Knowledge
+                            {
+                                CreateTime = DateTime.Now,
+                                Context = knowledge.Context,
+                                Title = knowledge.Title,
+                                CategoryId = knowledge.CategoryId,
+                                User = db.Users.Where(p => p.Email == HttpContext.User.Identity.Name).Single(),
 
-                        db.Knowledges.Add(new Knowledge
+
+                            };
+
+
+
+
+                        db.Knowledges.Add(newKnowledge);
+                        db.SaveChanges();
+                        if (fileNameArr != null)
                         {
-                            CreateTime = DateTime.Now,
-                            Context = knowledge.Context,
-                            Title = knowledge.Title,
-                            CategoryId = knowledge.CategoryId,
-                            User = db.Users.Where(p => p.Email == HttpContext.User.Identity.Name).Single(),
-                            
-                            
-                        });
+                            foreach (var fileName in fileNameArr)
+                            {
+                                var file = db.Accessories.Where(p => p.FileName == fileName).Single();
+                                file.Knowledge = newKnowledge;
+                            }
+
+                        }
+
                         db.SaveChanges();
                         return RedirectToAction("Index", "Home");
 
