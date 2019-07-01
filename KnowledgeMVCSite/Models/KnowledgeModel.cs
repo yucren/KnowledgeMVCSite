@@ -57,6 +57,10 @@
         [Display(Name ="附件名")]
         public string FileName { get; set; }
         [Required]
+        [Display(Name ="原始文件名")]
+        public string OrginFileName { get; set; }
+
+        [Required]
         [Display(Name ="上传时间")]
         public DateTime CreateTime { get; set; }
         [ForeignKey("Knowledge")]

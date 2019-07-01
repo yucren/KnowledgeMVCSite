@@ -41,7 +41,7 @@ namespace KnowledgeMVCSite.Controllers
             {
                 return PartialView("SearchPartial", knowledges);
             }
-
+           
             return View(knowledges);
         }
 

@@ -2,10 +2,6 @@
 @model List<Knowledge>
 
 @{
-
-
-
-
     foreach (Knowledge item in Model)
     {
 
@@ -14,7 +10,7 @@
                 <p style="display:block;font-size:20px">
                     @item.User.UserName <span style="color:blue;font-size:25px;" class="glyphicon glyphicon-chevron-right"></span>@item.Category.Name
                     <span>@item.CreateTime</span>
-                    <button onclick="readALL(event)" class="btn btn-link btn-info readAllBtn" style="border:none;text-decoration-line:none">阅读全文<span class="glyphicon glyphicon-arrow-down"></span></button>
+                    <button  onclick="readALL(event)" class="btn btn-link btn-info readAllBtn" style="border:none;text-decoration-line:none">阅读全文<span class="glyphicon glyphicon-arrow-down"></span></button>
                     <button class="btn btn-primary btn-sm  pull-right" style="margin-right:10px">
                         <span class="glyphicon glyphicon-share-alt"></span>
                     </button>
@@ -23,10 +19,37 @@
                 <strong style="font-size:18px;padding-left:10px">@item.Title </strong>
             </div>
 
-            <div class="panel-body-noborder panel-fit" style="height:100px;margin-bottom:15px;padding-left:10px">
-                @Html.Raw(@item.Context)
+            <div class="panel-body-noborder panel-fit" style="max-height:200px;word-break:break-word; padding-left:10px">
+               
+                    @Html.Raw(@item.Context)
+                
+               
             </div>
-            <div style="margin-bottom:-15px;padding:10px" class="well">
+            @if (item.Accessories.Count != 0)
+            {
+
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="collapse"
+                    data-target="#accessory@(item.Id)" >
+               @(item.Accessories.Count)附件
+            </button>
+            <div id="accessory@(item.Id)"  class="panel-footer-noborder collapse" >
+                
+                <ul class="list-group list" style="background-color:grey">
+                   
+                    @foreach (var accssory in item.Accessories)
+                    {
+                        <li class="list-group-item" style="background-color:lightblue">
+                            <a href='@Url.Action("ViewFile","Knowledge",new { fileName = accssory.FileName})'>@accssory.OrginFileName</a>
+                            <a href="@Url.Action("PreviewHtml","Knowledge",new {url=accssory.FileName })"  target="_blank">在线预览</a>
+                        </li>
+
+                    }
+                </ul>
+
+
+            </div>
+            }
+            <div style="margin-top:15px;padding:10px" class="well">
                 <p><span onclick="praise(event, @item.Id,'@(User.Identity.Name == "" ? "0" : User.Identity.Name)')" style="color:@(item.Praises.Where(p => p.UserId == User.Identity.GetUserId()).Count() == 0 ? "darkgray" : "red") ;font-size:20px" class="glyphicon glyphicon-thumbs-up">@item.Praises.Count</span></p>
 
                 <button class="btn btn-primary btn-sm pull-right" data-loading-text="加载中..." style="margin-top:-33px;margin-right:10px" onclick="discuss(event,@item.Id)">
@@ -37,8 +60,5 @@
             <div class="discuss" style="margin-top:20px"></div>
 
         </div>
-
-
-
         }
     }

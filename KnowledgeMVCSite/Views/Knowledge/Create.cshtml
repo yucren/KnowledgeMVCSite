@@ -70,10 +70,10 @@
             $('#content').val(text);
            
           var arr =  $.map(document.querySelectorAll('#uplist>li'), function (value) {
-                return value.innerText;
+              return value.dataset.file;
 
             })
-            if (arr !=null && arr.length ==0) {
+            if (arr !=null && arr.length !=0) {
                 $('#accessoHidden').val(arr.join("|"));
             }
            

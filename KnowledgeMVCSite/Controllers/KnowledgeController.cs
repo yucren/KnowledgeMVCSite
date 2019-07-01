@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using KnowledgeMVCSite.Filter;
 using Microsoft.AspNet.Identity;
 using System.IO;
+using KnowledgeMVCSite.Util;
 
 namespace KnowledgeMVCSite.Controllers
 {
@@ -142,11 +143,27 @@ namespace KnowledgeMVCSite.Controllers
 
         {           
           
-                    var knowledge = await db.Knowledges.FindAsync(id);              
+            var knowledge = await db.Knowledges.FindAsync(id);
+            var acces = db.Accessories.Where(p => p.KnowledgeId==knowledge.Id).ToList();
+            foreach (var item in acces)
+            {
+                db.Accessories.Remove(item);
+                
+            }
+                    
                     db.Knowledges.Remove(knowledge);
                    int cout=  await db.SaveChangesAsync();
             if (cout !=0)
             {
+                foreach (var item in acces)
+                {
+                    
+                    var filePath = Server.MapPath("~/upfiles/" + item.FileName);
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
                 return true;
             }
             else
@@ -268,7 +285,9 @@ namespace KnowledgeMVCSite.Controllers
         {
             try
             {
-                List<string> uploadFiles = new List<string>();
+               
+                Dictionary<string, string> upfiles = new Dictionary<string, string>();
+               
                 var files = Request.Files;
                 foreach (string item in files)
                 {
@@ -278,24 +297,75 @@ namespace KnowledgeMVCSite.Controllers
                         //var fileName = Path.GetFileNameWithoutExtension(file.FileName) + "-" + Guid.NewGuid() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(file.FileName);
                         var fileName = Guid.NewGuid()+Path.GetExtension(file.FileName);
                         file.SaveAs(Server.MapPath("~/upfiles/") + fileName);
-                        uploadFiles.Add(fileName);
+                        upfiles.Add(fileName, file.FileName);
                         db.Accessories.Add(new Accessory
                         {
                             CreateTime = DateTime.Now,
                             FileName = fileName,
+                            OrginFileName=file.FileName,
                             UserId = User.Identity.GetUserId()  
                         });
                     }
                 }
-               await db.SaveChangesAsync();
-               return string.Join("|",uploadFiles.ToArray());
+                 await db.SaveChangesAsync();
+                return Newtonsoft.Json.JsonConvert.SerializeObject(upfiles);
             }
             catch (Exception)
             {
                 return "上传失败";
             } 
         }
+        [AllowAnonymous]
+        public FileResult ViewFile(string fileName)
+        {
+            var path = Server.MapPath("~/upfiles/" + fileName);
+           
+            return File(path, MimeMapping.GetMimeMapping(path));
 
+
+
+        }
+        public FileResult PreviewHtml(string url)
+        {
+
+          
+            var htmlUrl = Server.MapPath("~/upfiles/")+ Path.GetFileNameWithoutExtension( url) + ".html";
+
+            if (! System.IO.File.Exists(htmlUrl))
+            {
+               
+                string extension = Path.GetExtension(url);
+                string physicalPath = Server.MapPath("~/upfiles/" + url);
+                PreviewTool previewTool = new PreviewTool();
+                switch (extension.ToLower())
+                {
+                    case ".xls":
+                    case ".xlsx":
+                        htmlUrl = previewTool.PreviewExcel(physicalPath, Server);
+                        break;
+                    case ".doc":
+                    case ".docx":
+                        htmlUrl = previewTool.PreviewWord(physicalPath, Server);
+                        break;
+                    case ".txt":
+                        htmlUrl = previewTool.PreviewTxt(physicalPath);
+                        break;
+                    case ".pdf":
+                        htmlUrl = previewTool.PreviewPdf(physicalPath);
+                        break;
+                }
+            }
+          
+            
+
+   
+
+            return File(htmlUrl, MimeMapping.GetMimeMapping(htmlUrl));
+
+
+
+
+        }
         //public IEnumerable<SelectListItem> GetCategory()
         //{
         //   var categories= from category in db.Categories

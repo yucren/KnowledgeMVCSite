@@ -76,39 +76,69 @@ function discuss(event, id) {
 }
 function more() {
     pageCount += 1;
-    $.post('@Url.Action("Index","Home")', {
-        pageCount: pageCount,
-        //pageNum: pageNum,
-        searchValue:searchValue,
-        catalog: catalog,
+    $.ajax({
+        url: '@Url.Action("Index","Home")', data: {
+            pageCount: pageCount,
+            //pageNum: pageNum,
+            searchValue: searchValue,
+            catalog: catalog,
 
-    },
-        function (req, status, xhr) {
+        }, beforeSend: function (xhr) {
+            console.log("beginsend");
+            $('#loading').css('visibility', 'visible');
+            $('#noMore').css('visibility', 'hidden');
+           
+           
+        }, success: function (req, status, xhr) {
+           
             if (status === "success") {
                 if (req === '') {
-                    var warning = document.getElementById('noMore');
-                    if (warning ==undefined) {
-                        $('#contentBody').append('<div id="noMore" class="alert alert-warning"><a href = "#" class= "alert-link" > 已经没有更多了</a ></div >');
-                    }
-                   
+                    window.setTimeout(function () {
+                        var warning = document.getElementById('noMore');
+                        if (warning == undefined) {
+                            $('#loading').after('<div id="noMore" style="color:red;text-align:center">已经没有更多了</div >');
+                        }
+                        else {
+                            $('#noMore').css('visibility', 'visible');
+                        }
+
+                    },100)
+                  
+
                 }
                 else {
-                    if ($('#moreBtn').length===0) {
+                    if ($('#moreBtn').length === 0) {
                         $('#contentBody').append(req);
+                        $('.panel-body-noborder.panel-fit').each(function (indx, item) {
+                            if ($(item).height() < 100) {
+                                $(item).prev().find(".readAllBtn").css('display', 'none');
+
+                            }
+
+                        })
+
                     }
                     else {
                         $('#moreBtn').before(req);
                     }
-                    
+
                 }
-                    
+                $('#loading').css('visibility', 'hidden');
             }
+
+
+        }, error: function (xhr, status, error) {
+
+            $('#loading').css('display', 'none');
+            $('#contentBody').append('<div id="noMore" class="alert alert-warning"><a href = "#" class= "alert-link" >' +error +'</a ></div >');
 
 
         }
 
-    );
-
+    });
+        
+        
+    
 
 
 
@@ -205,14 +235,15 @@ function disucssSuccess() {
 
     function readALL(e) {
         var me = $(e.currentTarget);
-        console.log(me.text());
+       
         if (me.text() === "阅读全文") {
-
-            me.closest('div').next().height('auto')
+            me.closest('div').next().css('max-height', '')
+            //me.closest('div').next().height('auto')
+           
             me.text('收起');
             
         } else if (me.text() === "收起") {
-            me.closest('div').next().height(100);
+            me.closest('div').next().css('max-height', 200)
             me.text('阅读全文');
 
         } 
@@ -278,32 +309,41 @@ function disucssSuccess() {
 
                 });
                 document.getElementById("accessories").value = null;
-                var arr = result.split("|");
-                if ($('#uploadFileBtn').next('ul').length !=0) {
+                var arr = JSON.parse(result);
+                if ($('#uploadFileBtn').next('ul').length != 0) {
+                    for (var i in arr) {
 
-                    for (var i = 0; i < arr.length; i++) {
 
-                        $('#uploadFileBtn').next('ul').append("<li class='list-group-item'>" + arr[i] + "</li>");
+                        $('#uploadFileBtn').next('ul').append("<li data-file='" + i + "'class='list-group-item'>" + arr[i] + "</li>");
+
 
                     }
-                   
                 }
                 else {
                     var html = "<ul id='uplist' class='list-group'>";
-                    for (var i = 0; i < arr.length; i++) {
+                    for (var i in arr) {
 
-                        html += "<li class='list-group-item'>" + arr[i] + "</li>";
+                        html += "<li data-file='" + i + "'class='list-group-item'>" + arr[i] + "</li>";
 
                     }
                     html += "</ul>";
                     $('#uploadFileBtn').after(html);
 
-                }  
+                    }
+                       
+                        
 
-            },
+
+                     
 
 
-        })
+                }
+                
+
+            })
+
+
+     
 
 
     }
