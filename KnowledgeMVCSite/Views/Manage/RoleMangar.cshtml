@@ -1,0 +1,75 @@
+﻿@using Microsoft.AspNet.Identity.EntityFramework
+@model List<IdentityRole>
+@{
+    ViewBag.Title = "角色管理";
+}
+
+<h2>@ViewBag.Title</h2>
+<button class="btn btn-default" data-toggle="modal" data-target="#roleBuildWin">添加角色</button>
+<div class="container">
+    <div class="row">
+        <div id="roleBuildWin" class="fade modal col-md-6" style="top:50px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">新增角色</h4>
+                </div>
+                <div class="modal-body ">
+                    @using (Html.BeginForm("RoleMangar", "Manage", FormMethod.Post, new { @class = "form-horizontal" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <label for="roleName" class="col-md-2 control-label">角色名称</label>
+                            <div class="col-md-4">
+                                <input id="roleName" type="text" class="form-control" name="roleName" />
+                            </div>
+                            
+                        </div>
+                        <button type="submit" class="col-md-offset-2">提交</button>
+
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<table class="table table-bordered table-striped table-condensed" style="width:50%">
+    <caption>角色列表</caption>
+ <tr>
+     <th>ID</th>
+     <th>角色名称</th>
+ </tr>
+    @{ 
+        foreach (IdentityRole role in Model)
+        {
+    <tr>
+        <td>@role.Id</td>   
+        
+        <td>
+            @Ajax.ActionLink(role.Name, "_RoleUserPartial","Manage",
+           routeValues:new {id=role.Id},ajaxOptions:           
+           new AjaxOptions {
+       UpdateTargetId= "userRole",
+        HttpMethod="GET",
+         AllowCache=false,
+          InsertionMode= InsertionMode.Replace
+   })
+           
+        </td>
+    </tr>
+
+            }
+
+
+    }
+
+</table>
+<div id="userRole"></div>
+
+
+
+

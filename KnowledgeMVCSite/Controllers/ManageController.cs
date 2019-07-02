@@ -1,6 +1,7 @@
 ﻿using KnowledgeMVCSite.App_Start;
 using KnowledgeMVCSite.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
@@ -16,6 +17,7 @@ namespace KnowledgeMVCSite.Controllers
     [Authorize]
     public class ManageController : Controller
     {
+        KnowledgeModel db = KnowledgeModel.Create();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -80,6 +82,36 @@ namespace KnowledgeMVCSite.Controllers
             };
             return View(model);
         }
+        public ActionResult RoleMangar()
+        {
+            var roles = db.Roles.ToList();
+
+            return View(roles);   
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RoleMangar( string roleName)
+        {
+            db.Roles.Add(new IdentityRole(roleName));
+            await db.SaveChangesAsync();
+            var roles = db.Roles.ToList();
+            return View(roles);
+        }
+        [HttpGet]
+        public PartialViewResult _RoleUserPartial(string id)
+        {
+            var users = db.Roles.Find(id).Users.ToList();
+            var userRoles= db.Roles.Find(id).Users;
+            var userList = new List<ApplicationUser>();
+            foreach (var item in userRoles)
+            {
+               userList.Add(db.Users.Find(item.UserId));
+            }
+            return PartialView(userList);
+           
+
+        }
+
         [Authorize(Roles = "Administrators")]
         public ActionResult ChangePassword()
         {
