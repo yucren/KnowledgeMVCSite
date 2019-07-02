@@ -13,7 +13,7 @@
                     <img src="~/Content/img/Create.png" />
                 </span> 创建知识
             </a>
-            <a  href='@Url.Action("Create","Knowledge")' style="margin-right:5%" class="btn btn-primary">
+            <a  href='@Url.Action("Ask","Ask")' style="margin-right:5%" class="btn btn-primary">
                 <span class="glyphicon">
                     <img style="height:41px" src="~/Content/img/ask.jpg" /> 
                 </span> 开始提问
@@ -91,85 +91,17 @@
                 }
 
             });
-            $('#contentBody').bind('touchstart', function () {
-            
-                if (document.getElementById('navbar-collapse-1').classList.contains('in')) {
 
-                    $('#navbar-collapse-1').collapse('hide');
-                }
+            $.get('@Url.Action("GetCatalog", "knowledge")', function (req, status, xhr) {
+                var catalog = JSON.parse(req);
+                catalog.forEach(function (item, index, arr) {
 
-            })
-
-            $('#contentBody').click(function () {
-
-                if (document.getElementById('navbar-collapse-1').classList.contains('in')) {
-
-                    $('#navbar-collapse-1').collapse('hide');
-                }
-
-
-            });
-
-            function GetSlideDirection(startX, startY, endX, endY) {
-                var dy = startY - endY;
-                //var dx = endX - startX;
-
-                if (dy > 0) {//向上滑动
-
-                    if ($(this).scrollTop()===0) {
-                        more();
-                    }
-
-
-                } else {//向下滑动
-
-
-                }
-
+                    $('#catalog').append('<div style="max-width:100%"><span  style="margin-bottom:5px;display:inline-block" class="label label-info"><a  href="/?catalog=' + item.CategoryId + '">' + item.Name + "</a></span></div>");
+                })
             }
 
-            //滑动处理
-            var startX, startY;
-            document.addEventListener('touchstart', function (ev) {
-                startX = ev.touches[0].pageX;
-                startY = ev.touches[0].pageY;
-            }, false);
-
-
-
-            document.addEventListener('touchend', function (ev) {
-                var endX, endY;
-                endX = ev.changedTouches[0].pageX;
-                endY = ev.changedTouches[0].pageY;
-                var direction = GetSlideDirection(startX, startY, endX, endY);
-                switch (direction) {
-                    case 0:
-                        break;
-                    case 1:
-                    // 手指向上滑动
-                    //alert('上');break;
-                    case 2:
-                    // 手指向下滑动
-                    //alert('下');break;
-                    default:
-                }
-            }, false);
+            );
         });
-
-      
-
-
-    $.get('@Url.Action("GetCatalog", "knowledge")', function (req, status, xhr) {
-        var catalog = JSON.parse(req);
-        catalog.forEach(function (item, index, arr) {
-
-            $('#catalog').append('<div style="max-width:100%"><span  style="margin-bottom:5px;display:inline-block" class="label label-info"><a  href="/?catalog=' + item.CategoryId + '">' + item.Name +"</a></span></div>");
-        })}
-
-        );
-
-
-
 
         @if (ViewBag.catalog == null)
         {

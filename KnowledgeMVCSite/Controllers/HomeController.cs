@@ -15,6 +15,7 @@ namespace KnowledgeMVCSite.Controllers
         // GET: Home      
         public ActionResult Index(int? catalog, int? pageCount, int? pageNum, string searchValue)
         {
+            
             ViewBag.catalog = catalog;
             ViewBag.searchValue = searchValue;
             var pc = pageCount == null ? 1 : pageCount.Value;

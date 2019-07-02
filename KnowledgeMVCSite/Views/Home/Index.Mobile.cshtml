@@ -21,14 +21,17 @@
                     <img src="~/Content/img/Create.png" />
                 </span> 创建知识
             </a>
+            <a href='@Url.Action("Ask","Ask")' style="margin-right:5%" class="btn btn-primary">
+                <span class="glyphicon">
+                    <img style="height:41px" src="~/Content/img/ask.jpg" />
+                </span> 开始提问
+            </a>
 
         </div>
-        <div class="col-md-12" style="margin-top:25px" id="catalog">
-            <h3>热门标签</h3>
-
-
-
-        </div>
+    </div>
+    <div class="col-md-12" style="margin-top:25px;display:inline-block" id="catalog" data-toggle="collapse" data-target="#catalogs">
+        <h3 style="display:inline-block">热门标签</h3>
+        <span class="glyphicon glyphicon-arrow-down" style="display:inline-block"></span>
     </div>
 </div>
 
@@ -135,6 +138,17 @@
                 }
             }, false);
         });
+
+        $.get('@Url.Action("GetCatalog", "knowledge")', function (req, status, xhr) {
+            var catalog = JSON.parse(req);
+            $('#catalog').append('<div id="catalogs" class="collapse" style="max-width:100%"></div>');
+        catalog.forEach(function (item, index, arr) {
+
+            $('#catalogs').append('<span  style="margin:5px;display:inline-block" class="label label-info"><a  href="/?catalog=' + item.CategoryId + '">' + item.Name +"</a></span>");
+        })}
+
+        );
+
 
         @if (ViewBag.catalog == null)
         {

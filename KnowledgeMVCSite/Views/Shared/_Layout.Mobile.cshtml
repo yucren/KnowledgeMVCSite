@@ -8,20 +8,21 @@
     <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <style>
-        body,html{
-            height:100%;
-            min-height:100%;
-            background-color:rgb(240,240,240)
+        body, html {
+            height: 100%;
+            min-height: 100%;
+            background-color: rgb(240,240,240);
+            overflow-y:auto;
         }
         
           </style>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="max-height:100%">
         <div id="head" class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                <button id="headrBtn" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">知识分享网站</span>
                     @*折叠时三条横线使用*@
                     <span class="icon-bar"></span>
@@ -32,39 +33,24 @@
             </div>
            
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                <ul id="headLink" class="nav navbar-nav">
-                    <li>@Html.ActionLink("首页", "Index", "Home",routeValues: null, htmlAttributes: null )</li>
+            <div  class="collapse navbar-collapse" id="navbar-collapse-1" style="max-height:100%">
+                @Html.Partial("_LoginPartial")
+                <ul id="headLink" class="nav navbar-nav" style="min-height:100%;">
+                    <li>@Html.ActionLink("首页", "Index", "Home", routeValues: null, htmlAttributes: null)</li>
                     <li>@Html.ActionLink("帮助", "Help", "Home")</li>
                     <li>@Html.ActionLink("关于", "About", "Home")</li>
+                    <li>@Html.ActionLink("我的提问", "MyAsk", "Manage")</li>
+                    <li>@Html.ActionLink("我的知识", "MyKnowledge", "Manage")</li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ERP知识<span class="caret"></span></a>
+                        <a href="#"  class="dropdown-toggle" data-toggle="dropdown">系统管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("U9ERP", "Index", "Home", routeValues: new { catalog = 1 }, htmlAttributes: null)</li>
-                            <li>@Html.ActionLink("K3ERP", "Index", "Home", routeValues: new { catalog = 2 }, htmlAttributes: null)</li>
-
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">编程知识<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><b style="color:blue">.NET</b></li>
-                            <li><a href="#">C#</a></li>
-                            <li><a href="#">.NET CORE</a></li>
-                            <li><a href="#">MVC</a></li>
-                            <li class="divider"></li>
-                            <li><b style="color:blue">JAVA</b></li>
-                            <li><a href="#">Java</a></li>
-                            <li class="divider"></li>
-                            <li><b style="color:blue">SQL</b></li>
-                            <li>@Html.ActionLink("数据库脚本", "Index", "Home", routeValues: new { catalog = 3 },htmlAttributes:null )</li>
-
-                            <li class="divider"></li>
+                            <li>@Html.ActionLink("用户管理", "Index", "Home", routeValues: new { catalog = 1 }, htmlAttributes: null)</li>
+                            <li>@Html.ActionLink("角色管理", "Index", "Home", routeValues: new { catalog = 2 }, htmlAttributes: null)</li>
                         </ul>
                 </ul>
 
 
-                @Html.Partial("_LoginPartial")
+
             </div>
 
 
@@ -77,10 +63,8 @@
      
         <div class="row">
             <div class="col-md-9" id="body">
-
                 @RenderBody()
-            </div>
-         
+            </div>         
         </div>
 
 
@@ -104,7 +88,7 @@
     <script src="~/Scripts/global.js"></script>
     @Html.Partial("_JsPartialPage")
     @RenderSection("Scripts", false)
-
+    <script src="~/Scripts/mobile.js"></script>
 </body>
 
 </html>

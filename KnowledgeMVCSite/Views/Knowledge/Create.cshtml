@@ -21,9 +21,10 @@
 <div class="form-group">
     <div id="textEidtor" style="height:450px;padding:15px">
     </div>
-    @Html.Label("accessories","附件:")
+    @Html.Label("accessories", "附件:")
     <input style="display:inline-block" type="file" multiple id="accessories" name="accessories" />
-    <input style="display:inline-block" type="button" id="uploadFileBtn"  name="uploadFileBtn" onclick="uploadFile('accessories')" value="上传"/>
+    <input style="display:inline-block" type="button" id="uploadFileBtn" name="uploadFileBtn" onclick="uploadFile('accessories')" value="上传" />
+    <div  id="uploadProgress" style="width:400px;display:inline-block;margin-top:15px;visibility:hidden"></div>
 </div>
 
     @Html.HiddenFor(m => m.Context, new { id = "content" })
@@ -64,7 +65,16 @@
                 $('#textEidtor').texteditor('setValue', $('#content').val());
 
             }
-        })
+
+
+            $('#uploadProgress').progressbar({
+                value: 0
+            }); 
+        }
+
+
+
+        )
         function PushKnowledge() {
             var text = $('#textEidtor').texteditor('getValue');           
             $('#content').val(text);
@@ -78,6 +88,9 @@
             }
            
         }
+
+
+
     </script>
 
 

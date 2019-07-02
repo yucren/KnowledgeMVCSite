@@ -21,7 +21,13 @@ $(function () {
             $(this).parent().addClass("active");
 
         }
-    });
+    }
+     
+
+
+    );
+
+
 });
 //new Vue({
 //    el: '#app',
@@ -87,13 +93,14 @@ function more() {
             console.log("beginsend");
             $('#loading').css('visibility', 'visible');
             $('#noMore').css('visibility', 'hidden');
+
            
            
         }, success: function (req, status, xhr) {
            
             if (status === "success") {
                 if (req === '') {
-                    window.setTimeout(function () {
+                   
                         var warning = document.getElementById('noMore');
                         if (warning == undefined) {
                             $('#loading').after('<div id="noMore" style="color:red;text-align:center">已经没有更多了</div >');
@@ -101,9 +108,6 @@ function more() {
                         else {
                             $('#noMore').css('visibility', 'visible');
                         }
-
-                    },100)
-                  
 
                 }
                 else {
@@ -274,19 +278,29 @@ function disucssSuccess() {
             cache: false,//上传文件无需缓存
             processData: false,//用于对data参数进行序列化处理 这里必须false
             contentType: false, //必须
-            beforeSend: function () {
+            xhr: function () { //获取ajaxSettings中的xhr对象。
+                var xhr = $.ajaxSettings.xhr();
+                if (xhr.upload) {
+                    xhr.upload.addEventListener("progress", function (e) {
+                        var loaded = e.loaded;//已经上传大小情况
+                        var tot = e.total;//附件总大小
+                        var per = Math.floor(100 * loaded / tot);  //已经上传的百分比                     
+                        console.log('附件总大小 = ' + loaded);
+                        console.log('已经上传大小 = ' + tot);
+                        $('#uploadProgress').progressbar('setValue', per); 
+                    }, false);
+                    return xhr;
+                }
 
-                $.messager.progress({
-
-                    title: "提示",
-                    msg: "加载中。。。。。。",
-
-
-                });
+            }, 
+            beforeSend: function (xhr) {              
+                $('#uploadProgress').css('visibility', 'visible');
+               
 
             },
             success: function (result) {
-                $.messager.progress('close');
+                $('#uploadProgress').css('visibility', 'hidden');
+                //$.messager.progress('close');
                 if (result==="发生错误") {
                     $.messager.alert({
                         title: "错误",
@@ -296,25 +310,25 @@ function disucssSuccess() {
                     return;
                 }            
                                
-                $.messager.show({
-                    title: '提示',
-                    msg: '上传成功',
-                    timeout: 1000,
-                    showType: 'slide',
-                    style: {
-                        right: '',
-                        top: document.body.scrollTop + document.documentElement.scrollTop,
-                        bottom: ''
-                    }
+                //$.messager.show({
+                //    title: '提示',
+                //    msg: '上传成功',
+                //    timeout: 1000,
+                //    showType: 'slide',
+                //    style: {
+                //        right: '',
+                //        top: document.body.scrollTop + document.documentElement.scrollTop,
+                //        bottom: ''
+                //    }
 
-                });
+                //});
                 document.getElementById("accessories").value = null;
                 var arr = JSON.parse(result);
-                if ($('#uploadFileBtn').next('ul').length != 0) {
+                if ($('#uploadProgress').next('ul').length != 0) {
                     for (var i in arr) {
 
 
-                        $('#uploadFileBtn').next('ul').append("<li data-file='" + i + "'class='list-group-item'>" + arr[i] + "</li>");
+                        $('#uploadProgress').next('ul').append("<li data-file='" + i + "'class='list-group-item'>" + arr[i] + "</li>");
 
 
                     }
@@ -327,7 +341,7 @@ function disucssSuccess() {
 
                     }
                     html += "</ul>";
-                    $('#uploadFileBtn').after(html);
+                    $('#uploadProgress').after(html);
 
                     }
                        

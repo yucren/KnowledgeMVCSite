@@ -14,7 +14,7 @@
     <RootNamespace>KnowledgeMVCSite</RootNamespace>
     <AssemblyName>KnowledgeMVCSite</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AskController.cs" />
     <Compile Include="Controllers\KnowledgeController.cs" />
     <Compile Include="Controllers\KnowledgesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -574,6 +575,7 @@
     <Content Include="Scripts\locale\easyui-lang-tr.js" />
     <Content Include="Scripts\locale\easyui-lang-zh_CN.js" />
     <Content Include="Scripts\locale\easyui-lang-zh_TW.js" />
+    <Content Include="Scripts\mobile.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="test.html" />
@@ -617,6 +619,7 @@
     <Content Include="Views\Shared\_ReportKnowPartial.cshtml" />
     <Content Include="Views\Shared\SearchPartial.cshtml" />
     <Content Include="Views\Knowledge\Edit.cshtml" />
+    <Content Include="Views\Ask\Ask.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -647,7 +650,7 @@
     <COMReference Include="Microsoft.Office.Interop.Excel">
       <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>1</VersionMajor>
-      <VersionMinor>9</VersionMinor>
+      <VersionMinor>6</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
@@ -656,7 +659,7 @@
     <COMReference Include="Microsoft.Office.Interop.Word">
       <Guid>{00020905-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>8</VersionMajor>
-      <VersionMinor>7</VersionMinor>
+      <VersionMinor>4</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
@@ -696,7 +699,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>80</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8088/</IISUrl>
+          <IISUrl>http://localhost/know/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
