@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -109,6 +110,32 @@ namespace KnowledgeMVCSite.Controllers
             }
             return PartialView(userList);
            
+
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public string _UserListPartial(string roleId)
+        {
+            var userList = new List<string>();
+            var users = db.Roles.Find(roleId).Users;
+            foreach (var item in users)
+            {
+                userList.Add(db.Users.Where(u => u.Id == item.UserId).Single().Id);
+            }
+
+          var cc =  db.Users.Where(p => userList.Contains(p.Id)==false);
+      
+            
+             
+
+            //var dd =   db.Users.Join(db.AspNetUserRoles, user => user.Id, ur => ur.UserId, (user, ur) => 
+            //         user
+
+            //  );
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(cc);
+
+
 
         }
 

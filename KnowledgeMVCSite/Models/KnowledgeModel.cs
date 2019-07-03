@@ -47,6 +47,7 @@
          public virtual DbSet<Discuss> Discusses{ get; set; }
          public virtual DbSet<Praise> Praises { get; set; }
          public virtual DbSet<Accessory> Accessories { get; set; }
+        //public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
     }
     [Bind(Exclude = "KnowledgeId,UserId,")]
     public class Accessory
@@ -73,6 +74,9 @@
 
 
     }
+
+    
+
 
     public class Praise
     {
