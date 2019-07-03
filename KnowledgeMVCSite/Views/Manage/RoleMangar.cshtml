@@ -23,7 +23,7 @@
                             <div class="col-md-4">
                                 <input id="roleName" type="text" class="form-control" name="roleName" />
                             </div>
-                            
+
                         </div>
                         <button type="submit" class="col-md-offset-2">提交</button>
 
@@ -34,41 +34,63 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-6 col-xs-6">
+
+            <table class="table table-bordered table-striped table-condensed">
+                <caption>角色列表</caption>
+                <tr>
+                    <th>ID</th>
+                    <th>角色名称</th>
+                </tr>
+                @{
+                    foreach (IdentityRole role in Model)
+                    {
+                        <tr>
+                            <td>@role.Id</td>
+
+                            <td>
+                                @Ajax.ActionLink(role.Name, "_RoleUserPartial","Manage",
+                               routeValues:new {id=role.Id},ajaxOptions:
+                               new AjaxOptions {
+                           UpdateTargetId= "userRoleTable",
+                            HttpMethod="GET",
+                             AllowCache=false,
+                              InsertionMode= InsertionMode.Replace,
+                               OnSuccess="GetRoleUserSuccess()"
+                       })
+
+                            </td>
+                        </tr>
+
+                    }
+
+
+                }
+
+            </table>
+
+        </div>
+        <div id="userRole" style="display:none">
+            <div id="userRoleTable" class="col-md-6 col-xs-6">
+            </div>
+
+            <button style="margin-left:15px" class="btn btn-default btn-sm">添加用户</button>
+
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+
 </div>
 
 
-<table class="table table-bordered table-striped table-condensed" style="width:50%">
-    <caption>角色列表</caption>
- <tr>
-     <th>ID</th>
-     <th>角色名称</th>
- </tr>
-    @{ 
-        foreach (IdentityRole role in Model)
-        {
-    <tr>
-        <td>@role.Id</td>   
-        
-        <td>
-            @Ajax.ActionLink(role.Name, "_RoleUserPartial","Manage",
-           routeValues:new {id=role.Id},ajaxOptions:           
-           new AjaxOptions {
-       UpdateTargetId= "userRole",
-        HttpMethod="GET",
-         AllowCache=false,
-          InsertionMode= InsertionMode.Replace
-   })
-           
-        </td>
-    </tr>
-
-            }
-
-
-    }
-
-</table>
-<div id="userRole"></div>
 
 
 

@@ -1,11 +1,17 @@
 ﻿@using KnowledgeMVCSite.Models;
 @model List<ApplicationUser>
 
-<table>
+<table class="table table-bordered table-condensed" style="width:30%">
+    <caption>角色用户</caption>
+    <tr>
+        <th class="hidden">ID</th>
+        <th>邮箱地址</th>
+        <th>用户名</th>
+    </tr>
     @foreach (ApplicationUser user in Model)
     {
         <tr>
-            <td>@user.Id</td>
+            <td class="hidden">@user.Id</td>
             <td>@user.Email</td>
             <td>@user.UserName</td>
         </tr>

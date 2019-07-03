@@ -50,13 +50,14 @@ namespace KnowledgeMVCSite.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
+            ViewBag.ReturnUrl = Request["ReturnUrl"];
             return View();
 
         }
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model, string ReturnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -66,7 +67,7 @@ namespace KnowledgeMVCSite.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToLocal(ReturnUrl);
                  
                 case SignInStatus.LockedOut:
                     return View("Lockout");
