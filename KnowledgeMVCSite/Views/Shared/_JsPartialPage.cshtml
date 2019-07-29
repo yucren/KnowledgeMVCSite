@@ -361,8 +361,31 @@ function disucssSuccess() {
 
 
     }
-    function GetRoleUserSuccess() {
+    function GetRoleUserSuccess(id) {
         $('#userRole').css('display', 'block');
+        var roleId = id;
+        $('#userRoleTableBtn').click(getNotAddUserList(roleId));
+    }
+
+    function getNotAddUserList(roleId) {
+        $.get('@Url.Action("UserList", "Manage")',{roleId:roleId },function(req,status,xhr){
+            if (status == 'success') {
+                $('#notUserListBody').children().remove()
+                var userList = JSON.parse(req);
+                for (var i = 0; i < userList.length; i++) {
+                    $('#notUserListBody').append("<tr><td>" + "<input type='checkbox' id=" + userList[i].Id + " />"  + "</td>" + "<td>" + userList[i].Email + "</td>" +"<td>" + userList[i].UserName+"</td>")
+                }
+
+            }
+            
+            } );
+
+
+
+
+
+
+
 
 
     }

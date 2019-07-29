@@ -161,13 +161,19 @@
 
         searchValue = '@ViewBag.searchValue';
 
-      
+        //问题1：$(window).scroll无效问题
 
-        $(window).scroll(function () {
-            var scrollTop = $(this).scrollTop();    //滚动条滚动距离
+        //如果你的css中：html, body的高度样式如果设置为100 %，
+
+        //那么$(window).scroll方法将检测不到正确的滚出高度（0），导致滚动监听事件失效，
+
+        //解决方法：设置html, body{ height: auto } 可以解决。
+
+        $('body').scroll(function () {
+            var scrollTop = $('body').scrollTop();    //滚动条滚动距离
             var scrollHeight = $(document).height();//文档内容高度
             var windowHeight = $(this).height();  //文档可视区域高度
-            if (scrollTop > 100 && $('#headTitle').css('display') =='block') {
+            if (scrollTop > 100 && ($('#headTitle').css('display') || $('#headTitle').css('display') =='block') ) {
                 $('#headTitle').hide();
                 $('#searchBar').appendTo($('#head'));
                 $('#searchBar').css({

@@ -47,6 +47,8 @@
          public virtual DbSet<Discuss> Discusses{ get; set; }
          public virtual DbSet<Praise> Praises { get; set; }
          public virtual DbSet<Accessory> Accessories { get; set; }
+
+        //public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
         //public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
     }
     [Bind(Exclude = "KnowledgeId,UserId,")]
@@ -176,6 +178,7 @@
         public virtual ICollection<Discuss> Discusses { get; set; }
         public virtual ICollection<Accessory> Accessories { get; set; }
 
+
         
 
 
@@ -227,6 +230,8 @@
             var userIdentity = await userManager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             return userIdentity;
         }
+
+        public virtual ICollection<Knowledge> Knowledges { get; set; }
 
 
     }

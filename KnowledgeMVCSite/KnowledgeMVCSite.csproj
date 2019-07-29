@@ -14,7 +14,7 @@
     <RootNamespace>KnowledgeMVCSite</RootNamespace>
     <AssemblyName>KnowledgeMVCSite</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -624,6 +624,7 @@
     <Content Include="Views\Ask\Ask.cshtml" />
     <Content Include="Views\Manage\RoleMangar.cshtml" />
     <Content Include="Views\Manage\_RoleUserPartial.cshtml" />
+    <Content Include="Views\Manage\_UserListPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -703,7 +704,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>80</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8888</IISUrl>
+          <IISUrl>http://localhost:8088/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
