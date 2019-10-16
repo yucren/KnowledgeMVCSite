@@ -83,6 +83,7 @@ namespace KnowledgeMVCSite.Controllers
             };
             return View(model);
         }
+      
         public ActionResult RoleMangar()
         {
             var roles = db.Roles.ToList();
@@ -148,6 +149,7 @@ namespace KnowledgeMVCSite.Controllers
 
 
         }
+       
         [HttpGet]       
         public string  UserList(string roleId)
         {
@@ -224,5 +226,6 @@ namespace KnowledgeMVCSite.Controllers
             RemovePhoneSuccess,
             Error
         }
+
     }
 }
