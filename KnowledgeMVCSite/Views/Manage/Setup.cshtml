@@ -4,22 +4,78 @@
 }
 
     <h2>系统设置</h2>
-
-    <div class="list-group">
+    
+    <div id="setup_mail" class="list-group">
         <a href="#" class="list-group-item active ">
             <h4>邮件服务器配置</h4>
         </a>
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">@Html.DisplayNameFor(m=>m.MailSendServer)</h4>
-            @Html.TextBoxFor(m => m.MailSendServer, new { disabled = "disabled" });
-        </a>
-        <a href="#" class="list-group-item">
+
+        <div href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">@Html.DisplayNameFor(m => m.MailSendServer)</h4>
+            <span>@Html.DisplayFor(m => m.MailSendServer)</span>
+        </div>
+       
+        <div href="#" class="list-group-item">
             <h4 class="list-group-item-heading">@Html.DisplayNameFor(m => m.MailSendUser)</h4>
-            @Html.TextBoxFor(m => m.MailSendUser, new { disabled = "disabled" });
-        </a>
-        <a href="#" class="list-group-item">
+            <span>@Html.DisplayFor(m => m.MailSendUser)</span>
+        </div>
+        <div href="#" class="list-group-item">
             <h4 class="list-group-item-heading">@Html.DisplayNameFor(m => m.MailSendPassword)</h4>
-            @Html.TextBoxFor(m => m.MailSendPassword, new { disabled = "disabled" });
-        </a>
+            <span>@Html.DisplayFor(m => m.MailSendPassword)</span>
+
+        </div>
+            
+            <button  id="setup_cbtn" class="btn btn-block btn-lg">修改
+                <span class="glyphicon glyphicon-edit"></span>                  
+        </button>
+        
+
+
     </div>
 
+@section Scripts{
+    <script>
+        $(function () {
+
+            $('#setup_cbtn').click(() => {
+                var btnText = $('#setup_cbtn').text();
+                var mailServer = $('#setup_mail .list-group-item').not(".list-group-item.active");
+
+                if (btnText.indexOf('修改') != -1) {
+                    mailServer.each(function (index, item) {
+                        var value = $(item).find('span').text();
+
+                        $(item).find('span').remove();
+                        $(item).append("<input type='text' class='form-control' value='" + value + "'/>")
+                    });
+                    $('#setup_cbtn').html('<span class="glyphicon glyphicon-edit"></span>保存');
+                } else {
+                     $.post('@Url.Action("Setup","Manage")' ,{
+                        MailSendServer: $('#setup_mail .list-group-item input')[0].value,
+                        MailSendUser:$('#setup_mail .list-group-item input')[1].value,
+                        MailSendPassword:$('#setup_mail .list-group-item input')[2].value
+                    }, function () {
+
+                            alert("保存成功");
+
+                    });
+                    mailServer.each(function (index, item) {
+                        var value = $(item).find('input').val();
+
+                        $(item).find('input').remove();
+                        $(item).append("<span>" + value + "</span>");
+                    });
+
+                   
+
+                    $('#setup_cbtn').html("<span class='glyphicon glyphicon-save'></span>修改");
+                }
+
+
+            })
+        })
+    </script>
+    
+    
+    
+    }

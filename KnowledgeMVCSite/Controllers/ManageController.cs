@@ -13,6 +13,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 
 namespace KnowledgeMVCSite.Controllers
 {
@@ -84,18 +85,47 @@ namespace KnowledgeMVCSite.Controllers
             };
             return View(model);
         }
+        [HttpGet]
         public ActionResult Setup()
         {
+            EmailServerViewModel emailServer = new EmailServerViewModel();
             
-            EmailServerViewModel emailServer = new EmailServerViewModel()
-            {
-                 MailSendServer=ConfigurationManager.AppSettings["mailSendServer"],
-                  MailSendUser= ConfigurationManager.AppSettings["mailSendUser"],
-                   MailSendPassword= ConfigurationManager.AppSettings["mailSendPassword"]
+            XmlDocument document = new XmlDocument();
+            var path = AppDomain.CurrentDomain.BaseDirectory;
+            document.Load( path + @"\config\mail.xml");
+            emailServer.MailSendServer = document.SelectSingleNode("/mailServer/mailSendServer").InnerText;
+          emailServer.MailSendUser=  document.SelectSingleNode("/mailServer/mailSendUser").InnerText;
+            emailServer.MailSendPassword=  document.SelectSingleNode("/mailServer/mailSendPassword").InnerText;
 
-            };
+
+
+
+
+
             return View(emailServer);
         }
+        [HttpPost]
+        public string Setup(EmailServerViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                XmlDocument document = new XmlDocument();
+                var path = AppDomain.CurrentDomain.BaseDirectory;
+                document.Load(path + @"\config\mail.xml");
+                document.SelectSingleNode("/mailServer/mailSendServer").InnerText = model.MailSendServer;
+                document.SelectSingleNode("/mailServer/mailSendUser").InnerText = model.MailSendUser;
+                document.SelectSingleNode("/mailServer/mailSendPassword").InnerText = model.MailSendPassword;
+                document.Save(@"C:\Users\yu861\source\repos\yucren\KnowledgeMVCSite\KnowledgeMVCSite\config\mail.xml");
+                return "成功";
+            }
+            else
+            {
+                return "失败";
+            }
+            
+           
+        }
+
 
 
         public ActionResult RoleMangar()

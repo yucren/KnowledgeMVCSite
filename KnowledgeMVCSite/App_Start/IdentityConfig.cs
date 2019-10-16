@@ -12,6 +12,7 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml;
 
 namespace KnowledgeMVCSite.App_Start
 
@@ -20,24 +21,31 @@ namespace KnowledgeMVCSite.App_Start
     {
         public Task SendAsync(IdentityMessage message)
         {
-            SmtpClient smtpClient = new SmtpClient("smtp.163.com");
+            XmlDocument document = new XmlDocument();
+            var path = AppDomain.CurrentDomain.BaseDirectory;
+            document.Load(path + @"\config\mail.xml");
+           var server=  document.SelectSingleNode("/mailServer/mailSendServer").InnerText;
+            var user= document.SelectSingleNode("/mailServer/mailSendUser").InnerText;
+            var password = document.SelectSingleNode("/mailServer/mailSendPassword").InnerText;
+
+            SmtpClient smtpClient = new SmtpClient(server);
             smtpClient.UseDefaultCredentials = false;
             smtpClient.Credentials = new NetworkCredential()
             {
-                UserName = "yu8611263@163.com",
-                Password = "woshiyuchengren"
+                UserName = user,
+                Password = password
             };
             
             MailMessage mailMessage = new MailMessage();
             mailMessage.Body = message.Body;
             mailMessage.IsBodyHtml = true;
             mailMessage.Subject = message.Subject;
-            mailMessage.Sender = new MailAddress("yu8611263@163.com", "yuchengren");
+            mailMessage.Sender = new MailAddress(user, "yuchengren");
             //  mailMessage.ReplyTo = new MailAddress("18721600247@139.com");
-            mailMessage.ReplyToList.Add(new MailAddress("yu8611263@163.com"));
+            mailMessage.ReplyToList.Add(new MailAddress(user));
           //  mailMessage.ReplyToList.Add(new MailAddress("928184371@139.com"));
             mailMessage.To.Add(new MailAddress(message.Destination));
-            mailMessage.From = new MailAddress("yu8611263@163.com");
+            mailMessage.From = new MailAddress(user);
             smtpClient.SendCompleted += SmtpClient_SendCompleted;
 
             try
