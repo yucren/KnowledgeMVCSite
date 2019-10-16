@@ -361,33 +361,57 @@ function disucssSuccess() {
 
 
     }
-    function GetRoleUserSuccess(id) {
+    function GetRoleUserSuccess(id,roleName) {
         $('#userRole').css('display', 'block');
+        $('#userRole').data('roleId', id);
         var roleId = id;
-        $('#userRoleTableBtn').click(getNotAddUserList(roleId));
+         $('#roleCaption').text(roleName);
+        $('#userRoleTableBtn').off().click(function () {
+                getNotAddUserList(roleId, roleName)
+
+        } );
     }
 
-    function getNotAddUserList(roleId) {
+    function getNotAddUserList(roleId, roleName) {
+        
         $.get('@Url.Action("UserList", "Manage")',{roleId:roleId },function(req,status,xhr){
             if (status == 'success') {
                 $('#notUserListBody').children().remove()
-                var userList = JSON.parse(req);
+                 userList = JSON.parse(req);
                 for (var i = 0; i < userList.length; i++) {
-                    $('#notUserListBody').append("<tr><td>" + "<input type='checkbox' id=" + userList[i].Id + " />"  + "</td>" + "<td>" + userList[i].Email + "</td>" +"<td>" + userList[i].UserName+"</td>")
+                    $('#notUserListBody').append("<tr userName=" +userList[i].UserName+  "><td>" + "<input type='checkbox' id=" + userList[i].Id + " />"  + "</td>" + "<td>" + userList[i].Email + "</td>" +"<td>" + userList[i].UserName+"</td>")
                 }
 
             }
             
             } );
+    }
 
+    //https://www.jianshu.com/p/c1ee12a328d2  ES6箭头函数里的this
+    function saveUserToRoleBtn(roleName,roleId) {
+      //var arr =  $('#notUserListBody input:checked').map(function (currentValue, index, arr) {
+      //    return 6;
 
+      //});
+        var arr = $.map($('#notUserListBody input:checked'), (item, index) => {
+               return item.id
 
+        });
+        $.post('@Url.Action("SaveUserToRole","Manage")', {
+            userIds: arr,
+            roleName:roleName
 
+        }, function (req) {
+                if (req ==="添加成功") {
+                    alert("添加成功");
+                    $('#userList').modal('hide');
+                }
+                else {
+                    alert("添加失败");
+                }
 
-
-
-
-
+            });
+        $('#userRoleTable').load('@Url.Action("_RoleUserPartial", "Manage")' + "/" + roleId);
     }
 
 

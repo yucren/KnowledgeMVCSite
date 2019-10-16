@@ -83,6 +83,7 @@ namespace KnowledgeMVCSite.Controllers
             };
             return View(model);
         }
+      
         public ActionResult RoleMangar()
         {
             var roles = db.Roles.ToList();
@@ -102,6 +103,7 @@ namespace KnowledgeMVCSite.Controllers
         public PartialViewResult _RoleUserPartial(string id)
         {
             ViewBag.RoleId = id;
+            ViewBag.RoleName = db.Roles.Find(id).Name;
             var users = db.Roles.Find(id).Users.ToList();
             var userRoles= db.Roles.Find(id).Users;
             var userList = new List<ApplicationUser>();
@@ -109,10 +111,45 @@ namespace KnowledgeMVCSite.Controllers
             {
                userList.Add(db.Users.Find(item.UserId));
             }
-            return PartialView(userList);
-           
+            return PartialView(userList);          
 
         }
+        [HttpPost]
+        public async Task<string> SaveUserToRole(string[] userIds,string roleName)
+        {
+            string errMsg = "";
+            try
+            {
+                foreach (var userid in userIds)
+                {
+                  var result =  await UserManager.AddToRoleAsync(userid, roleName);
+                  if (!result.Succeeded)
+                  {
+                      errMsg += UserManager.FindById(userid).UserName + "添加角色失败/n";
+                   }
+
+                }
+                if (string.IsNullOrEmpty(errMsg))
+                {
+                    return "添加成功";
+                }
+                else
+                {
+                    return errMsg;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return "发生错误,可以存在部分用户添加角色成功，请刷新查看，错误如下："  + ex.Message;
+            }
+           
+            
+
+
+
+        }
+       
         [HttpGet]       
         public string  UserList(string roleId)
         {
@@ -189,5 +226,6 @@ namespace KnowledgeMVCSite.Controllers
             RemovePhoneSuccess,
             Error
         }
+
     }
 }
