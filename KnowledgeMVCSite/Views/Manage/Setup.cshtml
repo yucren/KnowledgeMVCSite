@@ -1,0 +1,25 @@
+﻿@model KnowledgeMVCSite.Models.EmailServerViewModel
+@{
+    ViewBag.Title = "系统设置";
+}
+
+    <h2>系统设置</h2>
+
+    <div class="list-group">
+        <a href="#" class="list-group-item active ">
+            <h4>邮件服务器配置</h4>
+        </a>
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">@Html.DisplayNameFor(m=>m.MailSendServer)</h4>
+            @Html.TextBoxFor(m => m.MailSendServer, new { disabled = "disabled" });
+        </a>
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">@Html.DisplayNameFor(m => m.MailSendUser)</h4>
+            @Html.TextBoxFor(m => m.MailSendUser, new { disabled = "disabled" });
+        </a>
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">@Html.DisplayNameFor(m => m.MailSendPassword)</h4>
+            @Html.TextBoxFor(m => m.MailSendPassword, new { disabled = "disabled" });
+        </a>
+    </div>
+

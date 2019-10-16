@@ -36,7 +36,9 @@ namespace KnowledgeMVCSite
 
             //});
             //视图引擎配置
-          //  ViewEngines.Engines.Clear();
+            //  ViewEngines.Engines.Clear();
+            //日志记录功能
+            log4net.Config.XmlConfigurator.Configure();
             
         }
         void Session_Start(object sender, EventArgs e)

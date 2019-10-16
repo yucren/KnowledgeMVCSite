@@ -57,5 +57,18 @@ namespace KnowledgeMVCSite.Models
         public string ConfirmPassword { get; set; }
 
     }
+    public class EmailServerViewModel
+    {
+        [Required]
+        [Display(Name = "邮件发送服务器")]
+        public string MailSendServer { get; set; }
+        [Required]
+        [Display(Name = "邮箱发送用户名")]
+        public string MailSendUser { get; set; }
+        [Required]
+        [Display(Name = "邮箱密码")]
+        public string MailSendPassword { get; set; }
+
+    }
 
 }

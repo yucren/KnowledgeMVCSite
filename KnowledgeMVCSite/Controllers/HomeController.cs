@@ -11,10 +11,12 @@ namespace KnowledgeMVCSite.Controllers
 
     public class HomeController : Controller
     {
-        KnowledgeModel db = KnowledgeModel.Create();       
+        KnowledgeModel db = KnowledgeModel.Create();     
+        [HandleError]
         // GET: Home      
         public ActionResult Index(int? catalog, int? pageCount, int? pageNum, string searchValue)
         {
+
             
             ViewBag.catalog = catalog;
             ViewBag.searchValue = searchValue;
@@ -42,8 +44,8 @@ namespace KnowledgeMVCSite.Controllers
             {
                 return PartialView("SearchPartial", knowledges);
             }
-           
-            return View(knowledges);
+           // throw new Exception("helloworld");
+           return View(knowledges);
         }
 
 

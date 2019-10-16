@@ -48,6 +48,7 @@ namespace KnowledgeMVCSite.Controllers
 
 
         [AllowAnonymous]
+        
         public ActionResult Login()
         {
             ViewBag.ReturnUrl = Request["ReturnUrl"];
@@ -59,14 +60,18 @@ namespace KnowledgeMVCSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string ReturnUrl)
         {
+            log4net.ILog log = log4net.LogManager.GetLogger(typeof(HomeController));           
+
             if (!ModelState.IsValid)
             {
+                log.Error(model.Email + "登录失败");
                 return View();
             }
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, true, true);
             switch (result)
             {
                 case SignInStatus.Success:
+                    log.Info(model.Email + "登录成功");
                     return RedirectToLocal(ReturnUrl);
                  
                 case SignInStatus.LockedOut:

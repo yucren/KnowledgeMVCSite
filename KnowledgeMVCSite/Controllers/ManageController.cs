@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -83,7 +84,20 @@ namespace KnowledgeMVCSite.Controllers
             };
             return View(model);
         }
-      
+        public ActionResult Setup()
+        {
+            
+            EmailServerViewModel emailServer = new EmailServerViewModel()
+            {
+                 MailSendServer=ConfigurationManager.AppSettings["mailSendServer"],
+                  MailSendUser= ConfigurationManager.AppSettings["mailSendUser"],
+                   MailSendPassword= ConfigurationManager.AppSettings["mailSendPassword"]
+
+            };
+            return View(emailServer);
+        }
+
+
         public ActionResult RoleMangar()
         {
             var roles = db.Roles.ToList();
