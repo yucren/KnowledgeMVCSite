@@ -63,12 +63,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\KnowledgeMVCSite\KnowledgeMVCSite.csproj">
-      <Project>{E1C9FC6D-7BE4-4D46-AC70-7513DDD39CEE}</Project>
-      <Name>KnowledgeMVCSite</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
