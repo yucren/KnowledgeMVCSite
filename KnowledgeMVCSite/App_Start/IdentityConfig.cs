@@ -35,7 +35,7 @@ namespace KnowledgeMVCSite.App_Start
             mailMessage.Sender = new MailAddress("18721600247@139.com", "yuchengren");
             //  mailMessage.ReplyTo = new MailAddress("18721600247@139.com");
             mailMessage.ReplyToList.Add(new MailAddress("18721600247@139.com"));
-            mailMessage.ReplyToList.Add(new MailAddress("928184371@139.com"));
+          //  mailMessage.ReplyToList.Add(new MailAddress("928184371@139.com"));
             mailMessage.To.Add(new MailAddress(message.Destination));
             mailMessage.From = new MailAddress("18721600247@139.com");
             smtpClient.SendCompleted += SmtpClient_SendCompleted;

@@ -578,6 +578,7 @@
     <Content Include="Scripts\locale\easyui-lang-zh_CN.js" />
     <Content Include="Scripts\locale\easyui-lang-zh_TW.js" />
     <Content Include="Scripts\mobile.js" />
+    <Content Include="Scripts\Plugin\table.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="test.html" />

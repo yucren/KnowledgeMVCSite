@@ -5,10 +5,10 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<button class="btn btn-default" data-toggle="modal" data-target="#roleBuildWin">添加角色</button>
+
 <div class="container">
     <div class="row">
-        <div id="roleBuildWin" class="fade modal col-md-6" style="top:50px">
+        <div id="roleBuildWin" class="fade modal col-md-6" style="margin:10% auto auto auto">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">×</button>
@@ -21,7 +21,7 @@
                         <div class="form-group">
                             <label for="roleName" class="col-md-2 control-label">角色名称</label>
                             <div class="col-md-4">
-                                <input id="roleName" type="text" class="form-control" name="roleName" />
+                                <input id="roleName" type="text" class="form-control" name="roleName"  autofocus placeholder="在此输入角色名"/>
                             </div>
 
                         </div>
@@ -40,25 +40,26 @@
             <table class="table table-bordered table-striped table-condensed">
                 <caption>角色列表</caption>
                 <tr>
-                    <th>ID</th>
+                    <th style="display:none"> ID</th>
                     <th>角色名称</th>
                 </tr>
                 @{
                     foreach (IdentityRole role in Model)
                     {
                         <tr>
-                            <td>@role.Id</td>
+                            <td style="display:none">@role.Id</td>
 
-                            <td>
-                                @Ajax.ActionLink(role.Name, "_RoleUserPartial","Manage",
-                               routeValues:new {id=role.Id},ajaxOptions:
-                               new AjaxOptions {
-                                   UpdateTargetId= "userRoleTable",
-                                   HttpMethod="GET",
-                                   AllowCache=false,
-                                   InsertionMode= InsertionMode.Replace,
-                                   OnSuccess= "GetRoleUserSuccess('"+ role.Id +"')"
-                               },htmlAttributes:new {@class="btn btn-link active"  })
+                            <td >
+                                @Ajax.ActionLink(role.Name, "_RoleUserPartial", "Manage",
+                               routeValues: new { id = role.Id }, ajaxOptions:
+                               new AjaxOptions
+                                    {
+                                   UpdateTargetId = "userRoleTable",
+                                   HttpMethod = "GET",
+                                   AllowCache = false,
+                                   InsertionMode = InsertionMode.Replace,
+                                   OnSuccess = "GetRoleUserSuccess('" + role.Id + "','" + role.Name + "')"
+                               }, htmlAttributes: new { @class = "btn btn-link active",id= @role.Id  })
 
                             </td>
                         </tr>
@@ -69,7 +70,7 @@
                 }
 
             </table>
-
+            <button class="btn btn-default" data-toggle="modal" data-target="#roleBuildWin">添加角色</button>
         </div>
 
 
@@ -99,17 +100,23 @@
 
 <div class="container">
     <div class="row">
-        <div class="modal fade col-md-6 col-xs-6" id="userList" style="top:50%;left:50%" tabindex="-1">
+        <div class="modal fade col-md-6 col-xs-6" id="userList" style="margin:10% auto auto auto" tabindex="-1">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="userList-label">添加角色用户</h4>
+                    <h4 style="display:inline-block" class="modal-title" id="userList-label">添加角色用户</h4>
+                    <input id="userName" style="display:inline-block;margin-left:20px" type="search" name="" value="" placeholder="搜索用户">
+                    <button onclick="RoleManger_searchUser()">
+                        <span class="glyphicon glyphicon-search" style="color:red" ></span>
+
+                        搜索
+                    </button>
                 </div>
                 <div class="modal-body">
                     <table id="notUserList" class="table table-bordered table-condensed">
-                        <caption>角色用户</caption>
+                        <caption id="roleCaption">角色用户</caption>
                         <thead>
-                            <tr>                                
+                            <tr>
                                 <th>选择</th>
                                 <th>邮箱地址</th>
                                 <th>用户名</th>
@@ -120,10 +127,22 @@
 
                         </tfoot>
                     </table>
+                    <ul class="pagination" style="margin-top:0px">
+                        <li><a href="#">&laquo;</a></li>
+                        <li class="active"><a href="#">1</a></li>
+                        <li class="disabled"><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
                 </div>
+
+               
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn btn-primary" onclick="saveUserToRoleBtn($('#roleCaption').text(),$('#userRole').data('roleId'))">保存</button>
                 </div>
             </div>
 
@@ -132,7 +151,54 @@
 
 </div>
 
+@section scripts{
 
+   <script>
+       $(function () {
+
+
+           document.getElementById('@Model[0].Id').click();
+          
+
+       })
+
+       function RoleManger_searchUser() {
+           var userName = $('#userName').val();
+           if (userName !=='') {
+           //$("#notUserListBody input:checked").prop('checked',false );
+           //$("#notUserListBody>tr").css('display', 'none');           
+           //$("#notUserListBody>tr[userName*='" + userName + "']").css('display', 'table-row');
+               userList.forEach(function (value, index) {                  
+                  if (value.UserName.indexOf(userName) != -1) {
+                      console.log(value);
+               $('#notUserListBody').html("<tr userName=" +userList[index].UserName+  "><td>" + "<input type='checkbox' id=" + userList[index].Id + " />"  + "</td>" + "<td>" + userList[index].Email + "</td>" +"<td>" + userList[index].UserName+"</td>")
+                      return;
+                  }
+
+               });
+           }
+           else {
+               if ($('#notUserListBody>tr').length ===userList.length) {
+                   console.log("没有改变");
+               }
+               else {
+              $('#notUserListBody').children().remove();               
+                for (var i = 0; i < userList.length; i++) {
+                    $('#notUserListBody').append("<tr userName=" +userList[i].UserName+  "><td>" + "<input type='checkbox' id=" + userList[i].Id + " />"  + "</td>" + "<td>" + userList[i].Email + "</td>" +"<td>" + userList[i].UserName+"</td>")
+                }
+               }
+               
+
+
+           }
+
+       }
+
+    </script>
+
+
+
+}
 
 
 

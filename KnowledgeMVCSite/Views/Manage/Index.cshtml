@@ -91,9 +91,16 @@
     <hr />
     <div id="report">       
         @Html.Partial("_ReportKnowPartial",Model.Knowledges)
-
+      
     </div>
-</div>
+@*</div>
+@{ 
+    Func<dynamic, object> strongTemplate =@<strong>@item</strong>;
+    
+}
+<div>
+    @strongTemplate("this is yuchengren")
+</div>*@
 @section scripts{
     @*<script>
         $(function () {
