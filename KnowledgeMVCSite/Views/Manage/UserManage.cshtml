@@ -16,19 +16,54 @@
         </thead>
         
         <tbody>
+            @for (int i = 0; i <2; i++)
+            {
+            <tr data-email="@Model[i].MailAddress">
+                <td>@Model[i].UserName</td>
+                <td>@Model[i].MailAddress</td>
+                <td>@Model[i].PhoneNum</td>
+                <td>@Model[i].City</td>
+                <td>@Model[i].CreateTime</td>
+            </tr>
+
+            }
             @foreach (var user in Model)
             {
-                <tr data-email="@user.MailAddress">
-                    <td>@user.UserName</td>
-                    <td>@user.MailAddress</td>
-                    <td>@user.PhoneNum</td>
-                    <td>@user.City</td>
-                    <td>@user.CreateTime</td>
-                </tr>
+
             }
         </tbody>
+        <tfoot>
+           
+        </tfoot>
 
     </table>
+    <div>
+        <ul class="pagination pagination-lg">
+            <li><a href="#">&laquo;</a></li>
+            @{
+                var count = Model.Count();
+                var pageLines = 2;
+                var a = count * 1.0 / pageLines;
+                var pageCount = Math.Ceiling(a);
+                for (int i = 0; i < pageCount; i++)
+                {
+                    if (i == 0)
+                    {
+                        <li class="active"><a href="#">@(i + 1)</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="#">@(i + 1)</a></li>
+                    }
+
+                }
+            }
+
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+        <br>
+       
+    </div>
     <div id="userManage_toobar" class="btn-toolbar" style="position:page;bottom:0">
         
             <div class="btn-group">
