@@ -86,6 +86,29 @@ namespace KnowledgeMVCSite.Controllers
             return View(model);
         }
         [HttpGet]
+        public ActionResult MyKnowledge()
+        {
+            var model = new IndexViewModel();
+            return View(model);
+        }
+        public ActionResult UserManage()
+        {
+          var userModel=  (from user in db.Users
+            select new UserListViewModel
+            {
+                City = user.City,
+                MailAddress = user.Email,
+                PhoneNum = user.PhoneNumber,
+                UserName = user.UserName
+
+
+            }).ToList();
+            return View(userModel);
+            
+
+        }
+
+        [HttpGet]
         public ActionResult Setup()
         {
             EmailServerViewModel emailServer = new EmailServerViewModel();
@@ -96,14 +119,8 @@ namespace KnowledgeMVCSite.Controllers
             emailServer.MailSendServer = document.SelectSingleNode("/mailServer/mailSendServer").InnerText;
           emailServer.MailSendUser=  document.SelectSingleNode("/mailServer/mailSendUser").InnerText;
             emailServer.MailSendPassword=  document.SelectSingleNode("/mailServer/mailSendPassword").InnerText;
-
-
-
-
-
-
             return View(emailServer);
-        }
+       }
         [HttpPost]
         public string Setup(EmailServerViewModel model)
         {
@@ -115,7 +132,7 @@ namespace KnowledgeMVCSite.Controllers
                 document.SelectSingleNode("/mailServer/mailSendServer").InnerText = model.MailSendServer;
                 document.SelectSingleNode("/mailServer/mailSendUser").InnerText = model.MailSendUser;
                 document.SelectSingleNode("/mailServer/mailSendPassword").InnerText = model.MailSendPassword;
-                document.Save(@"C:\Users\yu861\source\repos\yucren\KnowledgeMVCSite\KnowledgeMVCSite\config\mail.xml");
+                document.Save(path + @"\config\mail.xml");
                 return "成功";
             }
             else

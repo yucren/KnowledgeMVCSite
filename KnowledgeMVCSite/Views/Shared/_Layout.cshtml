@@ -19,12 +19,14 @@
     <script src="~/Scripts/jquery.easyui.min.js"></script>
     <script src="~/Scripts/jquery.texteditor.js"></script>
     <script src="~/Scripts/Plugin/table.js"></script>
+    <script src="https://cdn.bootcss.com/babel-core/5.8.14/browser-polyfill.js"></script>
+    <script src="https://cdn.bootcss.com/babel-core/5.8.14/browser.min.js"></script>
+
     <style>
         body, html {
             height: 100%;
             min-height: 100%;
             background-color: rgb(240,240,240);
-           
         }
     </style>
 </head>
@@ -55,7 +57,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">系统管理<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("用户管理", "Index", "Home", routeValues: new { catalog = 1 }, htmlAttributes: null)</li>
+                                <li>@Html.ActionLink("用户管理", "UserManage", "Manage")</li>
                                 <li>@Html.ActionLink("角色管理", "RoleMangar", "Manage")</li>
                                 <li>@Html.ActionLink("系统设置","Setup","Manage")</li>
                             </ul>

@@ -1,0 +1,14 @@
+﻿@model KnowledgeMVCSite.Models.IndexViewModel
+@{
+    ViewBag.Title = "我的知识";
+}
+
+<h2>我的知识</h2>
+
+
+@{
+    Html.RenderPartial("_ReportKnowPartial", Model.Knowledges);
+
+
+}
+

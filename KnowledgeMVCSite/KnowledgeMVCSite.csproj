@@ -631,6 +631,8 @@
     <Content Include="Views\Manage\_RoleUserPartial.cshtml" />
     <Content Include="Views\Manage\_UserListPartial.cshtml" />
     <Content Include="Views\Manage\Setup.cshtml" />
+    <Content Include="Views\Manage\MyKnowledge.cshtml" />
+    <Content Include="Views\Manage\UserManage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

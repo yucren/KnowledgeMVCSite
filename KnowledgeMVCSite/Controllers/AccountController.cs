@@ -134,7 +134,7 @@ namespace KnowledgeMVCSite.Controllers
                 if (result.Succeeded)
                 {
                     string code = UserManager.GenerateEmailConfirmationToken(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new RouteValueDictionary(new { UserId = user.Id, Code = code }), "http", HttpContext.Request.Url.Authority);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new RouteValueDictionary(new { UserId = user.Id, Code = code }), "https", HttpContext.Request.Url.Authority);
                     await UserManager.SendEmailAsync(user.Id, "确认你的帐户", "请通过单击 <a href=\"" + callbackUrl + "\">这里</a>来确认你的帐户");
                     return RedirectToAction("DisplayEmail", "Account", new { result = "请查收邮件",email=user.Email });
                   //  await SignInManager.SignInAsync(user, false, false);

@@ -71,4 +71,23 @@ namespace KnowledgeMVCSite.Models
 
     }
 
+    public class UserListViewModel
+    {
+        [Display(Name ="用户名")]
+        public string UserName { get; set; }
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "邮箱地址")]
+        public string MailAddress { get; set; }
+        [Display(Name = "创建日期")]
+        [DataType( DataType.Date)]
+        public DateTime CreateTime { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "电话号码")]
+        public string PhoneNum { get; set; }
+        [Display(Name = "城市")]
+        public string City { get; set; }
+
+
+    }
+
 }

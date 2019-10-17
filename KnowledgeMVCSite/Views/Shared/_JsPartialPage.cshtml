@@ -16,7 +16,7 @@ $(function () {
 
             $('#headLink a').first().parent().addClass("active");
         }
-        else if ($(this).attr("href") !== "/" && document.location.pathname.includes($(this).attr("href"))) {
+        else if ($(this).attr("href") !== "/" && document.location.pathname.indexOf($(this).attr("href"))!==-1) {
 
             $(this).parent().addClass("active");
 
@@ -393,7 +393,7 @@ function disucssSuccess() {
       //    return 6;
 
       //});
-        var arr = $.map($('#notUserListBody input:checked'), (item, index) => {
+        var arr = $.map($('#notUserListBody input:checked'), function(item, index) {
                return item.id
 
         });

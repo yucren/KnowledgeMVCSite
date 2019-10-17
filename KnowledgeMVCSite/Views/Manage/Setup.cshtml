@@ -34,7 +34,7 @@
     </div>
 
 @section Scripts{
-    <script>
+    <script type="text/babel">
         $(function () {
 
             $('#setup_cbtn').click(() => {
@@ -54,9 +54,15 @@
                         MailSendServer: $('#setup_mail .list-group-item input')[0].value,
                         MailSendUser:$('#setup_mail .list-group-item input')[1].value,
                         MailSendPassword:$('#setup_mail .list-group-item input')[2].value
-                    }, function () {
-
-                            alert("保存成功");
+                    }, function (req) {
+                             if (req=="成功") {
+                                  alert("保存成功");
+                             }
+                             else {
+                                 alert("保存失败");
+                                 return;
+                             }
+                           
 
                     });
                     mailServer.each(function (index, item) {
