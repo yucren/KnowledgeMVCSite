@@ -11,7 +11,10 @@ namespace KnowledgeMVCSite
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            //启用特性路由
+            routes.MapMvcAttributeRoutes();
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            
 
             routes.MapRoute(
                 name: "Default",

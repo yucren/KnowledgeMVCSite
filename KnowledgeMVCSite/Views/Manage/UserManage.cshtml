@@ -3,7 +3,7 @@
     ViewBag.Title = "用户列表";
 }
 
-    <table id="userManage_userlist" class="table table-bordered table-responsive">
+    <table id="userManage_userlist" class="table table-bordered table-responsive ">
         <caption class="caption">用户列表</caption>
         <thead>
             <tr class="popover-title">
@@ -16,8 +16,8 @@
         </thead>
         
         <tbody>
-            @for (int i = 0; i <2; i++)
-            {
+            @for (int i = 0; i < 1; i++)
+{
             <tr data-email="@Model[i].MailAddress">
                 <td>@Model[i].UserName</td>
                 <td>@Model[i].MailAddress</td>
@@ -26,43 +26,70 @@
                 <td>@Model[i].CreateTime</td>
             </tr>
 
-            }
-            @foreach (var user in Model)
-            {
-
-            }
+}
+           
         </tbody>
         <tfoot>
            
         </tfoot>
 
     </table>
-    <div>
+    <div id="userManage_page">
+
         <ul class="pagination pagination-lg">
-            <li><a href="#">&laquo;</a></li>
+            <li onclick="prepage(event)"><a href="#" >&laquo;</a></li>
+
             @{
-                var count = Model.Count();
-                var pageLines = 2;
+                var count = ViewBag.count;
+                var pageLines = 1;
                 var a = count * 1.0 / pageLines;
                 var pageCount = Math.Ceiling(a);
-                for (int i = 0; i < pageCount; i++)
+                var cur = ViewBag.cur-1;
+                if (count -cur >= 3)
                 {
-                    if (i == 0)
+                    for (int i = cur; i <cur +3 ; i++)
                     {
-                        <li class="active"><a href="#">@(i + 1)</a></li>
+                        if (i == 0)
+                        {
+                            <li data-pagenum="@(i + 1)"><a href='@Url.Action("UserManage")/@pageLines/@(i + 1)'>@(i + 1)</a></li>
+                        }
+                        else
+                        {
+                            <li data-pagenum="@(i + 1)"><a href='@Url.Action("UserManage")/@pageLines/@(i + 1)'>@(i + 1)</a></li>
+
+
+                        }
+
                     }
-                    else
+                }
+                else
+                {
+                    for (int i = count-3; i < count; i++)
                     {
-                        <li><a href="#">@(i + 1)</a></li>
+                        if (i == 0)
+                        {
+                            <li data-pagenum="@(i + 1)"><a href='@Url.Action("UserManage")/@pageLines/@(i + 1)'>@(i + 1)</a></li>
+                        }
+                        else
+                        {
+                            <li data-pagenum="@(i + 1)"><a href='@Url.Action("UserManage")/@pageLines/@(i + 1)'>@(i + 1)</a></li>
+
+
+                        }
+
                     }
 
                 }
+
             }
 
-            <li><a href="#">&raquo;</a></li>
+            <li onclick="nextpage(event)"><a href="#" >&raquo;</a></li>
         </ul>
+        <span class="pull-right">共 @ViewBag.count 页，当前第 @ViewBag.cur 页</span>
+        
+
         <br>
-       
+
     </div>
     <div id="userManage_toobar" class="btn-toolbar" style="position:page;bottom:0">
         
@@ -92,16 +119,17 @@
 
 @section Scripts{
     <script>
-         var userMange_curUser=null;
+        var userMange_curUser = null;
+        var pageCount =@ViewBag.count;
        
         $(function () {
 
-           
+            $("#userManage_page li[data-pagenum='@ViewBag.cur'").addClass('active');
 
             $('#userManage_userlist tbody tr ').click(function () {
                 var cur = $(event.currentTarget);
-                $('#userManage_userlist tbody tr ').css('background-color',"rgb(240,240,240)");
-                cur.css('background-color','yellow');
+                $('#userManage_userlist tbody tr ').css('background-color', "rgb(240,240,240)");
+                cur.css('background-color', 'yellow');
                 userMange_curUser = cur.data('email');
                 $('#userManage_edit').parent().removeClass('disabled');
             });
@@ -112,14 +140,53 @@
                     console.log('ok');
 
                 }
-               
-
-
             });
+        });
+        function nextpage(e) {
+            var num = parseInt( $("#userManage_page li.active").children().text());
+            if (num >=pageCount ) {
+                return;
+            }
+            
+            var next = num + 1
+            console.log(next);
+            console.log($("#userManage_page li[data-pagenum='" + next + "']"));
+            if ($("#userManage_page li[data-pagenum='" + next + "']").length != 0) {
+                console.log("helloworld")
+                $("#userManage_page li[data-pagenum='" + next + "']").children()[0].click();
+            }
+                else {
+                       var target = $(e.currentTarget).prev();
+               // var num = parseInt(target.children().text());
+            
+               var a = target.html("<a href='/Manage/UserManage/1/ " + next + "'>" + next + "</a>");
+                target.children()[0].click();
+                }
 
+         
 
+        }
+        function prepage(e) {
+             var num = parseInt( $("#userManage_page li.active").children().text());
+            if (num ==1 ) {
+                return;
+            }
+            
+            var next = num -1
+           
+            if ($("#userManage_page li[data-pagenum='" + next + "']").length != 0) {
+                console.log("helloworld")
+                $("#userManage_page li[data-pagenum='" + next + "']").children()[0].click();
+            }
+                else {
+                       var target = $(e.currentTarget).next();
+               // var num = parseInt(target.children().text());
+               console.log(target)
+               var a = target.html("<a href='/Manage/UserManage/1/ " + next + "'>" + next + "</a>");
+                target.children()[0].click();
+                }
+        }
 
-        })
 
 
 

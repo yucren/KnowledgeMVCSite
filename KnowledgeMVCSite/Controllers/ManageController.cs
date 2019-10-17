@@ -18,6 +18,7 @@ using System.Xml;
 namespace KnowledgeMVCSite.Controllers
 {
     [Authorize]
+
     public class ManageController : Controller
     {
         KnowledgeModel db = KnowledgeModel.Create();
@@ -91,20 +92,39 @@ namespace KnowledgeMVCSite.Controllers
             var model = new IndexViewModel();
             return View(model);
         }
+        [Route("Manage/UserManage")]
         public ActionResult UserManage()
         {
-          var userModel=  (from user in db.Users
-            select new UserListViewModel
+            ViewBag.count = db.Users.Count();
+            ViewBag.cur = 1;
+            var userModel = db.Users.OrderBy(m => m.Email).Skip(0).Take(1).Select(m => new UserListViewModel
             {
-                City = user.City,
-                MailAddress = user.Email,
-                PhoneNum = user.PhoneNumber,
-                UserName = user.UserName
+                City = m.City,
+                MailAddress = m.Email,
+                PhoneNum = m.PhoneNumber,
+                UserName = m.UserName
+            }).ToList();
 
+            return View(userModel);
+
+
+        }
+        [Route("Manage/UserManage/{pageLines}/{pageCur}")]
+        public ActionResult UserManage(int pageLines, int pageCur)
+        {
+            ViewBag.count = db.Users.Count();
+            ViewBag.cur = pageCur;
+            var userModel = db.Users.OrderBy(m => m.Email).Skip((pageCur - 1)*pageLines).Take(pageLines).Select(m => new UserListViewModel
+            {
+                City = m.City,
+                MailAddress = m.Email,
+                PhoneNum = m.PhoneNumber,
+                UserName = m.UserName
 
             }).ToList();
+
             return View(userModel);
-            
+
 
         }
 
@@ -112,15 +132,15 @@ namespace KnowledgeMVCSite.Controllers
         public ActionResult Setup()
         {
             EmailServerViewModel emailServer = new EmailServerViewModel();
-            
+
             XmlDocument document = new XmlDocument();
             var path = AppDomain.CurrentDomain.BaseDirectory;
-            document.Load( path + @"\config\mail.xml");
+            document.Load(path + @"\config\mail.xml");
             emailServer.MailSendServer = document.SelectSingleNode("/mailServer/mailSendServer").InnerText;
-          emailServer.MailSendUser=  document.SelectSingleNode("/mailServer/mailSendUser").InnerText;
-            emailServer.MailSendPassword=  document.SelectSingleNode("/mailServer/mailSendPassword").InnerText;
+            emailServer.MailSendUser = document.SelectSingleNode("/mailServer/mailSendUser").InnerText;
+            emailServer.MailSendPassword = document.SelectSingleNode("/mailServer/mailSendPassword").InnerText;
             return View(emailServer);
-       }
+        }
         [HttpPost]
         public string Setup(EmailServerViewModel model)
         {
@@ -139,8 +159,8 @@ namespace KnowledgeMVCSite.Controllers
             {
                 return "失败";
             }
-            
-           
+
+
         }
 
 
@@ -149,11 +169,11 @@ namespace KnowledgeMVCSite.Controllers
         {
             var roles = db.Roles.ToList();
 
-            return View(roles);   
+            return View(roles);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> RoleMangar( string roleName)
+        public async Task<ActionResult> RoleMangar(string roleName)
         {
             db.Roles.Add(new IdentityRole(roleName));
             await db.SaveChangesAsync();
@@ -166,28 +186,28 @@ namespace KnowledgeMVCSite.Controllers
             ViewBag.RoleId = id;
             ViewBag.RoleName = db.Roles.Find(id).Name;
             var users = db.Roles.Find(id).Users.ToList();
-            var userRoles= db.Roles.Find(id).Users;
+            var userRoles = db.Roles.Find(id).Users;
             var userList = new List<ApplicationUser>();
             foreach (var item in userRoles)
             {
-               userList.Add(db.Users.Find(item.UserId));
+                userList.Add(db.Users.Find(item.UserId));
             }
-            return PartialView(userList);          
+            return PartialView(userList);
 
         }
         [HttpPost]
-        public async Task<string> SaveUserToRole(string[] userIds,string roleName)
+        public async Task<string> SaveUserToRole(string[] userIds, string roleName)
         {
             string errMsg = "";
             try
             {
                 foreach (var userid in userIds)
                 {
-                  var result =  await UserManager.AddToRoleAsync(userid, roleName);
-                  if (!result.Succeeded)
-                  {
-                      errMsg += UserManager.FindById(userid).UserName + "添加角色失败/n";
-                   }
+                    var result = await UserManager.AddToRoleAsync(userid, roleName);
+                    if (!result.Succeeded)
+                    {
+                        errMsg += UserManager.FindById(userid).UserName + "添加角色失败/n";
+                    }
 
                 }
                 if (string.IsNullOrEmpty(errMsg))
@@ -202,17 +222,17 @@ namespace KnowledgeMVCSite.Controllers
             catch (Exception ex)
             {
 
-                return "发生错误,可以存在部分用户添加角色成功，请刷新查看，错误如下："  + ex.Message;
+                return "发生错误,可以存在部分用户添加角色成功，请刷新查看，错误如下：" + ex.Message;
             }
-           
-            
+
+
 
 
 
         }
-       
-        [HttpGet]       
-        public string  UserList(string roleId)
+
+        [HttpGet]
+        public string UserList(string roleId)
         {
             var userList = new List<string>();
             var users = db.Roles.Find(roleId).Users;
@@ -220,13 +240,13 @@ namespace KnowledgeMVCSite.Controllers
             {
                 userList.Add(db.Users.Where(u => u.Id == item.UserId).Single().Id);
             }
-            var json= db.Users.Where(p => userList.Contains(p.Id)==false).Select(x=> new
+            var json = db.Users.Where(p => userList.Contains(p.Id) == false).Select(x => new
             {
                 x.Id,
                 x.Email,
                 x.UserName
 
-            });  
+            });
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
@@ -253,7 +273,7 @@ namespace KnowledgeMVCSite.Controllers
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
                 }
-               
+
 
             }
 
@@ -272,11 +292,11 @@ namespace KnowledgeMVCSite.Controllers
         public bool HasPassword()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user !=null)
+            if (user != null)
             {
                 return user.PasswordHash != null;
             }
-            return false;   
+            return false;
         }
         public enum ManageMessageId
         {
