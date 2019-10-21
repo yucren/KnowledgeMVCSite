@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeMVCSite", "KnowledgeMVCSite\KnowledgeMVCSite.csproj", "{E1C9FC6D-7BE4-4D46-AC70-7513DDD39CEE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeMVCSite.Tests", "KnowledgeMVCSite.Tests\KnowledgeMVCSite.Tests.csproj", "{6766D805-8903-4EE6-82D1-F8396856C39B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCFSelfWebAPi", "WCFSelfWebAPi\WCFSelfWebAPi.csproj", "{A5E0A53A-29AD-4B36-9643-C3E5B99C1ED0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6766D805-8903-4EE6-82D1-F8396856C39B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6766D805-8903-4EE6-82D1-F8396856C39B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6766D805-8903-4EE6-82D1-F8396856C39B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5E0A53A-29AD-4B36-9643-C3E5B99C1ED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5E0A53A-29AD-4B36-9643-C3E5B99C1ED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5E0A53A-29AD-4B36-9643-C3E5B99C1ED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5E0A53A-29AD-4B36-9643-C3E5B99C1ED0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
