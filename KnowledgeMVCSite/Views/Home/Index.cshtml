@@ -38,12 +38,16 @@
                 $(function () {
                     
                     $(window).scroll(function () {
-                        console.log("helloworld")
+                       
                         var scrollTop = $(this).scrollTop();    //滚动条滚动距离
                         var scrollHeight = $(document).height();//文档内容高度
                         var windowHeight = $(this).height();  //文档可视区域高度
-                        if ( 1>= (scrollHeight - scrollTop - windowHeight) <=1) {
-                            
+                        console.log(scrollTop)
+                        console.log(scrollHeight)
+                        console.log(windowHeight)
+                        var distance = scrollHeight - scrollTop - windowHeight;
+                        if (distance >=-1 && distance<=1 ) {  
+                            //console.log('dddd' + (scrollHeight - scrollTop - windowHeight))
                             more();
                         }
                     });

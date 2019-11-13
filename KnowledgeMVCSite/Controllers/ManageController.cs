@@ -95,9 +95,14 @@ namespace KnowledgeMVCSite.Controllers
         [Route("Manage/UserManage")]
         public ActionResult UserManage()
         {
-            ViewBag.count = db.Users.Count();
+            var count = db.Users.Count();
+            ViewBag.count = count;
             ViewBag.cur = 1;
-            var userModel = db.Users.OrderBy(m => m.Email).Skip(0).Take(1).Select(m => new UserListViewModel
+            var pageLines = 3;
+            ViewBag.pageLines = pageLines;
+            ViewBag.pageCount = Convert.ToInt32(Math.Ceiling(count / (pageLines * 1.0)));
+            
+            var userModel = db.Users.OrderBy(m => m.Email).Skip(0).Take(pageLines).Select(m => new UserListViewModel
             {
                 City = m.City,
                 MailAddress = m.Email,
@@ -112,8 +117,11 @@ namespace KnowledgeMVCSite.Controllers
         [Route("Manage/UserManage/{pageLines}/{pageCur}")]
         public ActionResult UserManage(int pageLines, int pageCur)
         {
-            ViewBag.count = db.Users.Count();
+            var count = db.Users.Count(); 
+            ViewBag.count = count; 
             ViewBag.cur = pageCur;
+            ViewBag.pageLines = pageLines;
+            ViewBag.pageCount =Convert.ToInt32(Math.Ceiling(count / (pageLines *1.0)));
             var userModel = db.Users.OrderBy(m => m.Email).Skip((pageCur - 1)*pageLines).Take(pageLines).Select(m => new UserListViewModel
             {
                 City = m.City,

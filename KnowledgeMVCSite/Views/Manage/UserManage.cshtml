@@ -16,7 +16,7 @@
         </thead>
         
         <tbody>
-            @for (int i = 0; i < 1; i++)
+            @for (int i = 0; i < Model.Count; i++)
 {
             <tr data-email="@Model[i].MailAddress">
                 <td>@Model[i].UserName</td>
@@ -40,14 +40,13 @@
             <li onclick="prepage(event)"><a href="#" >&laquo;</a></li>
 
             @{
-                var count = ViewBag.count;
-                var pageLines = 1;
-                var a = count * 1.0 / pageLines;
-                var pageCount = Math.Ceiling(a);
+                
+                var pageLines = ViewBag.pageLines;
+                var pageCount = ViewBag.pageCount;
                 var cur = ViewBag.cur-1;
-                if (count -cur >= 3)
+                if (pageCount -cur >= pageCount)
                 {
-                    for (int i = cur; i <cur +3 ; i++)
+                    for (int i = cur; i <cur +pageCount ; i++)
                     {
                         if (i == 0)
                         {
@@ -64,7 +63,7 @@
                 }
                 else
                 {
-                    for (int i = count-3; i < count; i++)
+                    for (int i = 0; i < pageCount; i++)
                     {
                         if (i == 0)
                         {
@@ -85,7 +84,7 @@
 
             <li onclick="nextpage(event)"><a href="#" >&raquo;</a></li>
         </ul>
-        <span class="pull-right">共 @ViewBag.count 页，当前第 @ViewBag.cur 页</span>
+        <span class="pull-right">共 @pageCount 页，当前第 @ViewBag.cur 页</span>
         
 
         <br>
@@ -120,8 +119,8 @@
 @section Scripts{
     <script>
         var userMange_curUser = null;
-        var pageCount =@ViewBag.count;
-       
+        var pageCount =@ViewBag.pageCount;
+        var pageLines =@ViewBag.pageLines
         $(function () {
 
             $("#userManage_page li[data-pagenum='@ViewBag.cur'").addClass('active');
@@ -150,16 +149,16 @@
             
             var next = num + 1
             console.log(next);
-            console.log($("#userManage_page li[data-pagenum='" + next + "']"));
+            console.log($("#userManage_page li[data-pagenum='" + next + "']")[0]);
             if ($("#userManage_page li[data-pagenum='" + next + "']").length != 0) {
-                console.log("helloworld")
-                $("#userManage_page li[data-pagenum='" + next + "']").children()[0].click();
+                console.log($("#userManage_page li[data-pagenum='" + next + "']").children()[0])
+               self.location.href=$("#userManage_page li[data-pagenum='" + next + "']").children()[0].href;
             }
                 else {
                        var target = $(e.currentTarget).prev();
                // var num = parseInt(target.children().text());
             
-               var a = target.html("<a href='/Manage/UserManage/1/ " + next + "'>" + next + "</a>");
+               var a = target.html("<a href='/Manage/UserManage/" + pageLines +"/ " + next + "'>" + next + "</a>");
                 target.children()[0].click();
                 }
 
@@ -176,13 +175,14 @@
            
             if ($("#userManage_page li[data-pagenum='" + next + "']").length != 0) {
                 console.log("helloworld")
-                $("#userManage_page li[data-pagenum='" + next + "']").children()[0].click();
+                              self.location.href=$("#userManage_page li[data-pagenum='" + next + "']").children()[0].href;
+
             }
                 else {
                        var target = $(e.currentTarget).next();
                // var num = parseInt(target.children().text());
                console.log(target)
-               var a = target.html("<a href='/Manage/UserManage/1/ " + next + "'>" + next + "</a>");
+               var a = target.html("<a href='/Manage/UserManage/" +pageLines + "/ " + next + "'>" + next + "</a>");
                 target.children()[0].click();
                 }
         }

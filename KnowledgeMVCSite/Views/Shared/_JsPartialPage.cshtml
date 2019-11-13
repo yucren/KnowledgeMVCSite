@@ -42,21 +42,22 @@ $(function () {
 //            getDiscussCount();
 //        })
 //    }
-function discuss(event, id) {  
+    function discuss(event, id) {  
+    
     var target = $($(event.target).parents("div").get(0)).next(".discuss");
-    if (target.css('display') == 'none') {
+    // 
+
+        if (discussDIV === null) {
+        target.toggle();
         //loadding(event.target);
-    }
-    if (discussDIV === null) {
-        //loadding(event.target);
-        discussDIV = $($(event.target).parents("div").get(0)).next(".discuss");
+        discussDIV = $($(event.target).parents("div").get(0)).next(".discuss").children(".discussContent");
         button = event.target;
         dicusseId = id;
         discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
         getDiscussCount()
     }
     else if (button === event.target) {
-        discussDIV.toggle();
+        target.toggle();
         //if (discussDIV.css('display')=="block") {
         //    discussDIV.css('display', 'none');
         //}
@@ -64,18 +65,18 @@ function discuss(event, id) {
         //    discussDIV.css('display', 'block');
         //}
         
-        discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
-        getDiscussCount()
+      //  discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
+     //   getDiscussCount()
 
     }
     else {
-        discussDIV.hide();
-        discussDIV = $($(event.target).parents("div").get(0)).next(".discuss");
+        target.hide();
+        discussDIV =$($(event.target).parents("div").get(0)).next(".discuss").children(".discussContent");
         button = event.target;
         dicusseId = id;
         //loadding(event.target);
         discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
-        discussDIV.show();
+        target.show();
         getDiscussCount()
     }
     var a = button === event.target;
@@ -90,7 +91,7 @@ function more() {
             catalog: catalog,
 
         }, beforeSend: function (xhr) {
-            console.log("beginsend");
+         
             $('#loading').css('visibility', 'visible');
             $('#noMore').css('visibility', 'hidden');
 

@@ -57,7 +57,15 @@
                     </span><span>@(item.Discusses.Count)</span>条评论
                 </button>
             </div>
-            <div class="discuss" style="margin-top:20px"></div>
+
+            <div class="discuss" style="margin-top:20px;display:none">
+                <input type="hidden" name="KnowledgeId" value="@ViewBag.knowledgeId" />
+                <textarea name="Context" maxlength="140" style="width:100%" class="form-control"></textarea>
+                <input type="submit" style="margin-top:10px" class="btn btn-default center-block " value="提交" />
+                <div class="discussContent">
+
+                </div>
+            </div>
 
         </div>
         }
