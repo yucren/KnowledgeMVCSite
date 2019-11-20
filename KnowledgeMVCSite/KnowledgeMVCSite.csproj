@@ -145,6 +145,7 @@
     <Compile Include="Controllers\KnowledgeController.cs" />
     <Compile Include="Controllers\KnowledgesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ValuesController1.cs" />
     <Compile Include="Filter\NoCacheAttribute.cs" />
     <Compile Include="Migrations\201906041251274_add.cs" />
     <Compile Include="Migrations\201906041251274_add.Designer.cs">
