@@ -186,7 +186,7 @@ namespace KnowledgeMVCSite.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task Discuss([Bind(Include ="Context,KnowledgeId")] Discuss model)
+        public async Task<PartialViewResult> Discuss([Bind(Include ="Context,KnowledgeId")] Discuss model)
         {
 
             if (ModelState.IsValid)
@@ -200,8 +200,12 @@ namespace KnowledgeMVCSite.Controllers
                 };
                 db.Discusses.Add(discuss);
                 await db.SaveChangesAsync();
+                
                
             }
+            var model1 = (from discuss in db.Discusses.Include("User") where discuss.Knowledge.Id == model.KnowledgeId select discuss).ToList();
+
+            return PartialView("DiscsussPartial", model1);
 
         }
 

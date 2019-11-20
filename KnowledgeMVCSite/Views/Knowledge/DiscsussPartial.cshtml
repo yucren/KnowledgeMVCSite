@@ -23,10 +23,10 @@
 
     @foreach (var discuss in Model)
     {
-    <ur class="list-group " style="margin-top:5px">
+   
         <li class="list-group-item" style="border:none">@discuss.Context</li>
         <li class="list-group-item" style="border:none;color:cadetblue;font-size:16px;"><b>@(discuss.User!=null? discuss.User.UserName:"匿名用户")-@discuss.CreateTime</b></li>
-    </ur>
+  
     }
 </ul>
 

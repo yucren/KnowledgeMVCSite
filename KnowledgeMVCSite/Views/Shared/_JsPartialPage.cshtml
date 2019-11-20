@@ -6,7 +6,10 @@ var count = 1;
 var pageCount = 1;
 //var pageNum = 1;
 var catalog = null;
-var searchValue = "";
+    var searchValue = "";
+    var target = null;
+    var curTarget = null;
+    var preTarget = null;
 
 $(function () {
     //添加单击链接匹配
@@ -42,13 +45,34 @@ $(function () {
 //            getDiscussCount();
 //        })
 //    }
-    function discuss(event, id) {  
-    
-    var target = $($(event.target).parents("div").get(0)).next(".discuss");   
-        discussDIV =$($(event.target).parents("div").get(0)).next(".discuss").children(".discussContent");
-           discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
-        target.toggle();
+    function discuss(event, id) { 
+        console.log("helloworldyuchengren")
+        var cur = event.currentTarget;
+        button = cur;
+        if (preTarget !== cur) {
+            console.log(preTarget);
+            console.log(cur);
+        }
+        curTarget = $($(cur).parents("div").get(0)).next(".discuss");  
+        
+        if (preTarget && (preTarget === cur)) {
+           
+            console.log("dddd")
+            curTarget.toggle()
+            return;
+        }
+        else {
+             target && target.toggle(); 
+        }
+       
+        curTarget.toggle();
+        discussDIV =$($(cur).parents("div").get(0)).next(".discuss").children(".discussContent");
+         discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
+        
+        dicusseId = id;
         getDiscussCount()
+        target =$($(cur).parents("div").get(0)).next(".discuss");
+        preTarget = event.target;
   
 }
 function more() {
@@ -124,6 +148,7 @@ function more() {
          $.get('@Url.Action("GetDiscussCout", "Knowledge")/?knowledgeId=' + dicusseId, function (req,status,xhr) {
         if (status=='success') {
             $($(button).children('span')[1]).html(req);
+            //$(button).button('toggle');     
         }
 
     });
