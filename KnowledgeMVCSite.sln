@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeMVCSite.Tests", "K
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCFSelfWebAPi", "WCFSelfWebAPi\WCFSelfWebAPi.csproj", "{A5E0A53A-29AD-4B36-9643-C3E5B99C1ED0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiItem", "WebApiItem\WebApiItem.csproj", "{467BA9BD-BF72-437D-94AF-747F4E56AEEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiItem.Tests", "WebApiItem.Tests\WebApiItem.Tests.csproj", "{9CA78433-A8A6-4310-9A96-60B2C2574112}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{A5E0A53A-29AD-4B36-9643-C3E5B99C1ED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5E0A53A-29AD-4B36-9643-C3E5B99C1ED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5E0A53A-29AD-4B36-9643-C3E5B99C1ED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{467BA9BD-BF72-437D-94AF-747F4E56AEEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{467BA9BD-BF72-437D-94AF-747F4E56AEEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{467BA9BD-BF72-437D-94AF-747F4E56AEEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{467BA9BD-BF72-437D-94AF-747F4E56AEEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CA78433-A8A6-4310-9A96-60B2C2574112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CA78433-A8A6-4310-9A96-60B2C2574112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CA78433-A8A6-4310-9A96-60B2C2574112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CA78433-A8A6-4310-9A96-60B2C2574112}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

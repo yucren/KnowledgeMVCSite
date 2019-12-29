@@ -16,8 +16,9 @@ namespace KnowledgeMVCSite.Controllers
         // GET: Home      
         public ActionResult Index(int? catalog, int? pageCount, int? pageNum, string searchValue)
         {
-
-            
+            try
+            {
+   
             ViewBag.catalog = catalog;
             ViewBag.searchValue = searchValue;
             var pc = pageCount == null ? 1 : pageCount.Value;
@@ -46,6 +47,13 @@ namespace KnowledgeMVCSite.Controllers
             }
            // throw new Exception("helloworld");
            return View(knowledges);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+         
         }
 
 
@@ -57,6 +65,11 @@ namespace KnowledgeMVCSite.Controllers
         public ActionResult About()
         {
             return View();
+        }
+        [Authorize]
+        public string GetValue()
+        {
+            return "yuchengren";
         }
     }
 }

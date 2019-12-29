@@ -57,7 +57,7 @@ namespace KnowledgeMVCSite.Controllers
         }
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+      //  [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string ReturnUrl)
         {
             log4net.ILog log = log4net.LogManager.GetLogger(typeof(HomeController));           
@@ -90,6 +90,50 @@ namespace KnowledgeMVCSite.Controllers
                     ModelState.AddModelError("", "无效的登录尝试。");
                     return View(model);
             }
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        //  [ValidateAntiForgeryToken]
+        public async Task Login2(LoginViewModel model, string ReturnUrl)
+        {
+            log4net.ILog log = log4net.LogManager.GetLogger(typeof(HomeController));
+
+            if (!ModelState.IsValid)
+            {
+                log.Error(model.Email + "登录失败");
+                Response.Write("alert('登录失败')");
+            }
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, true, true);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    log.Info(model.Email + "登录成功");
+                    Response.Write("登录成功");
+                    break;
+
+                case SignInStatus.LockedOut:
+                    Response.Write("账户已被锁定");
+                    break;
+
+                case SignInStatus.RequiresVerification:
+                    ModelState.AddModelError("", "请先验证邮箱。");
+                    var user = await UserManager.FindAsync(model.Email, model.Password);
+                    string code = UserManager.GenerateEmailConfirmationToken(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new RouteValueDictionary(new { UserId = user.Id, Code = code }), "http", HttpContext.Request.Url.Authority);
+                    await UserManager.SendEmailAsync(user.Id, "确认你的帐户", "请通过单击 <a href=\"" + callbackUrl + "\">这里</a>来确认你的帐户");
+                    Response.Write("请先验证邮箱");
+                    break; 
+                case SignInStatus.Failure:
+                  
+                  
+                default:
+                    ModelState.AddModelError("", "无效的登录尝试。");
+                    Response.Write("无效的登录尝试");
+                    return;
+                    
+                 
+            }
+          
         }
         /// <summary>
         /// 用于判断是否为本地url的方法 Url.IsLocalUrl() 的注意事项：
