@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KnowledgeMVCSite.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,12 +12,17 @@ namespace KnowledgeMVCSite.Controllers
         // GET: Ask
         public ActionResult Index()
         {
+            ViewBag.Title = "提出新问题";
+
             return View();
         }
-
-        public ActionResult Ask()
+        [HttpPost]
+        public ActionResult Ask(Problem problem)
         {
+            if (ModelState.IsValid)
+            {
 
+            }
             return View();
 
 

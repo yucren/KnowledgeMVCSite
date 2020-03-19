@@ -49,16 +49,16 @@
 
             </div>
             }
-            <div style="margin-top:15px;padding:10px" class="well">
+            <div  style="margin-top:15px;padding:10px" class="well">
                 <p><span onclick="praise(event, @item.Id,'@(User.Identity.Name == "" ? "0" : User.Identity.Name)')" style="color:@(item.Praises.Where(p => p.UserId == User.Identity.GetUserId()).Count() == 0 ? "darkgray" : "red") ;font-size:20px" class="glyphicon glyphicon-thumbs-up">@item.Praises.Count</span></p>
 
-                <button class="btn btn-primary btn-sm pull-right" data-loading-text="加载中..." style="margin-top:-33px;margin-right:10px" onclick="discuss(event,@item.Id)">
+                <button id="button@(item.Id)" class="btn btn-primary btn-sm pull-right" data-loading-text="加载中..." style="margin-top:-33px;margin-right:10px" onclick="discuss(event,@item.Id)">
                     <span class="glyphicon glyphicon-comment">
                     </span><span>@(item.Discusses.Count)</span>条评论
                 </button>
             </div>
 
-            <div class="discuss" style="margin-top:20px;display:none">
+            <div id="discuss@(item.Id)" class="discuss" style="margin-top:20px;display:none">
                 @using (Ajax.BeginForm("Discuss", "Knowledge", new AjaxOptions
                 {
                     HttpMethod = "POST",

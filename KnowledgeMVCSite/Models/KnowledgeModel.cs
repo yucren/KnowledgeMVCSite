@@ -141,7 +141,74 @@
 
 
     }
+    public class Answer
+    {
+        public Answer()
+        {
 
+        }
+
+        [Comment("ID")]
+
+        public int Id { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        [Comment("问题回复内容")]
+        [Display(Name = "问题回复内容")]
+        [Index(IsClustered = false, IsUnique = false)]
+        [StringLength(900)]
+        public string Content { get; set; }
+
+        [Comment("创建时间")]
+        [Display(Name = "评论时间")]
+        [DataType(DataType.DateTime)]
+
+        public DateTime CreateTime { get; set; }
+
+        [ForeignKey("User")]
+        public string UserId { get; set; }
+
+        public ApplicationUser User { get; set; }
+        [ForeignKey("Problem")]
+        public int ProblemId { get; set; }
+
+        public Problem Problem { get; set; }
+
+
+
+    }
+    public class Problem
+    {
+
+        public int Id { get; set; }
+        [Required]
+        public ApplicationUser AskUser { get; set; }
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime CreateTime { get; set; }
+        public Category Category { get; set; }
+        [Required]
+        [Comment("问题类别")]
+        [Display(Name = "问题类别")]
+        public int CategoryId { get; set; }
+        [Required]
+        [Comment("标题")]
+        [Index(IsClustered = false, IsUnique = false)]
+        //[Column()]
+        //[NotMapped]        
+        [Display(Name = "标题")]
+        [StringLength(maximumLength: 100, MinimumLength = 1, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
+        public string Title { get; set; }
+        [Required]
+        [Comment("正文")]
+        [Display(Name = "描述问题详细内容")]
+        [StringLength(maximumLength: 2000000, MinimumLength = 10, ErrorMessage = "{0}标题不能大于{1}，不能小于{2}")]
+        //[Index(IsClustered = false, IsUnique = false)]
+        public  string Content { get; set; }
+        public virtual ICollection<Answer> Answers { get; set; }
+
+
+    }
     public class Knowledge{
         [Required]
         [Comment("ID")]

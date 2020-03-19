@@ -7,9 +7,9 @@ var pageCount = 1;
 //var pageNum = 1;
 var catalog = null;
     var searchValue = "";
-    var target = null;
-    var curTarget = null;
-    var preTarget = null;
+    let preContent = null;
+   
+    
 
 $(function () {
     //添加单击链接匹配
@@ -46,14 +46,35 @@ $(function () {
 //        })
 //    }
     function discuss(event, id) { 
-        console.log("helloworldyuchengren")
+        console.log(preContent);
+        if (preContent) {
+            if (preContent === id) {
+                $('#discuss' + id).toggle();
+                preContent = null;
+                return
+            }
+            else {
+                $('#discuss' + preContent).toggle();
+            }
+        }
+        preContent = id;
+       $('#discuss' + id).toggle();
+        discussDIV =$('#discuss' + id).children(".discussContent");
+         discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });  
+        dicusseId = id;
+        getDiscussCount()
+
+        
+
+
+        @*console.log("helloworldyuchengren")
         var cur = event.currentTarget;
         button = cur;
         if (preTarget !== cur) {
             console.log(preTarget);
             console.log(cur);
         }
-        curTarget = $($(cur).parents("div").get(0)).next(".discuss");  
+        
         
         if (preTarget && (preTarget === cur)) {
            
@@ -66,13 +87,8 @@ $(function () {
         }
        
         curTarget.toggle();
-        discussDIV =$($(cur).parents("div").get(0)).next(".discuss").children(".discussContent");
-         discussDIV.load('@Url.Action("DiscsussPartial", "Knowledge")', { knowledgeId: id });
-        
-        dicusseId = id;
-        getDiscussCount()
         target =$($(cur).parents("div").get(0)).next(".discuss");
-        preTarget = event.currentTarget;
+        preTarget = event.currentTarget;*@
   
 }
 function more() {
@@ -255,8 +271,8 @@ function disucssSuccess() {
     function uploadFile(id) {
 
         var fileObjs = document.getElementById(id).files; // js 获取文件对象
-        if (typeof (fileObjs) == "undefined" || fileObjs.size <= 0) {
-            alert("请选择Excel文件");
+        if (typeof (fileObjs) == "undefined" || fileObjs.length <= 0) {
+            alert("请选择文件");
             return;
         }
         var formFile = new FormData();
