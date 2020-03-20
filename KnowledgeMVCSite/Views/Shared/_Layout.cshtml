@@ -52,36 +52,36 @@
                     <li>@Html.ActionLink("关于", "About", "Home")</li>
                     <li>@Html.ActionLink("我的提问", "MyAsk", "Manage")</li>
                     <li>@Html.ActionLink("我的知识", "MyKnowledge", "Manage")</li>
-                    @if(User.IsInRole("Administrator"))
+                    @if (User.IsInRole("Administrator"))
                     {
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">系统管理<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>@Html.ActionLink("用户管理", "UserManage", "Manage")</li>
                                 <li>@Html.ActionLink("角色管理", "RoleMangar", "Manage")</li>
-                                <li>@Html.ActionLink("系统设置","Setup","Manage")</li>
+                                <li>@Html.ActionLink("系统设置", "Setup", "Manage")</li>
                             </ul>
                         </li>
 
                     }
                     @*<li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">编程知识<span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li><b style="color:blue">.NET</b></li>
-            <li><a href="#">C#</a></li>
-            <li><a href="#">.NET CORE</a></li>
-            <li><a href="#">MVC</a></li>
-            <li class="divider"></li>
-            <li><b style="color:blue">JAVA</b></li>
-            <li><a href="#">Java</a></li>
-            <li class="divider"></li>
-            <li><b style="color:blue">SQL</b></li>
-            <li>@Html.ActionLink("数据库脚本", "Index", "Home", routeValues: new { catalog = 3 }, htmlAttributes: null)</li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">编程知识<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><b style="color:blue">.NET</b></li>
+                            <li><a href="#">C#</a></li>
+                            <li><a href="#">.NET CORE</a></li>
+                            <li><a href="#">MVC</a></li>
+                            <li class="divider"></li>
+                            <li><b style="color:blue">JAVA</b></li>
+                            <li><a href="#">Java</a></li>
+                            <li class="divider"></li>
+                            <li><b style="color:blue">SQL</b></li>
+                            <li>@Html.ActionLink("数据库脚本", "Index", "Home", routeValues: new { catalog = 3 }, htmlAttributes: null)</li>
 
-            <li class="divider"></li>
-        </ul>*@
+                            <li class="divider"></li>
+                        </ul>*@
                 </ul>
-                <form   action='@Url.Action("Index","Home")' class=" navbar-form navbar-left">
+                <form action='@Url.Action("Index","Home")' class=" navbar-form navbar-left">
                     <div class="form-group">
                         <input id="searchValue" name="searchValue" type="text" class="form-control" placeholder="标题或者内容" onkeydown="$('#searchBtn').submit()">
                     </div>
@@ -100,11 +100,12 @@
             <!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-
+    
     <div class="container" style="padding-top:50px;width:100%;">
 
         <div class="row">
-            <div class="col-md-12" id="body">
+
+            <div  id="body">
 
                 @RenderBody()
             </div>
@@ -119,10 +120,9 @@
 
 
     </div>
-   
+    
     @Html.Partial("_JsPartialPage")
     @RenderSection("Scripts", false)
-
 </body>
 
 </html>
