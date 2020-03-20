@@ -27,7 +27,7 @@ namespace KnowledgeMVCSite
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                //LoginPath = new Microsoft.Owin.PathString("/Account/Login"),
+                LoginPath = new Microsoft.Owin.PathString("/Account/Login"),
                 ExpireTimeSpan=TimeSpan.FromMinutes(20),
                 SlidingExpiration=true,
 			    Provider = new CookieAuthenticationProvider()
