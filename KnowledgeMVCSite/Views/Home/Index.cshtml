@@ -13,9 +13,9 @@
                     <img src="~/Content/img/Create.png" />
                 </span> 创建知识
             </a>
-            <a  href='@Url.Action("Ask","Ask")' style="margin-right:5%" class="btn btn-primary">
+            <a href='@Url.Action("Ask","Ask")' style="margin-right:5%" class="btn btn-primary">
                 <span class="glyphicon">
-                    <img style="height:41px" src="~/Content/img/ask.jpg" /> 
+                    <img style="height:41px" src="~/Content/img/ask.jpg" />
                 </span> 开始提问
             </a>
 
@@ -34,11 +34,13 @@
                     <button class="btn btn-primary center-block" onclick="more()">加载更多</button>
                 </div>*@
             <script>
-              //  console.log("hellowrl")
+                //  console.log("hellowrl")
                 $(function () {
-                    
+
+
+
                     $(window).scroll(function () {
-                       
+
                         var scrollTop = $(this).scrollTop();    //滚动条滚动距离
                         var scrollHeight = $(document).height();//文档内容高度
                         var windowHeight = $(this).height();  //文档可视区域高度
@@ -46,13 +48,14 @@
                         //console.log(scrollHeight)
                         //console.log(windowHeight)
                         var distance = scrollHeight - scrollTop - windowHeight;
-                        if (distance >=-1 && distance<=1 ) {  
+                        if (distance >= -1 && distance <= 1) {
                             //console.log('dddd' + (scrollHeight - scrollTop - windowHeight))
                             more();
                         }
                     });
+                    $(window).bind('scroll')
                 })
-              
+
             </script>
         }
         else
@@ -61,7 +64,7 @@
             <div id="noKnow" class="alert alert-warning">
                 <a href="@Url.Action("Create","Knowledge")" class="alert-link"> 还没有人创建知识，赶紧创建吧</a>
             </div>
-            
+
         }
 
 
@@ -69,7 +72,7 @@
 
 
 
-    <div class="col-md-3" style="margin-top:25px" id="catalog">
+    <div class="col-md-3" style="margin-top:25px;position:fixed;top:150px;right:10px" id="catalog">
         <h3>热门标签</h3>
 
 
@@ -118,7 +121,7 @@
 
         searchValue = '@ViewBag.searchValue';
     </script>
-    
+
 }
 
 

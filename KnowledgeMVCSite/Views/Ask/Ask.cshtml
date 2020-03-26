@@ -13,13 +13,13 @@
         @Html.LabelFor(m => m.CategoryId, new { @class = "control-label" })
         @Html.DropDownListFor(m => m.CategoryId, null, htmlAttributes: new { @class = "form-control" })
         @Html.LabelFor(m => m.Title, new { @class = "control-label", @for = "form-group-input" })
-        @Html.TextBoxFor(m => m.Title, new { @class = "form-control", id = "form-group-input", placeholder = "一句话描述你分享的知识" })
+        @Html.TextBoxFor(m => m.Title, new { @class = "form-control", id = "form-group-input", placeholder = "一句话描述你要提交的问题" })
         @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
         @Html.LabelFor(m => m.Context, new { @class = "control-label" })
 
     </div>
     <div class="form-group">
-        <div id="textEidtor" style="height:450px;padding:15px">
+        <div id="textEidtor" style="height:200px;padding:15px">
         </div>
         @Html.Label("accessories", "附件:")
         <input style="display:inline-block" type="file" multiple id="accessories" name="accessories" />
@@ -33,7 +33,7 @@
     <input type="hidden" id="accessoHidden" name="accessoHidden" />
     @Html.ValidationMessageFor(m => m.Context, "", new { @class = "text-danger" })
     <div class="form-group">
-        <input type="submit" class="btn btn-primary" name="submit" value="发布知识" onclick="PushKnowledge()" />
+        <input type="submit" class="btn btn-primary" name="submit" value="提交问题" onclick="PushKnowledge()" />
     </div>
 
 }

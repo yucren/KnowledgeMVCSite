@@ -1,0 +1,17 @@
+{
+  "name": "knowledgemvcsite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "knowledge"
+  ],
+  "author": "yuchengren",
+  "license": "MIT",
+  "dependencies": {
+    "layui-src": "^2.5.5"
+  }
+}

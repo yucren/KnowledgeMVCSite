@@ -8,15 +8,15 @@
         <div style="padding:10px 0px 0px 0px;margin-top:40px; background-color :white">
             <div style="padding-bottom:10px">
                 <p style="display:block;font-size:20px">
-                    @item.User.UserName <span style="color:blue;font-size:25px;" class="glyphicon glyphicon-chevron-right"></span>@item.Category.Name
-                    <span>@item.CreateTime</span>
+                    @item.User.UserName <span style="color:blue;font-size:15px;" class="glyphicon glyphicon glyphicon-play"></span>@item.Category.Name
+                <span>@KnowledgeMVCSite.Util.DateTool.DateFormatToString(item.CreateTime)</span>
                     <button  onclick="readALL(event)" class="btn btn-link btn-info readAllBtn" style="border:none;text-decoration-line:none">阅读全文<span class="glyphicon glyphicon-arrow-down"></span></button>
                     <button class="btn btn-primary btn-sm  pull-right" style="margin-right:10px">
                         <span class="glyphicon glyphicon-share-alt"></span>
                     </button>
 
                 </p>
-                <strong style="font-size:18px;padding-left:10px">@item.Title </strong>
+                <strong style="font-size:18px;padding-left:10px"><a href="@Url.Action("Detail","Knowledge",new { id =item.Id })">@item.Title</a>  </strong>
             </div>
 
             <div class="panel-body-noborder panel-fit" style="max-height:200px;word-break:break-word; padding-left:10px">

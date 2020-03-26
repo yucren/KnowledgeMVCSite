@@ -92,37 +92,35 @@ namespace KnowledgeMVCSite.Controllers
             var model = new IndexViewModel();
             return View(model);
         }
-        [Route("Manage/UserManage")]
+        //[Route("Manage/UserManage")]
+        
         public ActionResult UserManage()
         {
-            var count = db.Users.Count();
-            ViewBag.count = count;
-            ViewBag.cur = 1;
-            var pageLines = 3;
-            ViewBag.pageLines = pageLines;
-            ViewBag.pageCount = Convert.ToInt32(Math.Ceiling(count / (pageLines * 1.0)));
             
-            var userModel = db.Users.OrderBy(m => m.Email).Skip(0).Take(pageLines).Select(m => new UserListViewModel
-            {
-                City = m.City,
-                MailAddress = m.Email,
-                PhoneNum = m.PhoneNumber,
-                UserName = m.UserName
-            }).ToList();
 
-            return View(userModel);
+            return View();
 
 
         }
-        [Route("Manage/UserManage/{pageLines}/{pageCur}")]
-        public ActionResult UserManage(int pageLines, int pageCur)
+        //[Route("Manage/UserManage/{pageLines}/{pageCur}")]
+        //[HttpGet]
+        //public ActionResult UserManage()
+        //{
+           
+
+        //    return View();
+            
+
+        //}
+        [HttpPost]
+        public string UserManage(int pageLines, int pageCur)
         {
-            var count = db.Users.Count(); 
-            ViewBag.count = count; 
+            var count = db.Users.Count();
+            ViewBag.count = count;
             ViewBag.cur = pageCur;
             ViewBag.pageLines = pageLines;
-            ViewBag.pageCount =Convert.ToInt32(Math.Ceiling(count / (pageLines *1.0)));
-            var userModel = db.Users.OrderBy(m => m.Email).Skip((pageCur - 1)*pageLines).Take(pageLines).Select(m => new UserListViewModel
+            ViewBag.pageCount = Convert.ToInt32(Math.Ceiling(count / (pageLines * 1.0)));
+            var userModel = db.Users.OrderBy(m => m.Email).Skip((pageCur - 1) * pageLines).Take(pageLines).Select(m => new UserListViewModel
             {
                 City = m.City,
                 MailAddress = m.Email,
@@ -130,9 +128,8 @@ namespace KnowledgeMVCSite.Controllers
                 UserName = m.UserName
 
             }).ToList();
-
-            return View(userModel);
-
+            var json = "{\"code\":0,\"msg\":\"\",\"count\":"+userModel.Count + ",\"data\":" +    Newtonsoft.Json.JsonConvert.SerializeObject(userModel) +"}";
+            return json;
 
         }
 

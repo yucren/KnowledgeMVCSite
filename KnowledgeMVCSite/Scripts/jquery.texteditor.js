@@ -297,7 +297,7 @@
 		});
 	};
 
-	$.fn.texteditor.defaults = $.extend({}, $.fn.dialog.defaults, {
+	$.fn.texteditor.defaults = $.extend({}, {
 		title: null,
 		cls: 'texteditor',
 		bodyCls: 'texteditor-body',
@@ -566,5 +566,5 @@
 
 	});
 
-	$.parser.plugins.push('texteditor');
+	
 })(jQuery);

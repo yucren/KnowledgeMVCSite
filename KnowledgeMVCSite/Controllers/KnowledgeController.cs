@@ -19,15 +19,25 @@ namespace KnowledgeMVCSite.Controllers
     public class KnowledgeController : Controller
     {
 
-      public static KnowledgeModel db = new KnowledgeModel();
-        
+        public static KnowledgeModel db = new KnowledgeModel();
+
         // GET: Knowledge
         public ActionResult Index(string catalog)
         {
             ViewBag.Title = catalog;
             return View();
         }
-        
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Detail(int id)
+        {
+            var knowledge = db.Knowledges.Include("Category").Include("User").
+              Include("Praises").Include("Discusses").Where(k => k.Id == id).Single();
+            return View(knowledge);
+
+        }
+
         public ActionResult Create()
         {
             ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name", 2);
@@ -39,18 +49,18 @@ namespace KnowledgeMVCSite.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        
+
         public async Task<ActionResult> Create([Bind(Include = "CategoryId,Title,Context")] Knowledge knowledge)
         {
-            String[] fileNameArr =null;
-            ViewBag.IsEdit =bool.Parse(Request["IsEdit"]);
+            String[] fileNameArr = null;
+            ViewBag.IsEdit = bool.Parse(Request["IsEdit"]);
             ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name", knowledge.CategoryId);
             var accessories = Request["accessoHidden"];
             if (!string.IsNullOrEmpty(accessories))
             {
-                fileNameArr =accessories.Split('|') ;
+                fileNameArr = accessories.Split('|');
             }
-            
+
 
             if (ModelState.IsValid)
             {
@@ -70,17 +80,17 @@ namespace KnowledgeMVCSite.Controllers
                             db.SaveChanges();
                             return RedirectToAction("Index", "Home");
                         }
-                        
-                            var newKnowledge = new Knowledge
-                            {
-                                CreateTime = DateTime.Now,
-                                Context = knowledge.Context,
-                                Title = knowledge.Title,
-                                CategoryId = knowledge.CategoryId,
-                                User = db.Users.Where(p => p.Email == HttpContext.User.Identity.Name).Single(),
+
+                        var newKnowledge = new Knowledge
+                        {
+                            CreateTime = DateTime.Now,
+                            Context = knowledge.Context,
+                            Title = knowledge.Title,
+                            CategoryId = knowledge.CategoryId,
+                            User = db.Users.Where(p => p.Email == HttpContext.User.Identity.Name).Single(),
 
 
-                            };
+                        };
 
 
 
@@ -105,7 +115,7 @@ namespace KnowledgeMVCSite.Controllers
                     {
 
                         ModelState.AddModelError("", ex.Message);
-                        
+
                         return View(knowledge);
                     }
 
@@ -136,28 +146,28 @@ namespace KnowledgeMVCSite.Controllers
             ViewBag.CategoryId = new SelectList(db.Categorys, "CategoryId", "Name", knowledge.CategoryId);
             ViewBag.Title = "编辑知识";
             ViewBag.IsEdit = true;
-            return View("Create",knowledge);
+            return View("Create", knowledge);
         }
         [HttpGet]
         public async Task<Boolean> Delete(int id)
 
-        {           
-          
+        {
+
             var knowledge = await db.Knowledges.FindAsync(id);
-            var acces = db.Accessories.Where(p => p.KnowledgeId==knowledge.Id).ToList();
+            var acces = db.Accessories.Where(p => p.KnowledgeId == knowledge.Id).ToList();
             foreach (var item in acces)
             {
                 db.Accessories.Remove(item);
-                
+
             }
-                    
-                    db.Knowledges.Remove(knowledge);
-                   int cout=  await db.SaveChangesAsync();
-            if (cout !=0)
+
+            db.Knowledges.Remove(knowledge);
+            int cout = await db.SaveChangesAsync();
+            if (cout != 0)
             {
                 foreach (var item in acces)
                 {
-                    
+
                     var filePath = Server.MapPath("~/upfiles/" + item.FileName);
                     if (System.IO.File.Exists(filePath))
                     {
@@ -170,23 +180,23 @@ namespace KnowledgeMVCSite.Controllers
             {
                 return false;
             }
-      
+
 
         }
 
-        
+
         [AllowAnonymous]
         public PartialViewResult DiscsussPartial(int knowledgeId)
         {
             ViewBag.knowledgeId = knowledgeId;
-            var model = (from discuss in db.Discusses.Include("User") where discuss.Knowledge.Id == knowledgeId select discuss)  .ToList();
+            var model = (from discuss in db.Discusses.Include("User") where discuss.Knowledge.Id == knowledgeId select discuss).ToList();
 
             return PartialView(model);
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<PartialViewResult> Discuss([Bind(Include ="Context,KnowledgeId")] Discuss model)
+        public async Task<PartialViewResult> Discuss([Bind(Include = "Context,KnowledgeId")] Discuss model)
         {
 
             if (ModelState.IsValid)
@@ -195,13 +205,13 @@ namespace KnowledgeMVCSite.Controllers
                 {
                     Context = model.Context,
                     CreateTime = DateTime.Now,
-                    KnowledgeId=model.KnowledgeId,
+                    KnowledgeId = model.KnowledgeId,
                     User = db.Users.Where(p => p.Email == HttpContext.User.Identity.Name).SingleOrDefault()
                 };
                 db.Discusses.Add(discuss);
                 await db.SaveChangesAsync();
-                
-               
+
+
             }
             var model1 = (from discuss in db.Discusses.Include("User") where discuss.Knowledge.Id == model.KnowledgeId select discuss).ToList();
 
@@ -212,12 +222,12 @@ namespace KnowledgeMVCSite.Controllers
         [HttpPost]
         public PartialViewResult SearchPartial(string searchValue, int? pageCount, int? pageNum)
         {
-            var model=  db.Knowledges.Include("User").Include("Category").Where(p => p.Title.Contains(searchValue) || p.Context.Contains(searchValue)).ToList();
+            var model = db.Knowledges.Include("User").Include("Category").Where(p => p.Title.Contains(searchValue) || p.Context.Contains(searchValue)).ToList();
             return PartialView(model);
         }
 
 
-        public string  Praise(int knowlegeId)
+        public string Praise(int knowlegeId)
         {
             var userid = User.Identity.GetUserId();
             if (string.IsNullOrEmpty(User.Identity.Name))
@@ -225,21 +235,21 @@ namespace KnowledgeMVCSite.Controllers
                 return "未登录";
             }
 
-            if (db.Praises.Where(p=>p.KnowledgeId==knowlegeId && p.UserId== userid).Count()!=0)
+            if (db.Praises.Where(p => p.KnowledgeId == knowlegeId && p.UserId == userid).Count() != 0)
             {
                 db.Praises.Remove(db.Praises.Where(p => p.KnowledgeId == knowlegeId && p.UserId == userid).First());
                 db.SaveChanges();
                 return "点赞已取消";
 
             }
-          var praise=  db.Praises.Add(new Models.Praise
+            var praise = db.Praises.Add(new Models.Praise
             {
-                  KnowledgeId =knowlegeId,
-                   UserId= userid
+                KnowledgeId = knowlegeId,
+                UserId = userid
 
-          });
+            });
 
-            if (praise !=null)
+            if (praise != null)
             {
                 db.SaveChanges();
                 return "点赞成功";
@@ -281,7 +291,7 @@ namespace KnowledgeMVCSite.Controllers
         {
 
             var json = db.Categorys.ToList();
-           return  Newtonsoft.Json.JsonConvert.SerializeObject(json);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
 
         }
         [HttpPost]
@@ -289,9 +299,9 @@ namespace KnowledgeMVCSite.Controllers
         {
             try
             {
-               
+
                 Dictionary<string, string> upfiles = new Dictionary<string, string>();
-               
+
                 var files = Request.Files;
                 foreach (string item in files)
                 {
@@ -299,31 +309,31 @@ namespace KnowledgeMVCSite.Controllers
                     if (file != null)
                     {
                         //var fileName = Path.GetFileNameWithoutExtension(file.FileName) + "-" + Guid.NewGuid() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(file.FileName);
-                        var fileName = Guid.NewGuid()+Path.GetExtension(file.FileName);
+                        var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
                         file.SaveAs(Server.MapPath("~/upfiles/") + fileName);
                         upfiles.Add(fileName, file.FileName);
                         db.Accessories.Add(new Accessory
                         {
                             CreateTime = DateTime.Now,
                             FileName = fileName,
-                            OrginFileName=file.FileName,
-                            UserId = User.Identity.GetUserId()  
+                            OrginFileName = file.FileName,
+                            UserId = User.Identity.GetUserId()
                         });
                     }
                 }
-                 await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
                 return Newtonsoft.Json.JsonConvert.SerializeObject(upfiles);
             }
             catch (Exception)
             {
                 return "上传失败";
-            } 
+            }
         }
         [AllowAnonymous]
         public FileResult ViewFile(string fileName)
         {
             var path = Server.MapPath("~/upfiles/" + fileName);
-           
+
             return File(path, MimeMapping.GetMimeMapping(path));
 
 
@@ -332,12 +342,12 @@ namespace KnowledgeMVCSite.Controllers
         public FileResult PreviewHtml(string url)
         {
 
-          
-            var htmlUrl = Server.MapPath("~/upfiles/")+ Path.GetFileNameWithoutExtension( url) + ".html";
 
-            if (! System.IO.File.Exists(htmlUrl))
+            var htmlUrl = Server.MapPath("~/upfiles/") + Path.GetFileNameWithoutExtension(url) + ".html";
+
+            if (!System.IO.File.Exists(htmlUrl))
             {
-               
+
                 string extension = Path.GetExtension(url);
                 string physicalPath = Server.MapPath("~/upfiles/" + url);
                 PreviewTool previewTool = new PreviewTool();
@@ -359,10 +369,10 @@ namespace KnowledgeMVCSite.Controllers
                         break;
                 }
             }
-          
-            
 
-   
+
+
+
 
             return File(htmlUrl, MimeMapping.GetMimeMapping(htmlUrl));
 

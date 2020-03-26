@@ -11,16 +11,19 @@
     <link href="~/Content/themes/icon.css" rel="stylesheet" />
     <link href="~/Content/themes/texteditor.css" rel="stylesheet" />
     <link href="~/Content/Common.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/node_modules/layui-src/dist/css/layui.css" />
     <script src="~/Scripts/jquery-1.11.3.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
-    <script src="~/Scripts/locale/easyui-lang-zh_CN.js"></script>
-    <script src="~/Scripts/jquery.easyui.min.js"></script>
-    <script src="~/Scripts/jquery.texteditor.js"></script>
-    <script src="~/Scripts/Plugin/table.js"></script>
+    @*<script src="~/Scripts/locale/easyui-lang-zh_CN.js"></script>
+        <script src="~/Scripts/jquery.easyui.min.js"></script>*@
+
+    @*<script src="~/Scripts/Plugin/table.js"></script>*@
     <script src="https://cdn.bootcss.com/babel-core/5.8.14/browser-polyfill.js"></script>
     <script src="https://cdn.bootcss.com/babel-core/5.8.14/browser.min.js"></script>
+    <script src="~/node_modules/layui-src/dist/layui.js"></script>
+    <script src="~/Scripts/jquery.texteditor.js"></script>
 
     <style>
         body, html {
@@ -52,36 +55,21 @@
                     <li>@Html.ActionLink("关于", "About", "Home")</li>
                     <li>@Html.ActionLink("我的提问", "MyAsk", "Manage")</li>
                     <li>@Html.ActionLink("我的知识", "MyKnowledge", "Manage")</li>
-                    @if(User.IsInRole("Administrator"))
+                    @if (User.IsInRole("Administrator"))
                     {
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">系统管理<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>@Html.ActionLink("用户管理", "UserManage", "Manage")</li>
                                 <li>@Html.ActionLink("角色管理", "RoleMangar", "Manage")</li>
-                                <li>@Html.ActionLink("系统设置","Setup","Manage")</li>
+                                <li>@Html.ActionLink("系统设置", "Setup", "Manage")</li>
                             </ul>
                         </li>
 
                     }
-                    @*<li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">编程知识<span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li><b style="color:blue">.NET</b></li>
-            <li><a href="#">C#</a></li>
-            <li><a href="#">.NET CORE</a></li>
-            <li><a href="#">MVC</a></li>
-            <li class="divider"></li>
-            <li><b style="color:blue">JAVA</b></li>
-            <li><a href="#">Java</a></li>
-            <li class="divider"></li>
-            <li><b style="color:blue">SQL</b></li>
-            <li>@Html.ActionLink("数据库脚本", "Index", "Home", routeValues: new { catalog = 3 }, htmlAttributes: null)</li>
-
-            <li class="divider"></li>
-        </ul>*@
+                    
                 </ul>
-                <form   action='@Url.Action("Index","Home")' class=" navbar-form navbar-left">
+                <form action='@Url.Action("Index","Home")' class=" navbar-form navbar-left">
                     <div class="form-group">
                         <input id="searchValue" name="searchValue" type="text" class="form-control" placeholder="标题或者内容" onkeydown="$('#searchBtn').submit()">
                     </div>
@@ -119,7 +107,6 @@
 
 
     </div>
-   
     @Html.Partial("_JsPartialPage")
     @RenderSection("Scripts", false)
 

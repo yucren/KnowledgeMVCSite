@@ -1,0 +1,82 @@
+﻿@model KnowledgeMVCSite.Models.Knowledge
+@{
+    ViewBag.Title = "Detail";
+}
+    <ul class="breadcrumb">       
+        <li><a href="/">首页</a></li>
+        <li class="active">@Model.Title</li>
+    </ul>
+    <div style="padding:10px 0px 0px 0px;margin: 20px auto 0 auto; width:70%; background-color :white">
+        <div style="padding-bottom:10px;padding-left:20px">
+            <p style="display:block;font-size:20px">
+                @Model.User.UserName <span style="color:blue;font-size:25px;" class="glyphicon glyphicon-chevron-right"></span>@Model.Category.Name
+                <span>@KnowledgeMVCSite.Util.DateTool.DateFormatToString(Model.CreateTime)</span>
+                <button class="btn btn-primary btn-sm  pull-right" style="margin-right:10px">
+                    <span class="glyphicon glyphicon-share-alt"></span>
+                </button>
+
+            </p>
+            <strong style="font-size:18px;padding-left:10px"><a href="#">@Model.Title</a>  </strong>
+        </div>
+
+        <div class="panel-body-noborder panel-fit" style="word-break:break-word; padding-left:20px">
+
+            @Html.Raw(@Model.Context)
+
+
+        </div>
+        @if (Model.Accessories.Count != 0)
+        {
+
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="collapse"
+                    data-target="#accessory@(Model.Id)">
+                @(Model.Accessories.Count)附件
+            </button>
+            <div id="accessory@(Model.Id)" class="panel-footer-noborder collapse">
+
+                <ul class="list-group list" style="background-color:grey">
+
+                    @foreach (var accssory in Model.Accessories)
+                    {
+                        <li class="list-group-item" style="background-color:lightblue">
+                            <a href='@Url.Action("ViewFile","Knowledge",new { fileName = accssory.FileName})'>@accssory.OrginFileName</a>
+                            <a href="@Url.Action("PreviewHtml","Knowledge",new {url=accssory.FileName })" target="_blank">在线预览</a>
+                        </li>
+
+                    }
+                </ul>
+
+
+            </div>
+        }
+        <div style="margin-top:15px;padding:10px" class="well">
+            <p><span onclick="praise(event, @Model.Id,'@(User.Identity.Name == "" ? "0" : User.Identity.Name)')" style="color:@(Model.Praises.Where(p => p.UserId == User.Identity.GetUserId()).Count() == 0 ? "darkgray" : "red") ;font-size:20px" class="glyphicon glyphicon-thumbs-up">@Model.Praises.Count</span></p>
+
+            <button id="button@(Model.Id)" class="btn btn-primary btn-sm pull-right" data-loading-text="加载中..." style="margin-top:-33px;margin-right:10px" onclick="discuss(event,@Model.Id)">
+                <span class="glyphicon glyphicon-comment">
+                </span><span>@(Model.Discusses.Count)</span>条评论
+            </button>
+        </div>
+
+        <div id="discuss@(Model.Id)" class="discuss" style="margin-top:20px;display:none">
+            @using (Ajax.BeginForm("Discuss", "Knowledge", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                UpdateTargetId = "discuss_" + Model.Id,
+                OnSuccess = "getDiscussCount()"
+
+            }))
+            {
+                <input type="hidden" name="KnowledgeId" value="@Model.Id" />
+                <textarea name="Context" maxlength="140" style="width:100%" class="form-control"></textarea>
+                <input type="submit" style="margin-top:10px" class="btn btn-default center-block " value="提交" />
+
+            }
+
+            <div class="discussContent" id="discuss_@Model.Id">
+
+            </div>
+        </div>
+
+    </div>
+
